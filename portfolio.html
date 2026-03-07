@@ -43,7 +43,6 @@
   .hero-tag{font-family:var(--font-mono);font-size:12px;color:var(--accent3);letter-spacing:.2em;text-transform:uppercase;display:flex;align-items:center;gap:12px;margin-bottom:24px;opacity:0;animation:fadeUp .8s .2s forwards}
   .hero-tag::before{content:'';width:40px;height:1px;background:var(--accent3)}
   
-  /* UPDATED HERO NAME: Reddy on 2nd Line */
   .hero-name{font-family:var(--font-display);font-size:clamp(46px,7vw,96px);font-weight:800;line-height:1.05;letter-spacing:-.02em;opacity:0;animation:fadeUp .8s .4s forwards;}
   .hero-name span {
     background: linear-gradient(90deg, var(--accent1), var(--accent2), var(--accent3), var(--accent4));
@@ -51,7 +50,7 @@
     background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: gradientShift 8s ease infinite;
-    display: block; /* Forces line break inherently or works with <br> */
+    display: block; 
   }
   @keyframes gradientShift { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
   
@@ -86,16 +85,15 @@
   .emb-legend{display:flex;gap:16px;margin-top:12px;flex-wrap:wrap;font-family:var(--font-mono);font-size:10px;color:var(--muted);align-items:center;letter-spacing:.06em}
   .emb-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:4px}
 
-  /* NEW BENTO GRID TECH STACK */
+  /* SKILLS (Bento Grid) */
   #skills{padding:120px 60px}
   .skills-header{margin-bottom:40px}
   .bento-grid{display:grid;grid-template-columns:repeat(12, 1fr);grid-auto-rows:minmax(220px, auto);gap:24px}
-  .bento-box{background:rgba(17, 17, 31, 0.4);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.06);border-radius:24px;padding:36px;position:relative;overflow:hidden;transition:transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s;cursor:crosshair}
+  .bento-box{background:rgba(17, 17, 31, 0.4);backdrop-filter:blur(12px);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.06);border-radius:24px;padding:36px;position:relative;overflow:hidden;transition:transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s;cursor:crosshair}
   .bento-box::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(circle at top right, var(--cat-color), transparent 60%);opacity:0.05;transition:opacity 0.4s;pointer-events:none}
   .bento-box:hover{transform:translateY(-6px);border-color:var(--cat-color)}
   .bento-box:hover::before{opacity:0.15}
   
-  /* Bento Grid Span Configurations */
   .bento-agentic { grid-column: span 7; --cat-color: #00e5ff; }
   .bento-genai { grid-column: span 5; --cat-color: #bf5fff; }
   .bento-dl { grid-column: span 5; --cat-color: #ff6b35; }
@@ -109,7 +107,22 @@
   .bento-box:hover .bento-tag{border-color:rgba(255,255,255,0.1);color:#e0e0e0}
   .bento-tag:hover{background:var(--cat-color) !important;color:#000 !important;border-color:var(--cat-color) !important;transform:scale(1.05)}
 
-  /* PROJECTS (Updated Typography) */
+  /* CERTIFICATIONS */
+  #certifications{padding:120px 60px}
+  .cert-header{margin-bottom:60px}
+  .cert-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:24px}
+  .cert-card{background:rgba(17, 17, 31, 0.4);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:32px;text-decoration:none;display:flex;flex-direction:column;transition:transform .4s cubic-bezier(0.16, 1, 0.3, 1), border-color .4s;cursor:crosshair;position:relative;overflow:hidden}
+  .cert-card::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(circle at top right, var(--accent3), transparent 60%);opacity:0;transition:opacity 0.4s;pointer-events:none}
+  .cert-card:hover{transform:translateY(-6px);border-color:var(--accent3)}
+  .cert-card:hover::before{opacity:0.05}
+  .cert-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;font-family:var(--font-mono);font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em}
+  .cert-issuer{color:var(--accent3);font-weight:700}
+  .cert-name{font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--text);line-height:1.4;margin-bottom:24px;flex-grow:1;transition:color .3s}
+  .cert-card:hover .cert-name{color:var(--accent3)}
+  .cert-link{font-family:var(--font-mono);font-size:12px;color:var(--muted);transition:color .3s, transform .3s;display:flex;align-items:center;gap:8px}
+  .cert-card:hover .cert-link{color:var(--text);transform:translateX(4px)}
+
+  /* PROJECTS */
   #projects{padding:120px 60px}
   .projects-header{margin-bottom:60px}
   .projects-wrapper{display:flex;flex-direction:column;border-top:1px solid var(--border)}
@@ -119,8 +132,6 @@
   .proj-row:hover::before{opacity:1;left:0}
   
   .proj-top{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:16px;flex-wrap:wrap;gap:16px}
-  
-  /* Adjusted Project Title size to be smaller */
   .proj-title{font-family:var(--font-display);font-size:clamp(24px,3vw,36px);font-weight:700;color:var(--text);line-height:1;transition:color .3s}
   .proj-row:hover .proj-title{color:var(--accent1)}
   
@@ -129,15 +140,12 @@
   .proj-row:hover .proj-arrow{color:var(--accent1);transform:translateX(10px) rotate(45deg)}
   
   .proj-bottom{display:flex;justify-content:space-between;align-items:flex-start;gap:40px}
-  
-  /* Adjusted Project Description to be larger and slightly wider */
   .proj-desc{font-size:18px;color:var(--muted);max-width:700px;line-height:1.8;margin:0}
-  
   .proj-stack{display:flex;gap:10px;flex-wrap:wrap;max-width:400px;justify-content:flex-end}
   .proj-stack span{font-family:var(--font-mono);font-size:11px;color:var(--muted);padding:6px 16px;border:1px solid var(--border);border-radius:30px;transition:border-color .3s, color .3s}
   .proj-row:hover .proj-stack span{border-color:rgba(255,107,53,0.4);color:var(--text)}
 
-  /* MINI PROJECTS (More Projects) - Left untouched as requested */
+  /* MINI PROJECTS */
   .mini-wrapper{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px}
   .mini-item{padding:24px;background:rgba(255,255,255,0.02);border:1px solid var(--border);text-decoration:none;transition:background .3s;cursor:none}
   .mini-item:hover{background:rgba(255,255,255,0.05);border-color:var(--accent3)}
@@ -147,7 +155,7 @@
   /* CONTACT & KALI TERMINAL */
   #contact{padding:120px 60px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
   .contact-big{font-family:var(--font-display);font-size:clamp(40px,5vw,64px);font-weight:800;line-height:1.1;letter-spacing:-.02em;margin-bottom:24px}
-  .contact-big span{background:linear-gradient(90deg,var(--accent1),var(--accent2));background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .contact-big span{background:linear-gradient(90deg,var(--accent1),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
   .contact-sub{color:var(--muted);font-size:16px;line-height:1.7;margin-bottom:40px}
   .contact-links{display:flex;flex-direction:column;gap:16px}
   .contact-link{display:flex;align-items:center;gap:16px;text-decoration:none;padding:16px 20px;border:1px solid var(--border);background:var(--card);transition:border-color .3s,transform .2s;cursor:none}
@@ -201,7 +209,7 @@
     nav{padding:16px 24px}.nav-links{display:none}
     #hero{padding:100px 24px 60px}
     #about,#contact{padding:80px 24px;grid-template-columns:1fr;gap:40px}
-    #skills,#projects{padding:80px 24px}
+    #skills,#certifications,#projects{padding:80px 24px}
     .bento-box { grid-column: span 12 !important; }
     .proj-bottom{flex-direction:column;gap:20px}
     .proj-stack{justify-content:flex-start}
@@ -222,6 +230,7 @@
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#skills">Skills</a></li>
+    <li><a href="#certifications">Certificates</a></li>
     <li><a href="#projects">Projects</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
@@ -256,11 +265,21 @@
 <section id="about">
   <div class="reveal">
     <div class="section-label">01 — About</div>
-    <h2 class="section-title">Building AI from the inside out</h2>
-    <p class="about-text">I'm a <strong>CS undergraduate</strong> focused on <strong>Agentic AI, Generative AI, Deep Learning, and ML Systems</strong>. My philosophy: understand what's inside the API before using it.</p>
-    <p class="about-text">From building GPT-style transformers from scratch to deploying multi-model GPU-efficient platforms, I design <strong>end-to-end AI products</strong> — architecture to deployment.</p>
-    <p class="about-text">Every project is a real, working system engineered with industry-level practices: modular architecture, optimized inference, and production-ready backends.</p>
+    <h2 class="section-title">Bridging Theory and Production AI</h2>
+    
+    <p class="about-text">
+      I am a Computer Science undergraduate at <strong>Lovely Professional University</strong> with a deep-rooted passion for Artificial Intelligence. My focus lies at the intersection of Agentic AI, Generative Models, and scalable Machine Learning Systems. My engineering philosophy is simple: don't just consume APIs—understand the underlying mathematics and architecture.
+    </p>
+    
+    <p class="about-text">
+      Beyond academic coursework, I actively bridge the gap between theoretical ML and production deployment. During my tenure as an <strong>AI/ML Intern at Elevate Labs</strong>, I engineered automated NLP pipelines for candidate screening, reinforcing my ability to deliver business-centric AI solutions. I am highly competitive and data-driven, recently securing a <strong>Global Rank of 588 (Top 15%)</strong> in Kaggle's Road Accident Risk Prediction challenge.
+    </p>
+
+    <p class="about-text">
+      Whether I am hand-coding GPT-style transformers in PyTorch, developing conditional GANs, or architecting multi-agent workflows with LangChain, my goal remains consistent: to build robust, end-to-end AI systems. I approach every project with a software engineering mindset, emphasizing modular architecture, optimized inference, and production-ready backends.
+    </p>
   </div>
+  
   <div class="reveal">
     <div class="embedding-viz">
       <div class="emb-header">
@@ -340,9 +359,54 @@
   </div>
 </section>
 
+<section id="certifications">
+  <div class="cert-header reveal">
+    <div class="section-label">03 — Certifications</div>
+    <h2 class="section-title">Verified Credentials</h2>
+  </div>
+  
+  <div class="cert-grid reveal">
+    <a class="cert-card" href="https://drive.google.com/file/d/1qtsvlXZa8pmrHZz22AJipZIoHpPA2Y-q/view" target="_blank">
+      <div class="cert-top">
+        <div class="cert-issuer">AWS Training</div>
+        <div class="cert-date">Oct 2025</div>
+      </div>
+      <h3 class="cert-name">Machine Learning Exam Basics</h3>
+      <div class="cert-link">View Credential ↗</div>
+    </a>
+    
+    <a class="cert-card" href="https://drive.google.com/file/d/1yVCt4nSr6sNPbkVP7cTLqXDG9gB2V2os/view" target="_blank">
+      <div class="cert-top">
+        <div class="cert-issuer">GeeksforGeeks</div>
+        <div class="cert-date">2025</div>
+      </div>
+      <h3 class="cert-name">Generative AI, LLM & RAG - Skill Up</h3>
+      <div class="cert-link">View Credential ↗</div>
+    </a>
+
+    <a class="cert-card" href="https://drive.google.com/file/d/1jhU52QZwVoUqO1-vLnADNZQMFK-IkDTn/view" target="_blank">
+      <div class="cert-top">
+        <div class="cert-issuer">CipherSchools</div>
+        <div class="cert-date">Jul 2025</div>
+      </div>
+      <h3 class="cert-name">A Guide to Machine Learning with Data Science</h3>
+      <div class="cert-link">View Credential ↗</div>
+    </a>
+
+    <a class="cert-card" href="https://drive.google.com/file/d/1mCWEFx-TPkMaJkr90CpHypil2BWamNPC/view" target="_blank">
+      <div class="cert-top">
+        <div class="cert-issuer">IBM Cognitive Class</div>
+        <div class="cert-date">Mar 2025</div>
+      </div>
+      <h3 class="cert-name">Deep Learning with TensorFlow</h3>
+      <div class="cert-link">View Credential ↗</div>
+    </a>
+  </div>
+</section>
+
 <section id="projects">
   <div class="projects-header reveal">
-    <div class="section-label">03 — Projects</div>
+    <div class="section-label">04 — Projects</div>
     <h2 class="section-title">Systems I've built</h2>
   </div>
 
@@ -447,7 +511,7 @@
 
 <section id="contact">
   <div class="reveal">
-    <div class="section-label">04 — Contact</div>
+    <div class="section-label">05 — Contact</div>
     <h2 class="contact-big">Let's build <span>something that matters.</span></h2>
     <p class="contact-sub">Open to collaborations, research internships, and full-time AI/ML roles. If you're working on something ambitious at the intersection of ML and real-world impact — reach out.</p>
     <div class="contact-links">
@@ -530,7 +594,7 @@ document.addEventListener('mousemove', e => {
   trail.style.left=tx+'px'; trail.style.top=ty+'px';
   requestAnimationFrame(loop);
 })();
-document.querySelectorAll('a,button,.bento-box').forEach(el=>{
+document.querySelectorAll('a,button,.bento-box,.cert-card').forEach(el=>{
   el.addEventListener('mouseenter',()=>{
     cursor.style.width='6px'; cursor.style.height='6px';
     cursor.style.background='#00e5ff'; cursor.style.borderRadius='0';
@@ -606,7 +670,7 @@ let t=0;
   rndr.render(scene,cam);
 })();
 
-// ── EMBEDDING SPACE CANVAS (UPDATED WITH NEW SKILLS) ───────────
+// ── EMBEDDING SPACE CANVAS ─────────────────────────────────────
 (function(){
   const emb=document.getElementById('embCanvas');
   if(!emb) return;
