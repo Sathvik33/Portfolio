@@ -43,7 +43,23 @@
   .hero-tag{font-family:var(--font-mono);font-size:12px;color:var(--accent3);letter-spacing:.2em;text-transform:uppercase;display:flex;align-items:center;gap:12px;margin-bottom:24px;opacity:0;animation:fadeUp .8s .2s forwards}
   .hero-tag::before{content:'';width:40px;height:1px;background:var(--accent3)}
   .hero-name{font-family:var(--font-display);font-size:clamp(52px,8vw,96px);font-weight:800;line-height:.95;letter-spacing:-.02em;opacity:0;animation:fadeUp .8s .4s forwards}
-  .hero-name .line1{display:block;color:var(--text)}
+  
+  /* UPDATED HERO NAME GRADIENT ANIMATION */
+  .hero-name .line1 {
+    display: block;
+    background: linear-gradient(90deg, var(--accent1), var(--accent2), var(--accent3), var(--accent4));
+    background-size: 300%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientShift 8s ease infinite;
+  }
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
   .hero-name .line2{display:block;color:var(--text)}
   .hero-sub{font-family:var(--font-body);font-size:18px;font-weight:300;color:var(--muted);margin-top:24px;max-width:560px;line-height:1.6;opacity:0;animation:fadeUp .8s .6s forwards}
   .hero-sub strong{color:var(--text);font-weight:500}
@@ -122,7 +138,7 @@
   /* CONTACT */
   #contact{padding:120px 60px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
   .contact-big{font-family:var(--font-display);font-size:clamp(40px,5vw,64px);font-weight:800;line-height:1.1;letter-spacing:-.02em;margin-bottom:24px}
-  .contact-big span{background:linear-gradient(90deg,var(--accent1),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .contact-big span{background:linear-gradient(90deg,var(--accent1),var(--accent2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
   .contact-sub{color:var(--muted);font-size:16px;line-height:1.7;margin-bottom:40px}
   .contact-links{display:flex;flex-direction:column;gap:16px}
   .contact-link{display:flex;align-items:center;gap:16px;text-decoration:none;padding:16px 20px;border:1px solid var(--border);background:var(--card);transition:border-color .3s,transform .2s;cursor:none}
@@ -194,7 +210,6 @@
   </ul>
 </nav>
 
-<!-- HERO -->
 <section id="hero">
   <div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div>
   <div class="hero-content">
@@ -220,7 +235,6 @@
   <div class="hero-scroll"><div class="scroll-line"></div>SCROLL</div>
 </section>
 
-<!-- ABOUT -->
 <section id="about">
   <div class="reveal">
     <div class="section-label">01 — About</div>
@@ -246,7 +260,6 @@
   </div>
 </section>
 
-<!-- SKILLS -->
 <section id="skills">
   <div class="skills-header reveal">
     <div class="section-label">02 — Skills</div>
@@ -255,32 +268,23 @@
   <div class="skills-grid reveal">
     <div class="skill-category" style="--cat-color:#ff6b35">
       <div class="cat-icon">🧠</div><div class="cat-name">ML / Deep Learning</div>
-      <div class="skill-chips"><span class="chip">PyTorch</span><span class="chip">Scikit-learn</span><span class="chip">HuggingFace</span><span class="chip">XGBoost</span><span class="chip">Optuna</span><span class="chip">CUDA</span></div>
+      <div class="skill-chips"><span class="chip">PyTorch</span><span class="chip">TensorFlow</span><span class="chip">Scikit-learn</span><span class="chip">NumPy</span><span class="chip">Pandas</span><span class="chip">OpenCV</span></div>
     </div>
     <div class="skill-category" style="--cat-color:#f7c948">
       <div class="cat-icon">🎨</div><div class="cat-name">Generative AI</div>
-      <div class="skill-chips"><span class="chip">Stable Diffusion</span><span class="chip">StyleGAN</span><span class="chip">Diffusers</span><span class="chip">GPT-style LLMs</span><span class="chip">Ollama</span><span class="chip">LLaVA</span></div>
+      <div class="skill-chips"><span class="chip">Transformers</span><span class="chip">LLaMA3</span><span class="chip">LLaVA</span><span class="chip">Ollama</span><span class="chip">NLP</span><span class="chip">Stable Diffusion</span></div>
     </div>
     <div class="skill-category" style="--cat-color:#00e5ff">
       <div class="cat-icon">🤖</div><div class="cat-name">Agentic AI</div>
-      <div class="skill-chips"><span class="chip">LangChain</span><span class="chip">LangServe</span><span class="chip">Multi-Agent</span><span class="chip">RAG</span><span class="chip">ChromaDB</span><span class="chip">Tool Use</span></div>
+      <div class="skill-chips"><span class="chip">LangChain</span><span class="chip">RAG</span><span class="chip">ChromaDB</span><span class="chip">yfinance</span><span class="chip">DuckDuckGo</span><span class="chip">Multi-Agent</span></div>
     </div>
     <div class="skill-category" style="--cat-color:#bf5fff">
       <div class="cat-icon">⚙️</div><div class="cat-name">Backend / Infra</div>
-      <div class="skill-chips"><span class="chip">FastAPI</span><span class="chip">PostgreSQL</span><span class="chip">SQLAlchemy</span><span class="chip">JWT Auth</span><span class="chip">Alembic</span><span class="chip">Docker</span></div>
-    </div>
-    <div class="skill-category" style="--cat-color:#ff6b35">
-      <div class="cat-icon">👁️</div><div class="cat-name">Vision / UI</div>
-      <div class="skill-chips"><span class="chip">OpenCV</span><span class="chip">Streamlit</span><span class="chip">Plotly</span></div>
-    </div>
-    <div class="skill-category" style="--cat-color:#f7c948">
-      <div class="cat-icon">💻</div><div class="cat-name">Languages & Tools</div>
-      <div class="skill-chips"><span class="chip">Python</span><span class="chip">Java</span><span class="chip">C++</span><span class="chip">Git</span><span class="chip">VS Code</span><span class="chip">Pandas</span></div>
+      <div class="skill-chips"><span class="chip">Python</span><span class="chip">FastAPI</span><span class="chip">Streamlit</span><span class="chip">Docker</span><span class="chip">MySQL</span><span class="chip">C++</span></div>
     </div>
   </div>
 </section>
 
-<!-- PROJECTS -->
 <section id="projects">
   <div class="projects-header reveal">
     <div class="section-label">03 — Projects</div>
@@ -355,18 +359,6 @@
     </a>
   </div>
 
-  <div class="reveal" style="margin-top:2px">
-    <a class="project-card" href="https://github.com/Sathvik33/high-resolution-image-denoising-autoencoder" target="_blank" style="display:flex;align-items:flex-start;gap:40px;flex-wrap:wrap">
-      <div style="flex:1;min-width:280px">
-        <div class="project-num"><span>PROJECT_008</span><div class="project-tags"><span class="tag">Autoencoders</span><span class="tag">Unsupervised</span></div></div>
-        <div class="project-link" style="position:static;margin-bottom:16px">↗</div>
-        <h3 class="project-title">🔍 High-Res Image Denoising Autoencoder</h3>
-        <p class="project-desc">Deep Convolutional Denoising Autoencoder trained on CelebA (200k+ images). Encoder learns noise-invariant latent representations analyzed via PCA & t-SNE. Foundation for VAE/GAN/Diffusion model research.</p>
-        <div class="project-stack"><span class="stack-pill">PyTorch</span><span class="stack-pill">CelebA</span><span class="stack-pill">PCA</span><span class="stack-pill">t-SNE</span><span class="stack-pill">Gaussian Noise</span></div>
-      </div>
-    </a>
-  </div>
-
   <div class="section-label reveal" style="margin-top:72px;margin-bottom:24px">More Projects</div>
   <div class="mini-grid reveal">
     <a class="mini-card" href="https://github.com/Sathvik33/Movie_recommendation" target="_blank"><div class="mini-emoji">🎬</div><div class="mini-title">Movie Recommendation</div><div class="mini-desc">Genre-cluster-based recommendations using K-Means clustering with a Streamlit UI.</div></a>
@@ -378,7 +370,6 @@
   </div>
 </section>
 
-<!-- CONTACT -->
 <section id="contact">
   <div class="reveal">
     <div class="section-label">04 — Contact</div>
@@ -404,27 +395,27 @@
     </div>
   </div>
   <div class="reveal">
-    <div class="contact-terminal">
+    <div class="contact-terminal" id="term-box">
       <div class="terminal-bar">
         <div class="t-dot"></div><div class="t-dot"></div><div class="t-dot"></div>
         <span style="margin-left:8px;font-size:11px;color:var(--muted)">sathvik@ai ~ terminal</span>
       </div>
-      <div><span class="t-prompt">❯</span> <span class="t-cmd">whoami</span></div>
-      <div><span class="t-out">→</span> <span class="t-val">ML/AI Engineer · CS Undergrad</span></div>
-      <div style="margin-top:8px"><span class="t-prompt">❯</span> <span class="t-cmd">cat status.txt</span></div>
-      <div><span class="t-out">→</span> <span class="t-val">Open to opportunities</span></div>
-      <div style="margin-top:8px"><span class="t-prompt">❯</span> <span class="t-cmd">ls interests/</span></div>
-      <div><span class="t-out">→</span> <span class="t-val">agentic_ai/  generative_ai/  llm_systems/</span></div>
-      <div style="margin-top:8px"><span class="t-prompt">❯</span> <span class="t-cmd">send --to sathvik --re "collaboration"</span></div>
-      <div><span class="t-out">→</span> <span style="color:#28c840">Message delivered. Will respond ASAP.</span></div>
-      <div style="margin-top:8px"><span class="t-prompt">❯</span> <span class="t-cursor"></span></div>
+      <div class="term-line" style="display:none"><span class="t-prompt">❯</span> <span class="t-cmd">whoami</span></div>
+      <div class="term-line" style="display:none"><span class="t-out">→</span> <span class="t-val">ML/AI Engineer · CS Undergrad</span></div>
+      <div class="term-line" style="margin-top:8px;display:none"><span class="t-prompt">❯</span> <span class="t-cmd">cat status.txt</span></div>
+      <div class="term-line" style="display:none"><span class="t-out">→</span> <span class="t-val">Open to opportunities</span></div>
+      <div class="term-line" style="margin-top:8px;display:none"><span class="t-prompt">❯</span> <span class="t-cmd">ls interests/</span></div>
+      <div class="term-line" style="display:none"><span class="t-out">→</span> <span class="t-val">agentic_ai/  generative_ai/  llm_systems/</span></div>
+      <div class="term-line" style="margin-top:8px;display:none"><span class="t-prompt">❯</span> <span class="t-cmd">send --to sathvik --re "collaboration"</span></div>
+      <div class="term-line" style="display:none"><span class="t-out">→</span> <span style="color:#28c840">Message delivered. Will respond ASAP.</span></div>
+      <div class="term-line" style="margin-top:8px;display:none"><span class="t-prompt">❯</span> <span class="t-cursor"></span></div>
     </div>
   </div>
 </section>
 
 <footer>
   <span>// Maru Sathvik Reddy</span>
-  <span>ML / AI Engineer · <span>Built with passion</span> · 2025</span>
+  <span>ML / AI Engineer · <span>Built with passion</span> · 2026</span>
 </footer>
 
 <div class="floating-badge"><div class="status-dot"></div>Available for opportunities</div>
@@ -528,30 +519,44 @@ let t=0;
   rndr.render(scene,cam);
 })();
 
-// ── EMBEDDING SPACE CANVAS ─────────────────────────────────────
+// ── EMBEDDING SPACE CANVAS (UPDATED) ───────────────────────────
 (function(){
   const emb=document.getElementById('embCanvas');
   if(!emb) return;
   const ctx=emb.getContext('2d');
   const W=emb.width,H=emb.height;
+  
+  // Updated skills mapping from CV to 4 distinct groups
   const nodes=[
+    // Group 0: ML / Deep Learning (Orange)
     {label:'PyTorch',color:'#ff6b35',cx:.22,cy:.28,group:0},
-    {label:'CUDA',color:'#ff6b35',cx:.30,cy:.20,group:0},
-    {label:'HuggingFace',color:'#ff6b35',cx:.18,cy:.38,group:0},
-    {label:'XGBoost',color:'#ff6b35',cx:.28,cy:.35,group:0},
+    {label:'TensorFlow',color:'#ff6b35',cx:.30,cy:.20,group:0},
     {label:'Scikit-learn',color:'#ff6b35',cx:.14,cy:.24,group:0},
+    {label:'NumPy',color:'#ff6b35',cx:.18,cy:.38,group:0},
+    {label:'Pandas',color:'#ff6b35',cx:.28,cy:.35,group:0},
+    {label:'OpenCV',color:'#ff6b35',cx:.10,cy:.30,group:0},
+
+    // Group 1: Agentic AI (Cyan)
     {label:'LangChain',color:'#00e5ff',cx:.72,cy:.25,group:1},
     {label:'RAG',color:'#00e5ff',cx:.80,cy:.32,group:1},
     {label:'ChromaDB',color:'#00e5ff',cx:.76,cy:.18,group:1},
-    {label:'Ollama',color:'#00e5ff',cx:.68,cy:.34,group:1},
-    {label:'Stable Diffusion',color:'#bf5fff',cx:.60,cy:.72,group:2},
-    {label:'StyleGAN',color:'#bf5fff',cx:.68,cy:.78,group:2},
-    {label:'Diffusers',color:'#bf5fff',cx:.54,cy:.64,group:2},
-    {label:'LLaVA',color:'#bf5fff',cx:.50,cy:.76,group:2},
-    {label:'FastAPI',color:'#f7c948',cx:.30,cy:.72,group:3},
-    {label:'PostgreSQL',color:'#f7c948',cx:.22,cy:.64,group:3},
-    {label:'Optuna',color:'#f7c948',cx:.38,cy:.65,group:3},
-    {label:'OpenCV',color:'#f7c948',cx:.26,cy:.80,group:3},
+    {label:'yfinance',color:'#00e5ff',cx:.68,cy:.34,group:1},
+    {label:'DuckDuckGo',color:'#00e5ff',cx:.85,cy:.25,group:1},
+
+    // Group 2: Generative AI (Purple)
+    {label:'Transformers',color:'#bf5fff',cx:.60,cy:.72,group:2},
+    {label:'LLaMA3',color:'#bf5fff',cx:.68,cy:.78,group:2},
+    {label:'LLaVA',color:'#bf5fff',cx:.54,cy:.64,group:2},
+    {label:'Ollama',color:'#bf5fff',cx:.50,cy:.76,group:2},
+    {label:'NLP',color:'#bf5fff',cx:.65,cy:.60,group:2},
+
+    // Group 3: ML Systems & Tools (Yellow)
+    {label:'Python',color:'#f7c948',cx:.30,cy:.72,group:3},
+    {label:'FastAPI',color:'#f7c948',cx:.22,cy:.64,group:3},
+    {label:'Streamlit',color:'#f7c948',cx:.38,cy:.65,group:3},
+    {label:'Docker',color:'#f7c948',cx:.26,cy:.80,group:3},
+    {label:'MySQL',color:'#f7c948',cx:.15,cy:.75,group:3},
+    {label:'C++',color:'#f7c948',cx:.35,cy:.85,group:3},
   ].map(n=>({...n,x:n.cx*W+(Math.random()-.5)*14,y:n.cy*H+(Math.random()-.5)*14,r:4+Math.random()*2.5,phase:Math.random()*Math.PI*2}));
 
   let hov=null,mex=-1,mey=-1;
@@ -604,6 +609,26 @@ document.querySelectorAll('.stat-num').forEach(el=>{
     })(s);
   },1200);
 });
+
+// ── TERMINAL TYPING EFFECT ─────────────────────────────────────
+const termBox = document.getElementById('term-box');
+const termLines = document.querySelectorAll('.term-line');
+if(termBox && termLines.length > 0) {
+  const termObserver = new IntersectionObserver(entries => {
+    if(entries[0].isIntersecting) {
+      termObserver.disconnect();
+      let delay = 0;
+      termLines.forEach((line, i) => {
+        setTimeout(() => {
+          line.style.display = 'block';
+        }, delay);
+        // Add slightly longer delay before typing command, shorter before showing output
+        delay += (i % 2 === 0) ? 600 : 250; 
+      });
+    }
+  }, {threshold: 0.6});
+  termObserver.observe(termBox);
+}
 </script>
 </body>
 </html>
