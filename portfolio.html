@@ -44,7 +44,7 @@
   .hero-name span {
     background: linear-gradient(90deg, var(--accent1), var(--accent2), var(--accent3), var(--accent4));
     background-size: 300%;
-    background-clip: text;
+    -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: gradientShift 8s ease infinite;
     display: block; 
@@ -98,26 +98,30 @@
   .bento-box:hover .bento-tag{border-color:rgba(255,255,255,0.1);color:#e0e0e0}
   .bento-tag:hover{background:var(--cat-color) !important;color:#000 !important;border-color:var(--cat-color) !important;transform:scale(1.05) translateY(-2px);}
 
-  /* VISIBLE CERTIFICATIONS (Arch with Image) */
+  /* CERTIFICATIONS (Square/Modern Card Style) */
   #certifications{padding:120px 60px}
   .cert-header{margin-bottom:60px; display: flex; flex-direction: column; align-items: center; text-align: center;}
-  .cert-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));gap:32px}
+  .cert-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:24px}
   
-  .cert-card{background:rgba(17, 17, 31, 0.4);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.06); border-radius: 120px 120px 32px 32px; padding: 16px 16px 40px 16px; text-decoration:none;display:flex;flex-direction:column; align-items: center; text-align: center; transition:all .4s cubic-bezier(0.16, 1, 0.3, 1);cursor:crosshair;position:relative;overflow:hidden}
-  .cert-card:hover{transform:translateY(-10px);border-color:var(--accent3); box-shadow: 0 20px 50px rgba(0, 229, 255, 0.1);}
+  .cert-card{background:rgba(17, 17, 31, 0.4);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.06); border-radius: 24px; padding: 40px 32px; text-decoration:none;display:flex;flex-direction:column; align-items: flex-start; text-align: left; transition:all .4s cubic-bezier(0.16, 1, 0.3, 1);cursor:crosshair;position:relative;overflow:hidden}
+  .cert-card:hover{transform:translateY(-8px);border-color:var(--accent3); box-shadow: 0 16px 40px rgba(0, 229, 255, 0.08);}
   
-  /* Certificate Image Wrapper */
-  .cert-image-wrapper { width: 100%; aspect-ratio: 4/3; border-radius: 104px 104px 20px 20px; overflow: hidden; margin-bottom: 24px; border: 1px solid rgba(255,255,255,0.1); background: #1a1a24;}
-  .cert-image-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; opacity: 0.8; filter: grayscale(20%); }
-  .cert-card:hover .cert-image-wrapper img { transform: scale(1.05); opacity: 1; filter: grayscale(0%); }
-
-  .cert-issuer{color:var(--accent3);font-family:var(--font-mono);font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; margin-bottom: 8px;}
-  .cert-name{font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--text);line-height:1.4;margin-bottom:16px;flex-grow:1;transition:color .3s}
+  .cert-card::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(circle at top right, var(--accent3), transparent 60%);opacity:0;transition:opacity 0.4s;pointer-events:none}
+  .cert-card:hover::before{opacity:0.08}
+  
+  /* Clean, structured logo placement */
+  .cert-logo-wrapper { width: 72px; height: 72px; background: #fff; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; border-radius: 16px; padding: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.4); transition: transform 0.4s ease;}
+  .cert-card:hover .cert-logo-wrapper { transform: scale(1.05); }
+  .cert-logo-wrapper img { max-width: 100%; max-height: 100%; object-fit: contain; }
+  .cert-logo-wrapper svg { max-width: 100%; max-height: 100%; }
+  
+  .cert-issuer{color:var(--accent3);font-family:var(--font-mono);font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; margin-bottom: 12px;}
+  .cert-name{font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--text);line-height:1.3;margin-bottom:12px;flex-grow:1;transition:color .3s}
   .cert-card:hover .cert-name{color:var(--accent3)}
-  .cert-date{font-family:var(--font-mono);font-size:11px;color:var(--muted); margin-bottom: 24px;}
+  .cert-date{font-family:var(--font-mono);font-size:11px;color:var(--muted); margin-bottom: 32px;}
   
-  .cert-link{font-family:var(--font-mono);font-size:12px;color:var(--bg); background: var(--text); padding: 10px 28px; border-radius: 50px; transition:all .3s ease; font-weight: bold;}
-  .cert-card:hover .cert-link{background: var(--accent3); color: #000; transform:scale(1.05)}
+  .cert-link{font-family:var(--font-mono);font-size:12px;color:var(--bg); background: var(--text); padding: 12px 24px; border-radius: 50px; transition:all .3s ease; font-weight: bold; align-self: flex-start; display: flex; gap: 8px; align-items: center;}
+  .cert-card:hover .cert-link{background: var(--accent3); color: #000; padding-left: 28px; padding-right: 20px;}
 
   /* PROJECTS (Engineering + UX Side-by-Side) */
   #projects{padding:120px 60px}
@@ -145,10 +149,10 @@
   .proj-row:hover .proj-link-btn {opacity: 1; color: var(--accent1);}
   .proj-row:hover .proj-arrow{background: var(--accent1); transform: rotate(45deg);}
 
-  /* Image Right */
-  .proj-visual { width: 45%; aspect-ratio: 16/10; border-radius: 32px; overflow: hidden; position: relative; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 20px 40px rgba(0,0,0,0.5);}
-  .proj-visual img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); filter: brightness(0.9); }
-  .proj-row:hover .proj-visual img { transform: scale(1.05); filter: brightness(1.1); }
+  /* Image Right - Dark/Tech Specific Images */
+  .proj-visual { width: 45%; aspect-ratio: 16/10; border-radius: 32px; overflow: hidden; position: relative; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 20px 40px rgba(0,0,0,0.5); background: #0a0a0f;}
+  .proj-visual img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); filter: brightness(0.8) contrast(1.1); }
+  .proj-row:hover .proj-visual img { transform: scale(1.05); filter: brightness(1) contrast(1.1); }
   
   /* Reversing every other row for visual rhythm */
   .proj-row:nth-child(even) { flex-direction: row-reverse; }
@@ -163,7 +167,7 @@
   /* CONTACT & KALI BLOB TERMINAL */
   #contact{padding:120px 60px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
   .contact-big{font-family:var(--font-display);font-size:clamp(40px,5vw,64px);font-weight:800;line-height:1.1;letter-spacing:-.02em;margin-bottom:24px}
-  .contact-big span{background:linear-gradient(90deg,var(--accent1),var(--accent2));background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .contact-big span{background:linear-gradient(90deg,var(--accent1),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
   .contact-sub{color:var(--muted);font-size:16px;line-height:1.7;margin-bottom:40px}
   
   .contact-links{display:flex;flex-wrap: wrap; gap:16px}
@@ -368,43 +372,43 @@
   <div class="cert-grid reveal">
     
     <a class="cert-card" href="https://drive.google.com/file/d/1qtsvlXZa8pmrHZz22AJipZIoHpPA2Y-q/view" target="_blank">
-      <div class="cert-image-wrapper">
-        <img src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?q=80&w=600&auto=format&fit=crop" alt="AWS Certificate">
+      <div class="cert-logo-wrapper">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg" alt="AWS Logo">
       </div>
       <div class="cert-issuer">AWS Training & Certification</div>
       <h3 class="cert-name">Machine Learning Exam Basics</h3>
       <div class="cert-date">October 2025</div>
-      <div class="cert-link">View Document</div>
+      <div class="cert-link">View Document <span>↗</span></div>
     </a>
 
     <a class="cert-card" href="https://drive.google.com/file/d/1mCWEFx-TPkMaJkr90CpHypil2BWamNPC/view" target="_blank">
-      <div class="cert-image-wrapper">
-        <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=600&auto=format&fit=crop" alt="IBM Certificate">
+      <div class="cert-logo-wrapper">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg" alt="IBM Logo">
       </div>
       <div class="cert-issuer">IBM Cognitive Class</div>
       <h3 class="cert-name">Deep Learning with TensorFlow</h3>
       <div class="cert-date">March 2025</div>
-      <div class="cert-link">View Document</div>
+      <div class="cert-link">View Document <span>↗</span></div>
     </a>
     
     <a class="cert-card" href="https://drive.google.com/file/d/1yVCt4nSr6sNPbkVP7cTLqXDG9gB2V2os/view" target="_blank">
-      <div class="cert-image-wrapper">
-         <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=600&auto=format&fit=crop" alt="GeeksforGeeks Certificate">
+      <div class="cert-logo-wrapper">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/43/GeeksforGeeks.svg" alt="GeeksforGeeks Logo">
       </div>
       <div class="cert-issuer">GeeksforGeeks</div>
       <h3 class="cert-name">Generative AI, LLM & RAG</h3>
       <div class="cert-date">2025</div>
-      <div class="cert-link">View Document</div>
+      <div class="cert-link">View Document <span>↗</span></div>
     </a>
 
     <a class="cert-card" href="https://drive.google.com/file/d/1jhU52QZwVoUqO1-vLnADNZQMFK-IkDTn/view" target="_blank">
-      <div class="cert-image-wrapper">
-        <img src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?q=80&w=600&auto=format&fit=crop" alt="CipherSchools Certificate">
+      <div class="cert-logo-wrapper">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
       </div>
       <div class="cert-issuer">CipherSchools</div>
       <h3 class="cert-name">Machine Learning & Data Science</h3>
       <div class="cert-date">July 2025</div>
-      <div class="cert-link">View Document</div>
+      <div class="cert-link">View Document <span>↗</span></div>
     </a>
   </div>
 </section>
@@ -428,7 +432,7 @@
         <div class="proj-link-btn">View Source Code <div class="proj-arrow">↗</div></div>
       </div>
       <div class="proj-visual">
-        <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=800&auto=format&fit=crop" alt="AI Chat Interface UI">
+        <img src="https://images.unsplash.com/photo-1655393001768-d946c998b49f?q=80&w=800&auto=format&fit=crop" alt="AI Neural Network Graph">
       </div>
     </a>
 
@@ -443,7 +447,7 @@
         <div class="proj-link-btn">View Source Code <div class="proj-arrow">↗</div></div>
       </div>
       <div class="proj-visual">
-        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop" alt="Data Architecture UI">
+        <img src="https://images.unsplash.com/photo-1618477247222-acaff0b8458e?q=80&w=800&auto=format&fit=crop" alt="Dark Developer System Setup">
       </div>
     </a>
 
@@ -458,7 +462,7 @@
         <div class="proj-link-btn">View Source Code <div class="proj-arrow">↗</div></div>
       </div>
       <div class="proj-visual">
-        <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=800&auto=format&fit=crop" alt="Financial Dashboard UI">
+        <img src="https://images.unsplash.com/photo-1642543492481-44e81e3914a7?q=80&w=800&auto=format&fit=crop" alt="Dark Finance Chart Dashboard">
       </div>
     </a>
 
@@ -473,7 +477,7 @@
         <div class="proj-link-btn">View Source Code <div class="proj-arrow">↗</div></div>
       </div>
       <div class="proj-visual">
-        <img src="https://images.unsplash.com/photo-1686191128892-3b370a463bc4?q=80&w=800&auto=format&fit=crop" alt="Creative AI UI">
+        <img src="https://images.unsplash.com/photo-1678323891428-1b6ec7590b1e?q=80&w=800&auto=format&fit=crop" alt="AI Generated Render Abstract">
       </div>
     </a>
 
@@ -488,11 +492,54 @@
         <div class="proj-link-btn">View Source Code <div class="proj-arrow">↗</div></div>
       </div>
       <div class="proj-visual">
-        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=800&auto=format&fit=crop" alt="IDE Code Visual">
+        <img src="https://images.unsplash.com/photo-1607799279861-4dddf961ada6?q=80&w=800&auto=format&fit=crop" alt="Dark Mode Code Editor">
+      </div>
+    </a>
+
+    <a class="proj-row" href="https://github.com/Sathvik33/Road_Accident_Risk" target="_blank">
+      <div class="proj-info">
+        <div class="proj-top">
+          <div class="proj-meta">PROJECT_006 // XGBoost · R² 0.886</div>
+          <h3 class="proj-title">Accident Risk Predictor</h3>
+        </div>
+        <p class="proj-desc">XGBoost ensemble (8 models) with 80+ engineered features and Optuna hyperparameter tuning. Interactive dashboard with real-time speedometer gauge and risk factor breakdown.</p>
+        <div class="proj-stack"><span>XGBoost</span><span>Optuna</span><span>Scikit-learn</span><span>Plotly</span></div>
+        <div class="proj-link-btn">View Source Code <div class="proj-arrow">↗</div></div>
+      </div>
+      <div class="proj-visual">
+        <img src="https://images.unsplash.com/photo-1507413245164-6160d8298b31?q=80&w=800&auto=format&fit=crop" alt="Data Analytics Dashboard">
       </div>
     </a>
   </div>
 </section>
+
+  <div class="section-label reveal" style="margin-top:72px;margin-bottom:0; text-align:center; display:block;">More Projects</div>
+  <div class="mini-wrapper reveal" style="padding: 0 60px;">
+    <a class="mini-item" href="https://github.com/Sathvik33/Style_GAN" target="_blank">
+      <div class="mini-item-title">StyleGAN Face Gen</div>
+      <div class="mini-item-desc">Conditional face generation built from scratch with Mapping Network, AdaIN, and EMA weights.</div>
+    </a>
+    <a class="mini-item" href="https://github.com/Sathvik33/Movie_recommendation" target="_blank">
+      <div class="mini-item-title">Movie Recommendation</div>
+      <div class="mini-item-desc">Genre-cluster-based recommendations using K-Means clustering with a Streamlit UI.</div>
+    </a>
+    <a class="mini-item" href="https://github.com/Sathvik33/Liver-Cancer-Prediction" target="_blank">
+      <div class="mini-item-title">Liver Cancer Prediction</div>
+      <div class="mini-item-desc">Tumor malignancy classifier built with Scikit-Learn, deployed via Streamlit.</div>
+    </a>
+    <a class="mini-item" href="https://github.com/Sathvik33/Apple-Stocks-Predictor" target="_blank">
+      <div class="mini-item-title">Apple Stocks LSTM</div>
+      <div class="mini-item-desc">Time-series stock price forecasting using LSTM networks with yFinance data.</div>
+    </a>
+    <a class="mini-item" href="https://github.com/Sathvik33/ACO-wireless-routing" target="_blank">
+      <div class="mini-item-title">ACO Wireless Routing</div>
+      <div class="mini-item-desc">Ant Colony Optimization for intelligent wireless network routing simulation.</div>
+    </a>
+    <a class="mini-item" href="https://github.com/Sathvik33" target="_blank">
+      <div class="mini-item-title">LangChain Chatbot</div>
+      <div class="mini-item-desc">Fully local LLM app — FastAPI + LangServe backend, Llama 3 on-device. Zero cloud.</div>
+    </a>
+  </div>
 
 <section id="contact">
   <div class="reveal">
