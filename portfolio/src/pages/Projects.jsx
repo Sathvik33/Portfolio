@@ -87,7 +87,7 @@ export default function Projects() {
 
             <motion.div variants={F} className="flex justify-between">
               <button onClick={() => navigate('/stack')} className="font-mono text-xs text-[var(--t3)] hover:text-[#00d4ff] transition-colors">← Stack</button>
-              <button onClick={() => navigate('/github')} className="font-mono text-xs text-[var(--t3)] hover:text-[#00d4ff] transition-colors">GitHub →</button>
+              <button onClick={() => navigate('/Certifications')} className="font-mono text-xs text-[var(--t3)] hover:text-[#00d4ff] transition-colors">Certificates →</button>
             </motion.div>
           </motion.div>
         </div>

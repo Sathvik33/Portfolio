@@ -96,18 +96,18 @@ export const projects = [
   },  
   {
     id: 6,
-    title: 'Convolutional Autoencoder',
+    title: 'Image Denoising Autoencoder',
     subtitle: 'Deep Learning · 2025',
     description:
-      'End-to-end image compression and reconstruction using a Convolutional Autoencoder on CIFAR-10. Achieves MSE ≈ 0.0009 with clean encoder-decoder architecture demonstrating compact latent representations.',
+      'A deep convolutional autoencoder designed for high-resolution image denoising and restoration. Built to effectively map noisy image distributions back to clean, high-fidelity latent representations and reconstructions.',
     highlights: [
-      'Stride-based downsampling encoder',
-      'Transposed convolution decoder',
-      'MSE ≈ 0.0009 on CIFAR-10 test set',
-      'Modular PyTorch architecture with checkpointing',
+      'High-resolution image restoration pipeline',
+      'Custom noise injection and augmentation',
+      'Modular PyTorch encoder-decoder architecture',
+      'Optimized for structural similarity (SSIM) and PSNR',
     ],
-    tech: ['Python', 'PyTorch', 'CNN', 'CIFAR-10', 'NumPy'],
-    github: 'https://github.com/Sathvik33/deep-convolutional-gan',
+    tech: ['Python', 'PyTorch', 'CNN', 'OpenCV', 'NumPy'],
+    github: 'https://github.com/Sathvik33/high-resolution-image-denoising-autoencoder',
     demo: null,
     badge: 'Deep Learning',
     badgeColor: 'blue',
@@ -135,11 +135,12 @@ export const projects = [
 ]
 
 export const badgeStyles = {
-  cyan: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20',
-  amber: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
-  green: 'bg-green-500/10 text-green-400 border-green-500/20',
-  purple: 'bg-purple-500/10 text-purple-400 border-purple-500/20',
-  gold: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20',
-  teal: 'bg-teal-500/10 text-teal-400 border-teal-500/20',
-  blue: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
+  cyan: 'bg-cyan-500/10 text-cyan-600 border-cyan-500/20',
+  amber: 'bg-amber-500/10 text-amber-600 border-amber-500/20',
+  green: 'bg-green-500/10 text-green-600 border-green-500/20',
+  purple: 'bg-purple-500/10 text-purple-600 border-purple-500/20',
+  gold: 'bg-yellow-500/10 text-yellow-600 border-yellow-500/20',
+  teal: 'bg-teal-500/10 text-teal-600 border-teal-500/20',
+  blue: 'bg-blue-500/10 text-blue-600 border-blue-500/20',
+  violet: 'bg-violet-500/10 text-violet-600 border-violet-500/20',
 }

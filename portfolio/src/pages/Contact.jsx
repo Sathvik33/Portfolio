@@ -76,47 +76,7 @@ export default function Contact() {
                   </p>
                 </div>
               </motion.div>
-
-              {/* Right: form */}
-              <motion.div variants={F}>
-                <form onSubmit={handleSubmit} className="gradient-border rounded-xl bg-[var(--surface)] p-6">
-                  <div className="mb-4 font-mono text-xs text-[var(--t3)] uppercase tracking-widest">Send a message</div>
-
-                  {[
-                    { id:'name',  label:'Your Name',     type:'text',  placeholder:'Hiring Manager' },
-                    { id:'email', label:'Email Address', type:'email', placeholder:'hr@company.com' },
-                  ].map(field => (
-                    <div key={field.id} className="mb-4">
-                      <label className="mb-1.5 block font-mono text-[11px] text-[var(--t3)]">{field.label}</label>
-                      <input type={field.type} name={field.id} value={form[field.id]} onChange={handleChange}
-                        placeholder={field.placeholder} required
-                        className="w-full rounded border border-[var(--border)] bg-[var(--panel)] px-4 py-3 font-body text-sm text-[var(--t1)] placeholder-[var(--t3)] outline-none focus:border-[#00d4ff]/40 focus:ring-1 focus:ring-[#00d4ff]/20 transition-all duration-200" />
-                    </div>
-                  ))}
-
-                  <div className="mb-6">
-                    <label className="mb-1.5 block font-mono text-[11px] text-[var(--t3)]">Message</label>
-                    <textarea name="message" value={form.message} onChange={handleChange}
-                      placeholder="I'd like to discuss an ML engineering role..." required rows={5}
-                      className="w-full rounded border border-[var(--border)] bg-[var(--panel)] px-4 py-3 font-body text-sm text-[var(--t1)] placeholder-[var(--t3)] outline-none focus:border-[#00d4ff]/40 focus:ring-1 focus:ring-[#00d4ff]/20 transition-all duration-200 resize-none" />
-                  </div>
-
-                  <button type="submit" disabled={status==='sending'||status==='sent'}
-                    className="group w-full rounded bg-[#00d4ff] py-3.5 font-display font-bold text-sm text-[#07080d] transition-all duration-300 hover:shadow-glow-cyan disabled:opacity-60 disabled:cursor-not-allowed relative overflow-hidden">
-                    <span className="relative z-10">
-                      {status==='sending'?'Sending...':status==='sent'?'✓ Message Sent!':'Send Message'}
-                    </span>
-                    <span className="absolute inset-0 -translate-x-full bg-white/20 group-hover:translate-x-0 transition-transform duration-300 skew-x-12" />
-                  </button>
-
-                  {status==='sent' && <p className="mt-3 text-center font-mono text-xs text-green-500">Thanks! I'll get back to you soon.</p>}
-                </form>
-              </motion.div>
             </div>
-
-            <motion.div variants={F} className="mt-12">
-              <button onClick={() => navigate('/github')} className="font-mono text-xs text-[var(--t3)] hover:text-[#00d4ff] transition-colors">← GitHub</button>
-            </motion.div>
           </motion.div>
         </div>
       </section>
