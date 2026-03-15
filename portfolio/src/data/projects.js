@@ -132,6 +132,25 @@ export const projects = [
     badgeColor: 'blue',
     featured: false,
   },
+  {
+    id: 8,
+    title: 'ResearchForge AI',
+    subtitle: 'Multi-Agent Research Platform · 2026',
+    description:
+      'A local multi-agent research assistant that plans, scrapes, analyzes, and writes structured research reports using LangGraph + Ollama. Includes semantic caching, hybrid report generation, versioned outputs, and agentic follow-up chat.',
+    highlights: [
+      'Supervisor/Planner/Researcher/Analyst/Writer multi-agent flow',
+      'Local Qwen2.5:7b inference via Ollama with no paid APIs',
+      'Redis-based prompt cache + vector semantic report cache',
+      'Hybrid fresh scraping + cached report merging for versioned output',
+    ],
+    tech: ['Python', 'FastAPI', 'LangGraph', 'Ollama', 'Redis', 'Streamlit', 'Docker', 'BeautifulSoup'],
+    github: 'https://github.com/Sathvik33/ResearchForge-AI',
+    demo: null,
+    badge: 'Open Source',
+    badgeColor: 'violet',
+    featured: false,
+  },
 ]
 
 export const badgeStyles = {
