@@ -7,7 +7,8 @@ const navLinks = [
   { label: 'About',    to: '/about'    },
   { label: 'Stack',    to: '/stack'    },
   { label: 'Projects', to: '/projects' },
-  { label: 'GitHub',   to: '/github'   },
+  { label: 'Certifications', to: '/certifications' },
+  { label: 'Resume', to: '/resume' },
   { label: 'Contact',  to: '/contact'  },
 ]
 
@@ -96,12 +97,12 @@ export default function Navbar() {
             {/* Theme toggle */}
             <div className="mx-2"><ThemeToggle /></div>
 
-            <a
-              href="/Sathvik_CV.pdf" target="_blank" rel="noreferrer"
+            {/* <a
+              href="/resume" target="_blank" rel="noreferrer"
               className="flex items-center gap-2 rounded border border-[#00d4ff]/30 bg-[#00d4ff]/5 px-4 py-2 font-mono text-xs text-[#00d4ff] hover:bg-[#00d4ff]/10 hover:border-[#00d4ff]/60 transition-all duration-200"
             >
               Resume ↗
-            </a>
+            </a> */}
           </div>
 
           {/* Mobile: toggle + hamburger */}

@@ -11,20 +11,22 @@ import Hero     from './pages/Hero'
 import About    from './pages/About'
 import TechStack from './pages/TechStack'
 import Projects from './pages/Projects'
-import GitHub   from './pages/GitHub'
 import Contact  from './pages/Contact'
+import Certifications from './pages/Certifications'
+import Resume from './pages/Resume'
 
 function AnimatedRoutes() {
   const location = useLocation()
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-        <Route path="/"         element={<Hero />} />
-        <Route path="/about"    element={<About />} />
-        <Route path="/stack"    element={<TechStack />} />
+        <Route path="/" element={<Hero />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/stack" element={<TechStack />} />
         <Route path="/projects" element={<Projects />} />
-        <Route path="/github"   element={<GitHub />} />
-        <Route path="/contact"  element={<Contact />} />
+        <Route path="/resume" element={<Resume />} />
+        <Route path="/certifications" element={<Certifications />} />
+        <Route path="/contact" element={<Contact />} />
       </Routes>
     </AnimatePresence>
   )

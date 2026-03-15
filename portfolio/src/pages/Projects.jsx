@@ -64,9 +64,7 @@ function ProjectCard({ project }) {
 export default function Projects() {
   const navigate = useNavigate()
   const [showAll, setShowAll] = useState(false)
-  const featured  = projects.filter(p => p.featured)
-  const others    = projects.filter(p => !p.featured)
-  const displayed = showAll ? others : others.slice(0, 2)
+  const displayed = projects
 
   return (
     <PageWrapper>
@@ -83,24 +81,9 @@ export default function Projects() {
               <a href="https://github.com/Sathvik33" target="_blank" rel="noreferrer" className="font-mono text-xs text-[var(--t3)] hover:text-[#00d4ff] transition-colors">github.com/Sathvik33 ↗</a>
             </motion.div>
 
-            <motion.div variants={F} className="mb-2 font-mono text-[11px] text-[var(--t3)] uppercase tracking-widest">— Featured</motion.div>
-            <div className="grid gap-5 grid-cols-1 mb-8">
-              {featured.map(p => <ProjectCard key={p.id} project={p} />)}
-            </div>
-
-            <motion.div variants={F} className="mb-2 font-mono text-[11px] text-[var(--t3)] uppercase tracking-widest">— Other Projects</motion.div>
             <div className="grid gap-5 grid-cols-1 mb-8">
               <AnimatePresence>{displayed.map(p => <ProjectCard key={p.id} project={p} />)}</AnimatePresence>
             </div>
-
-            {!showAll && others.length > 2 && (
-              <motion.div variants={F} className="flex justify-center mb-10">
-                <button onClick={() => setShowAll(true)}
-                  className="rounded border border-[var(--border)] px-8 py-3 font-mono text-xs text-[var(--t2)] hover:border-[#00d4ff]/30 hover:text-[#00d4ff] transition-all duration-200">
-                  Show {others.length - 2} more projects
-                </button>
-              </motion.div>
-            )}
 
             <motion.div variants={F} className="flex justify-between">
               <button onClick={() => navigate('/stack')} className="font-mono text-xs text-[var(--t3)] hover:text-[#00d4ff] transition-colors">← Stack</button>
