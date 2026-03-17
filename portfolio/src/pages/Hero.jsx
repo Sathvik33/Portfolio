@@ -149,14 +149,14 @@ export default function Hero() {
             {/* CTA Buttons */}
             <motion.div variants={fadeUp} className="mt-10 flex flex-wrap gap-4">
               <motion.button
-                onClick={() => navigate('/projects')}
+                onClick={() => navigate('/about')}
                 className="px-8 py-3.5 font-display font-bold text-sm text-white rounded-xl shadow-lg cursor-pointer"
-                style={{ background: 'linear-gradient(135deg, #7c5cfc, #ff6b8a)' }}
-                whileHover={{ scale: 1.05, boxShadow: '0 12px 30px rgba(124,92,252,0.3)' }}
+                style={{ background: 'linear-gradient(135deg, var(--accent1), var(--accent2))' }}
+                whileHover={{ scale: 1.05, boxShadow: '0 12px 30px rgba(6,182,212,0.3)' }}
                 whileTap={{ scale: 0.98 }}
                 transition={{ type: 'spring', stiffness: 400 }}
               >
-                View Projects →
+                About Me →
               </motion.button>
               
               <motion.a

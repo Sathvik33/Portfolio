@@ -47,74 +47,28 @@ export default function About() {
             </motion.h2>
           </motion.div>
 
-          <div className="grid md:grid-cols-12 gap-12">
-            {/* Left Column: Slide from left */}
-            <motion.div
-              ref={leftRef}
-              className="md:col-span-7 space-y-6 text-[var(--t2)] leading-relaxed font-body text-lg"
-              initial={{ opacity: 0, x: -50 }}
-              animate={leftInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
+          <div className="max-w-3xl space-y-8 text-[var(--t2)] leading-loose font-body text-lg">
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1], delay: 0.1 }}
             >
-              <motion.p
-                className="glass-card p-5 rounded-xl"
-                whileHover={{ scale: 1.01, boxShadow: '0 8px 30px rgba(124,92,252,0.08)' }}
-                transition={{ type: 'spring', stiffness: 400 }}
-              >
-                I am a Computer Science undergraduate at <strong className="text-[var(--accent1)]">Lovely Professional University</strong>. My core engineering philosophy is simple: understand what is happening inside the black box before deploying it.
-              </motion.p>
-              <motion.p
-                className="glass-card p-5 rounded-xl"
-                whileHover={{ scale: 1.01, boxShadow: '0 8px 30px rgba(255,107,138,0.08)' }}
-                transition={{ type: 'spring', stiffness: 400 }}
-              >
-                Recently, I completed an intensive Machine Learning training program at <strong className="text-[var(--accent2)]">Elevate Labs</strong>, where I built automated candidate screening systems using NLP and cosine similarity algorithms.
-              </motion.p>
-              <motion.p
-                className="glass-card p-5 rounded-xl"
-                whileHover={{ scale: 1.01, boxShadow: '0 8px 30px rgba(56,189,248,0.08)' }}
-                transition={{ type: 'spring', stiffness: 400 }}
-              >
-                Whether I am hand-coding a Transformer's causal self-attention layers in PyTorch or designing a multi-agent LangGraph architecture with Redis semantic caching, my goal is always to engineer robust, mathematically sound, and highly optimized AI systems.
-              </motion.p>
-            </motion.div>
-
-            {/* Right Column: Slide from right with animated cards */}
-            <motion.div
-              ref={rightRef}
-              className="md:col-span-5 space-y-6 pl-0 md:pl-8 md:border-l-2 border-[var(--border)]"
-              initial={{ opacity: 0, x: 50 }}
-              animate={rightInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1], delay: 0.15 }}
+              I am a Computer Science undergraduate at <strong className="text-[var(--accent1)]">Lovely Professional University</strong>. My core engineering philosophy is simple: understand what is happening inside the black box before deploying it.
+            </motion.p>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1], delay: 0.2 }}
             >
-              <motion.div
-                className="glass-card p-6 rounded-xl"
-                whileHover={{ y: -4, boxShadow: '0 12px 30px rgba(124,92,252,0.1)' }}
-                transition={{ type: 'spring', stiffness: 400 }}
-              >
-                <h3 className="font-mono text-xs text-[var(--accent1)] uppercase tracking-widest font-bold mb-4 flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-[var(--accent1)]" />
-                  Education
-                </h3>
-                <p className="font-bold text-[var(--t1)] text-base mb-1">B.Tech Computer Science</p>
-                <p className="text-sm text-[var(--t2)] mb-2">Lovely Professional University</p>
-                <p className="text-xs text-[var(--t3)] font-mono bg-[var(--panel)] inline-block px-3 py-1 rounded-full">CGPA 7.28 · 2023 - Present</p>
-              </motion.div>
-
-              <motion.div
-                className="glass-card p-6 rounded-xl"
-                whileHover={{ y: -4, boxShadow: '0 12px 30px rgba(255,107,138,0.1)' }}
-                transition={{ type: 'spring', stiffness: 400 }}
-              >
-                <h3 className="font-mono text-xs text-[var(--accent2)] uppercase tracking-widest font-bold mb-4 flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-[var(--accent2)]" />
-                  Training
-                </h3>
-                <p className="font-bold text-[var(--t1)] text-base mb-1">Machine Learning</p>
-                <p className="text-sm text-[var(--t2)] mb-2">Elevate Labs</p>
-                <p className="text-xs text-[var(--t3)] font-mono bg-[var(--panel)] inline-block px-3 py-1 rounded-full">Supervised/Unsupervised ML & NLP</p>
-              </motion.div>
-            </motion.div>
+              Recently, I completed an intensive Machine Learning training program at <strong className="text-[var(--accent2)]">Elevate Labs</strong>, where I built automated candidate screening systems using NLP and cosine similarity algorithms.
+            </motion.p>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1], delay: 0.3 }}
+            >
+              Whether I am hand-coding a Transformer's causal self-attention layers in PyTorch or designing a multi-agent LangGraph architecture with Redis semantic caching, my goal is always to engineer robust, mathematically sound, and highly optimized AI systems.
+            </motion.p>
           </div>
 
           <motion.div
