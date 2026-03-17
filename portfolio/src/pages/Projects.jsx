@@ -16,45 +16,86 @@ const GH_ICON = (
 function ProjectCard({ project }) {
   const [hovered, setHovered] = useState(false)
   return (
-    <motion.div variants={F}
+    <motion.div
+      variants={F}
       className="gradient-border group relative rounded-xl bg-[var(--surface)] p-6 card-hover cursor-default flex flex-col"
-      onHoverStart={() => setHovered(true)} onHoverEnd={() => setHovered(false)}>
+      onHoverStart={() => setHovered(true)}
+      onHoverEnd={() => setHovered(false)}
+      whileHover={{ y: -4 }}
+      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+    >
       <AnimatePresence>
         {hovered && (
-          <motion.div className="pointer-events-none absolute inset-0 rounded-xl"
-            initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }}
-            style={{ background:'radial-gradient(circle at 50% 0%, rgba(0,212,255,0.05) 0%, transparent 70%)' }} />
+          <motion.div
+            className="pointer-events-none absolute inset-0 rounded-xl"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            style={{
+              background:
+                'radial-gradient(circle at 50% 0%, rgba(0,212,255,0.1) 0%, rgba(124,58,237,0.05) 50%, transparent 70%)',
+            }}
+          />
         )}
       </AnimatePresence>
 
-      <div className="mb-4 flex items-start justify-between gap-3">
+      <div className="mb-4 flex items-start justify-between gap-3 relative z-10">
         <div>
-          <span className={`inline-block rounded border px-2 py-0.5 font-mono text-[10px] font-medium uppercase tracking-wider ${badgeStyles[project.badgeColor]}`}>{project.badge}</span>
+          <motion.span
+            className={`inline-block rounded border px-2 py-0.5 font-mono text-[10px] font-medium uppercase tracking-wider ${badgeStyles[project.badgeColor]}`}
+            whileHover={{ scale: 1.05 }}
+          >
+            {project.badge}
+          </motion.span>
           <div className="mt-1 font-mono text-[11px] text-[var(--t3)]">{project.subtitle}</div>
         </div>
         {project.github && (
-          <a href={project.github} target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()}
-            className="flex h-8 w-8 items-center justify-center rounded border border-[var(--border)] text-[var(--t3)] hover:border-[#00d4ff]/40 hover:text-[#00d4ff] transition-all duration-200">
+          <motion.a
+            href={project.github}
+            target="_blank"
+            rel="noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            className="flex h-8 w-8 items-center justify-center rounded border border-[var(--border)] text-[var(--t3)] hover:border-[#00d4ff]/40 hover:text-[#00d4ff] transition-all duration-200 bg-[var(--surface)]"
+            whileHover={{ scale: 1.1, rotate: 5 }}
+            whileTap={{ scale: 0.95 }}
+          >
             {GH_ICON}
-          </a>
+          </motion.a>
         )}
       </div>
 
-      <h3 className="font-display text-lg font-bold text-[var(--t1)] mb-2 group-hover:text-[#00d4ff] transition-colors duration-200">{project.title}</h3>
-      <p className="font-body text-sm text-[var(--t3)] leading-relaxed mb-4 flex-1">{project.description}</p>
+      <h3 className="relative z-10 font-display text-lg font-bold text-[var(--t1)] mb-2 group-hover:text-gradient transition-all duration-200">
+        {project.title}
+      </h3>
+      <p className="relative z-10 font-body text-sm text-[var(--t3)] leading-relaxed mb-4 flex-1">
+        {project.description}
+      </p>
 
-      <div className="mb-5 space-y-1">
-        {project.highlights.map(h => (
-          <div key={h} className="flex items-start gap-2">
+      <div className="relative z-10 mb-5 space-y-1">
+        {project.highlights.map((h, i) => (
+          <motion.div
+            key={h}
+            className="flex items-start gap-2"
+            initial={{ opacity: 0, x: -10 }}
+            animate={hovered ? { opacity: 1, x: 0 } : { opacity: 0.7, x: 0 }}
+            transition={{ delay: i * 0.05 }}
+          >
             <span className="mt-1 text-[#00d4ff] font-mono text-[10px]">▸</span>
             <span className="font-mono text-[11px] text-[var(--t2)]">{h}</span>
-          </div>
+          </motion.div>
         ))}
       </div>
 
-      <div className="flex flex-wrap gap-1.5 border-t border-[var(--border)] pt-4">
-        {project.tech.map(t => (
-          <span key={t} className="rounded bg-[var(--panel)] px-2 py-0.5 font-mono text-[10px] text-[var(--t3)] border border-[var(--border)]">{t}</span>
+      <div className="relative z-10 flex flex-wrap gap-1.5 border-t border-[var(--border)] pt-4">
+        {project.tech.map((t) => (
+          <motion.span
+            key={t}
+            className="skill-tag"
+            whileHover={{ scale: 1.05 }}
+            transition={{ type: 'spring', stiffness: 400 }}
+          >
+            {t}
+          </motion.span>
         ))}
       </div>
     </motion.div>

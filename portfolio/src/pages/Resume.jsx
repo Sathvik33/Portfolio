@@ -1,16 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import PageWrapper from '../components/PageWrapper'
-
-// Importing your uploaded certificate images
-import awsImg from '../images/AWS ML Exam.png'
-import ibmImg from '../images/Deep Learning with TensorFlow.png'
-import gfgImg from '../images/Generative AI GFG.png'
-import cipherImg from '../images/machine learning for datascience -cipherschools.png'
-
-// NOTE: Take a screenshot of your Oracle PDF, name it exactly "Oracle_AI.png", 
-// and put it in the src/images/ folder for this to show up properly!
-import oracleImg from '../images/Oracle_AI.png' 
+import PageWrapper from '../components/PageWrapper' 
 
 const tabs = ['Education', 'Skills', 'Projects', 'Extracurricular', 'Certificates']
 
@@ -70,32 +60,31 @@ const extracurricular = [
   'Volunteer mentor for ML study groups and Kaggle teams',
 ]
 
-// Certificates updated to hold Image variables
 const certificates = [
   {
     name: 'OCI 2025 AI Foundations Associate',
     issuer: 'Oracle University',
-    image: oracleImg,
+    image: null,
   },
   {
     name: 'Machine Learning Exam Basics',
     issuer: 'Amazon Web Services',
-    image: awsImg,
+    image: null,
   },
   {
     name: 'Deep Learning with TensorFlow',
     issuer: 'IBM',
-    image: ibmImg,
+    image: null,
   },
   {
     name: 'Generative AI, LLM & RAG',
     issuer: 'GeeksforGeeks',
-    image: gfgImg,
+    image: null,
   },
   {
     name: 'Machine Learning & Data Science',
     issuer: 'Cipher Schools',
-    image: cipherImg,
+    image: null,
   },
 ]
 

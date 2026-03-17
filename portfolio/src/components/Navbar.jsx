@@ -56,7 +56,7 @@ export default function Navbar() {
             ? 'backdrop-blur-xl border-b border-[var(--border)]'
             : 'bg-transparent'
         }`}
-        style={scrolled ? { backgroundColor: dark ? 'rgba(7,8,13,0.85)' : 'rgba(245,246,252,0.85)' } : {}}
+        style={scrolled ? { backgroundColor: 'rgba(10, 14, 39, 0.85)' } : {}}
         initial={{ y: -60, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
@@ -122,7 +122,7 @@ export default function Navbar() {
         {menuOpen && (
           <motion.div
             className="fixed inset-0 z-30 backdrop-blur-xl flex flex-col items-center justify-center"
-            style={{ backgroundColor: dark ? 'rgba(7,8,13,0.97)' : 'rgba(245,246,252,0.97)' }}
+            style={{ backgroundColor: 'rgba(10, 14, 39, 0.97)' }}
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
           >
