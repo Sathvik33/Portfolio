@@ -4,6 +4,10 @@ import PageWrapper from '../components/PageWrapper'
 import useScrollAnimation from '../hooks/useScrollAnimation'
 
 import oracleImg from '../images/Oracle_AI.png'
+import awsImg from '../images/aws_cert.jpg'
+import ibmImg from '../images/IBM Deep-Learning_page-0001.jpg'
+import gfgImg from '../images/Geeks for geeks_page-0001.jpg'
+import cipherImg from '../images/Updated Cipher Schools-ML certificate_page-0001.jpg'
 
 const tabs = ['Education', 'Skills', 'Projects', 'Extracurricular', 'Certificates']
 
@@ -32,10 +36,10 @@ const extracurricular = [
 
 const certificates = [
   { name: 'OCI 2025 AI Foundations Associate', issuer: 'Oracle University', image: oracleImg },
-  { name: 'Machine Learning Exam Basics', issuer: 'Amazon Web Services', image: null },
-  { name: 'Deep Learning with TensorFlow', issuer: 'IBM', image: null },
-  { name: 'Generative AI, LLM & RAG', issuer: 'GeeksforGeeks', image: null },
-  { name: 'Machine Learning & Data Science', issuer: 'Cipher Schools', image: null },
+  { name: 'Machine Learning Exam Basics', issuer: 'Amazon Web Services', image: awsImg },
+  { name: 'Deep Learning with TensorFlow', issuer: 'IBM', image: ibmImg },
+  { name: 'Generative AI, LLM & RAG', issuer: 'GeeksforGeeks', image: gfgImg },
+  { name: 'Machine Learning & Data Science', issuer: 'Cipher Schools', image: cipherImg },
 ]
 
 const tabContentVariants = {

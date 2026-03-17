@@ -18,7 +18,7 @@ import Resume from './pages/Resume'
 function AnimatedRoutes() {
   const location = useLocation()
   return (
-    <AnimatePresence mode="wait">
+    <AnimatePresence mode="wait" onExitComplete={() => window.scrollTo({ top: 0, left: 0, behavior: 'instant' })}>
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<Hero />} />
         <Route path="/about" element={<About />} />
