@@ -10,7 +10,9 @@ dist/
 build/
 .next/
 out/
-
+*.png
+*.jpg
+*.pdf
 # Logs
 
 logs

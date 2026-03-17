@@ -1,31 +1,16 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import PageWrapper from '../components/PageWrapper' 
+import PageWrapper from '../components/PageWrapper'
+import useScrollAnimation from '../hooks/useScrollAnimation'
+
+import oracleImg from '../images/Oracle_AI.png'
 
 const tabs = ['Education', 'Skills', 'Projects', 'Extracurricular', 'Certificates']
 
 const education = [
-  {
-    title: 'Lovely Professional University',
-    location: 'Punjab, India',
-    period: 'Since August 2023',
-    detail: 'B.Tech in Computer Science and Engineering',
-    score: 'CGPA: 7.28*',
-  },
-  {
-    title: "Sri Chaitanya Junior College",
-    location: 'Hyderabad, Telangana',
-    period: 'April 2021 - March 2023',
-    detail: 'Intermediate',
-    score: 'Percentage: 88.9%',
-  },
-  {
-    title: 'Wisdom Spaes School',
-    location: 'Metpally, Telangana',
-    period: 'March 2021',
-    detail: 'High School',
-    score: 'Percentage: 100%',
-  },
+  { title: 'Lovely Professional University', location: 'Punjab, India', period: 'Since August 2023', detail: 'B.Tech in Computer Science and Engineering', score: 'CGPA: 7.28*' },
+  { title: "Sri Chaitanya Junior College", location: 'Hyderabad, Telangana', period: 'April 2021 - March 2023', detail: 'Intermediate', score: 'Percentage: 88.9%' },
+  { title: 'Wisdom Spaes School', location: 'Metpally, Telangana', period: 'March 2021', detail: 'High School', score: 'Percentage: 100%' },
 ]
 
 const skillsGroups = [
@@ -36,70 +21,46 @@ const skillsGroups = [
 ]
 
 const projectItems = [
-  {
-    title: 'ResearchForge AI',
-    subtitle: 'Local multi-agent research assistant',
-    description: 'LangGraph + Ollama powered system for semantic caching, hybrid report generation, versioned analytical reports, and agentic chat.',
-  },
-  {
-    title: 'Multi-Modal RAG System',
-    subtitle: 'Production-grade multimodal retrieval system',
-    description: 'Ingest documents/images/videos, ChromaDB vector indexing, streaming inference, and multi-agent retrieval-first architecture.',
-  },
-  {
-    title: 'Autoregressive Transformer for Python Code Gen',
-    subtitle: 'GitHub project · Nov 25',
-    description: 'Implemented decoder-only Transformer for autoregressive Python code generation using CodeParrot subset. Built causal self-attention, positional and token embeddings, and greedy decoding pipeline.',
-  },
+  { title: 'ResearchForge AI', subtitle: 'Local multi-agent research assistant', description: 'LangGraph + Ollama powered system for semantic caching, hybrid report generation, versioned analytical reports, and agentic chat.' },
+  { title: 'Multi-Modal RAG System', subtitle: 'Production-grade multimodal retrieval system', description: 'Ingest documents/images/videos, ChromaDB vector indexing, streaming inference, and multi-agent retrieval-first architecture.' },
+  { title: 'Autoregressive Transformer for Python Code Gen', subtitle: 'GitHub project · Nov 25', description: 'Implemented decoder-only Transformer for autoregressive Python code generation using CodeParrot subset. Built causal self-attention, positional and token embeddings, and greedy decoding pipeline.' },
 ]
 
 const extracurricular = [
-  'Machine Learning - Elevate Labs (Apr’ 25 – May’ 25): Gained hands-on experience in Supervised and Unsupervised Machine Learning, with strong understanding of core algorithms, feature engineering, and model evaluation techniques. Built a resume ranking system using cosine similarity to match resumes with job descriptions, automating candidate screening through text preprocessing and relevance scoring. Tech: Python, Pandas, Scikit-learn, NLP.',
-  'Kaggle Top 15% in Road Accident Risk competition',
-  'Open-source contributor: AI tools and research pipelines',
-  'Volunteer mentor for ML study groups and Kaggle teams',
+  'Kaggle Top 15% in Road Accident Risk competition — Global Rank 588 out of 4000+ teams, achieving R² = 0.886 with an ensemble of 8 XGBoost models and 80+ engineered features.',
 ]
 
 const certificates = [
-  {
-    name: 'OCI 2025 AI Foundations Associate',
-    issuer: 'Oracle University',
-    image: null,
-  },
-  {
-    name: 'Machine Learning Exam Basics',
-    issuer: 'Amazon Web Services',
-    image: null,
-  },
-  {
-    name: 'Deep Learning with TensorFlow',
-    issuer: 'IBM',
-    image: null,
-  },
-  {
-    name: 'Generative AI, LLM & RAG',
-    issuer: 'GeeksforGeeks',
-    image: null,
-  },
-  {
-    name: 'Machine Learning & Data Science',
-    issuer: 'Cipher Schools',
-    image: null,
-  },
+  { name: 'OCI 2025 AI Foundations Associate', issuer: 'Oracle University', image: oracleImg },
+  { name: 'Machine Learning Exam Basics', issuer: 'Amazon Web Services', image: null },
+  { name: 'Deep Learning with TensorFlow', issuer: 'IBM', image: null },
+  { name: 'Generative AI, LLM & RAG', issuer: 'GeeksforGeeks', image: null },
+  { name: 'Machine Learning & Data Science', issuer: 'Cipher Schools', image: null },
 ]
 
-// Animation variants
-const tabVariants = {
-  hidden: { opacity: 0, y: 10 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4, staggerChildren: 0.1 } }
+const tabContentVariants = {
+  hidden: { opacity: 0, y: 20, scale: 0.98 },
+  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.45, staggerChildren: 0.08 } },
+  exit: { opacity: 0, y: -15, scale: 0.98, transition: { duration: 0.25 } }
 }
-const itemVariants = {
-  hidden: { opacity: 0, y: 10 },
-  visible: { opacity: 1, y: 0 }
+
+function ScrollRevealItem({ children, index = 0 }) {
+  const { ref, inView } = useScrollAnimation({ rootMargin: '0px 0px -20px 0px' })
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 25 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.5, delay: index * 0.08 }}
+    >
+      {children}
+    </motion.div>
+  )
 }
 
 export default function Resume() {
   const [activeTab, setActiveTab] = useState('Education')
+  const colors = ['#2563eb', '#0ea5e9', '#10b981', '#2563eb', '#0ea5e9']
 
   return (
     <PageWrapper>
@@ -108,38 +69,86 @@ export default function Resume() {
           
           {/* Header Section */}
           <div className="text-center mb-12">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
               <div className="flex items-center justify-center gap-4 mb-6">
-                <div className="h-px w-12 bg-[var(--border)]" />
-                <span className="font-mono text-xs text-[var(--t1)] tracking-widest uppercase font-bold">05 · Curriculum Vitae</span>
-                <div className="h-px w-12 bg-[var(--border)]" />
+                <motion.div
+                  className="h-[2px] w-12 rounded-full"
+                  style={{ background: 'linear-gradient(90deg, transparent, #2563eb)' }}
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  transition={{ delay: 0.2, duration: 0.6 }}
+                />
+                <span className="font-mono text-xs gradient-text tracking-widest uppercase font-bold">05 · Curriculum Vitae</span>
+                <motion.div
+                  className="h-[2px] w-12 rounded-full"
+                  style={{ background: 'linear-gradient(90deg, #0ea5e9, transparent)' }}
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  transition={{ delay: 0.4, duration: 0.6 }}
+                />
               </div>
-              <h1 className="font-display text-5xl font-extrabold text-[var(--t1)] tracking-tight mb-6">Interactive Resume</h1>
+              <motion.h1
+                className="font-display text-5xl font-extrabold tracking-tight mb-6"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3, duration: 0.7 }}
+              >
+                <span className="gradient-text">Interactive</span> <span className="text-[var(--t1)]">Resume</span>
+              </motion.h1>
               
               {/* Contact Chips */}
-              <div className="mt-4 flex flex-wrap justify-center gap-3">
-                <a href="mailto:marusathvikreddy@gmail.com" className="outline-card px-4 py-1.5 rounded-full text-xs font-mono font-bold text-[var(--t2)] bg-white hover:text-[var(--t1)] hover:border-[var(--t1)] transition-colors">✉️ marusathvikreddy@gmail.com</a>
-                <a href="tel:+916305096050" className="outline-card px-4 py-1.5 rounded-full text-xs font-mono font-bold text-[var(--t2)] bg-white hover:text-[var(--t1)] hover:border-[var(--t1)] transition-colors">📱 +91-6305096050</a>
-                <a href="https://www.linkedin.com/in/maru-sathvik-reddy-/" target="_blank" rel="noreferrer" className="outline-card px-4 py-1.5 rounded-full text-xs font-mono font-bold text-[var(--t2)] bg-white hover:text-[var(--t1)] hover:border-[var(--t1)] transition-colors">🔗 LinkedIn ↗</a>
-                <a href="https://github.com/Sathvik33" target="_blank" rel="noreferrer" className="outline-card px-4 py-1.5 rounded-full text-xs font-mono font-bold text-[var(--t2)] bg-white hover:text-[var(--t1)] hover:border-[var(--t1)] transition-colors">💻 GitHub ↗</a>
-              </div>
+              <motion.div
+                className="mt-4 flex flex-wrap justify-center gap-3"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.6 }}
+              >
+                {[
+                  { text: '✉️ marusathvikreddy@gmail.com', href: 'mailto:marusathvikreddy@gmail.com' },
+                  { text: '📱 +91-6305096050', href: 'tel:+916305096050' },
+                  { text: '🔗 LinkedIn ↗', href: 'https://www.linkedin.com/in/maru-sathvik-reddy-/' },
+                  { text: '💻 GitHub ↗', href: 'https://github.com/Sathvik33' },
+                ].map((chip) => (
+                  <motion.a
+                    key={chip.text}
+                    href={chip.href}
+                    target={chip.href.startsWith('http') ? '_blank' : undefined}
+                    rel="noreferrer"
+                    className="glass-card px-4 py-1.5 rounded-full text-xs font-mono font-bold text-[var(--t2)] hover:text-[var(--accent1)] hover:border-[var(--accent1)] transition-all"
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    transition={{ type: 'spring', stiffness: 400 }}
+                  >
+                    {chip.text}
+                  </motion.a>
+                ))}
+              </motion.div>
             </motion.div>
           </div>
 
-          {/* Tab Navigation */}
+          {/* Tab Navigation with layoutId indicator */}
           <div className="mb-12 flex flex-wrap justify-center gap-3 border-b border-[var(--border)] pb-6">
             {tabs.map((tab) => (
-              <button
+              <motion.button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`rounded-full px-6 py-2.5 text-xs font-mono font-bold transition-all duration-300 shadow-sm ${
+                className={`relative rounded-full px-6 py-2.5 text-xs font-mono font-bold transition-all duration-300 ${
                   activeTab === tab 
-                  ? 'bg-[var(--t1)] text-white border border-[var(--t1)]' 
-                  : 'bg-white text-[var(--t2)] border border-[var(--border)] hover:border-[var(--t1)] hover:text-[var(--t1)]'
+                  ? 'text-white' 
+                  : 'text-[var(--t2)] border border-[var(--border)] bg-white/50 hover:border-[var(--accent1)] hover:text-[var(--accent1)]'
                 }`}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.97 }}
               >
-                {tab}
-              </button>
+                {activeTab === tab && (
+                  <motion.div
+                    layoutId="tab-bg"
+                    className="absolute inset-0 rounded-full"
+                    style={{ background: 'linear-gradient(135deg, #1e3a5f, #2563eb)' }}
+                    transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                  />
+                )}
+                <span className="relative z-10">{tab}</span>
+              </motion.button>
             ))}
           </div>
 
@@ -147,29 +156,37 @@ export default function Resume() {
           <AnimatePresence mode="wait">
             <motion.div
               key={activeTab}
-              variants={tabVariants}
+              variants={tabContentVariants}
               initial="hidden"
               animate="visible"
-              exit={{ opacity: 0, y: -10, transition: { duration: 0.2 } }}
+              exit="exit"
             >
               
               {/* Education Tab */}
               {activeTab === 'Education' && (
                 <div className="space-y-6">
-                  {education.map((item) => (
-                    <motion.div variants={itemVariants} key={item.title} className="outline-card rounded-xl p-8 bg-white">
-                      <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-4 border-b border-[var(--border)] pb-4">
-                        <div>
-                          <div className="text-2xl font-display font-bold text-[var(--t1)] mb-1">{item.title}</div>
-                          <div className="text-sm font-mono text-[var(--t3)]">{item.location}</div>
+                  {education.map((item, index) => (
+                    <ScrollRevealItem key={item.title} index={index}>
+                      <motion.div
+                        className="glass-card rounded-xl p-8 relative overflow-hidden"
+                        whileHover={{ y: -3, boxShadow: '0 12px 30px rgba(37,99,235,0.06)' }}
+                      >
+                        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-12 rounded-full" style={{ background: colors[index] }} />
+                        <div className="pl-4">
+                          <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-4 border-b border-[var(--border)] pb-4">
+                            <div>
+                              <div className="text-2xl font-display font-bold text-[var(--t1)] mb-1">{item.title}</div>
+                              <div className="text-sm font-mono text-[var(--t3)]">{item.location}</div>
+                            </div>
+                            <span className="inline-block rounded-full px-3 py-1 text-xs font-mono font-bold text-[var(--accent1)] whitespace-nowrap" style={{ background: 'rgba(37,99,235,0.06)' }}>
+                              {item.period}
+                            </span>
+                          </div>
+                          <p className="mt-4 text-base font-bold text-[var(--t2)]">{item.detail}</p>
+                          <p className="text-sm text-[var(--t2)] font-mono mt-2 inline-block px-3 py-1 rounded-full border border-[var(--border)] bg-[var(--panel)]">{item.score}</p>
                         </div>
-                        <span className="inline-block rounded-full bg-[var(--panel)] border border-[var(--border)] px-3 py-1 text-xs font-mono font-bold text-[var(--t1)] whitespace-nowrap">
-                          {item.period}
-                        </span>
-                      </div>
-                      <p className="mt-4 text-base font-bold text-[var(--t2)]">{item.detail}</p>
-                      <p className="text-sm text-[var(--t2)] font-mono mt-2 bg-[var(--surface)] inline-block px-3 py-1 rounded border border-[var(--border)]">{item.score}</p>
-                    </motion.div>
+                      </motion.div>
+                    </ScrollRevealItem>
                   ))}
                 </div>
               )}
@@ -177,19 +194,28 @@ export default function Resume() {
               {/* Skills Tab */}
               {activeTab === 'Skills' && (
                 <div className="grid gap-6 sm:grid-cols-2">
-                  {skillsGroups.map((group) => (
-                    <motion.div variants={itemVariants} key={group.title} className="outline-card rounded-xl p-8 bg-white">
-                      <div className="mb-6 text-sm font-mono font-bold text-[var(--t1)] uppercase tracking-widest border-b border-[var(--border)] pb-3">
-                        {group.title}
-                      </div>
-                      <div className="flex flex-wrap gap-2.5">
-                        {group.items.map(item => (
-                          <span key={item} className="skill-tag cursor-default text-[var(--t2)] font-bold shadow-sm">
-                            {item}
-                          </span>
-                        ))}
-                      </div>
-                    </motion.div>
+                  {skillsGroups.map((group, gi) => (
+                    <ScrollRevealItem key={group.title} index={gi}>
+                      <motion.div
+                        className="glass-card rounded-xl p-8"
+                        whileHover={{ y: -3 }}
+                      >
+                        <div className="mb-6 text-sm font-mono font-bold uppercase tracking-widest border-b border-[var(--border)] pb-3" style={{ color: colors[gi] }}>
+                          {group.title}
+                        </div>
+                        <div className="flex flex-wrap gap-2.5">
+                          {group.items.map(item => (
+                            <motion.span
+                              key={item}
+                              className="skill-tag cursor-default font-bold"
+                              whileHover={{ scale: 1.1, borderColor: colors[gi], color: colors[gi] }}
+                            >
+                              {item}
+                            </motion.span>
+                          ))}
+                        </div>
+                      </motion.div>
+                    </ScrollRevealItem>
                   ))}
                 </div>
               )}
@@ -197,14 +223,19 @@ export default function Resume() {
               {/* Projects Tab */}
               {activeTab === 'Projects' && (
                 <div className="space-y-6">
-                  {projectItems.map((p) => (
-                    <motion.div variants={itemVariants} key={p.title} className="outline-card rounded-xl p-8 bg-white">
-                      <div className="border-b border-[var(--border)] pb-4 mb-4">
-                        <div className="text-2xl font-display font-bold text-[var(--t1)]">{p.title}</div>
-                        <p className="text-xs font-mono font-bold text-[var(--t3)] mt-2 uppercase tracking-widest">{p.subtitle}</p>
-                      </div>
-                      <p className="text-base text-[var(--t2)] leading-relaxed">{p.description}</p>
-                    </motion.div>
+                  {projectItems.map((p, pi) => (
+                    <ScrollRevealItem key={p.title} index={pi}>
+                      <motion.div
+                        className="glass-card rounded-xl p-8"
+                        whileHover={{ y: -3 }}
+                      >
+                        <div className="border-b border-[var(--border)] pb-4 mb-4">
+                          <div className="text-2xl font-display font-bold gradient-text">{p.title}</div>
+                          <p className="text-xs font-mono font-bold text-[var(--t3)] mt-2 uppercase tracking-widest">{p.subtitle}</p>
+                        </div>
+                        <p className="text-base text-[var(--t2)] leading-relaxed">{p.description}</p>
+                      </motion.div>
+                    </ScrollRevealItem>
                   ))}
                 </div>
               )}
@@ -213,43 +244,49 @@ export default function Resume() {
               {activeTab === 'Extracurricular' && (
                 <div className="space-y-6">
                   {extracurricular.map((item, index) => (
-                    <motion.div variants={itemVariants} key={index} className="outline-card rounded-xl p-8 bg-white flex gap-4">
-                      <span className="text-[var(--t1)] mt-1 font-bold">―</span>
-                      <p className="text-base text-[var(--t2)] leading-relaxed">{item}</p>
-                    </motion.div>
+                    <ScrollRevealItem key={index} index={index}>
+                      <motion.div
+                        className="glass-card rounded-xl p-8 flex gap-4"
+                        whileHover={{ y: -3 }}
+                      >
+                        <span className="mt-1 font-bold" style={{ color: colors[index % 3] }}>―</span>
+                        <p className="text-base text-[var(--t2)] leading-relaxed">{item}</p>
+                      </motion.div>
+                    </ScrollRevealItem>
                   ))}
                 </div>
               )}
 
-              {/* Certificates Tab (Now displaying images!) */}
+              {/* Certificates Tab */}
               {activeTab === 'Certificates' && (
-                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-2">
+                <div className="grid gap-6 sm:grid-cols-2">
                   {certificates.map((item, index) => (
-                    <motion.div variants={itemVariants} key={index} className="outline-card rounded-xl overflow-hidden bg-white flex flex-col group border border-[var(--border)] hover:border-[var(--t1)] transition-colors duration-300">
-                      
-                      {/* Image Preview Box */}
-                      <div className="h-56 w-full bg-[var(--surface)] border-b border-[var(--border)] overflow-hidden flex items-center justify-center relative">
-                        {item.image ? (
-                           <img 
-                             src={item.image} 
-                             alt={item.name} 
-                             className="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" 
-                           />
-                         ) : (
-                           <span className="font-mono text-xs text-[var(--t3)]">Screenshot Missing</span>
-                         )}
-                      </div>
-
-                      {/* Text details below the image */}
-                      <div className="p-6 flex flex-col justify-center bg-white">
-                        <div className="text-lg font-display font-bold text-[var(--t1)] mb-2 group-hover:underline decoration-[var(--border)] underline-offset-4">
-                          {item.name}
+                    <ScrollRevealItem key={index} index={index}>
+                      <motion.div
+                        className="glass-card rounded-xl overflow-hidden flex flex-col group"
+                        whileHover={{ y: -4, boxShadow: `0 20px 40px ${colors[index % 3]}10` }}
+                      >
+                        <div className="h-56 w-full bg-[var(--panel)] border-b border-[var(--border)] overflow-hidden flex items-center justify-center relative">
+                          {item.image ? (
+                            <img 
+                              src={item.image} 
+                              alt={item.name} 
+                              className="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700" 
+                            />
+                          ) : (
+                            <span className="font-mono text-xs text-[var(--t3)]">Screenshot Missing</span>
+                          )}
                         </div>
-                        <div className="text-xs font-mono font-bold text-[var(--t3)] uppercase tracking-wider">
-                          {item.issuer}
+                        <div className="p-6 flex flex-col justify-center">
+                          <div className="text-lg font-display font-bold text-[var(--t1)] mb-2 group-hover:text-[var(--accent1)] transition-colors">
+                            {item.name}
+                          </div>
+                          <div className="text-xs font-mono font-bold text-[var(--t3)] uppercase tracking-wider">
+                            {item.issuer}
+                          </div>
                         </div>
-                      </div>
-                    </motion.div>
+                      </motion.div>
+                    </ScrollRevealItem>
                   ))}
                 </div>
               )}

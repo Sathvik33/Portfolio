@@ -1,22 +1,26 @@
 import { NavLink } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import useScrollAnimation from '../hooks/useScrollAnimation'
 
 export default function Footer() {
-  return (
-    <footer className="relative border-t border-[var(--border)] py-10 bg-[var(--surface)]/50 backdrop-blur-sm transition-colors duration-300 overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-cyan-500/5 via-transparent to-transparent" />
+  const { ref, inView } = useScrollAnimation({ threshold: 0.3 })
 
-      <div className="relative z-10 mx-auto max-w-6xl px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+  return (
+    <motion.footer
+      ref={ref}
+      className="border-t border-[var(--border)] py-10 transition-colors duration-300"
+      style={{ background: 'linear-gradient(180deg, var(--bg) 0%, var(--panel) 100%)' }}
+      initial={{ opacity: 0, y: 30 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+    >
+      <div className="mx-auto max-w-6xl px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
         <NavLink to="/" className="flex items-center gap-2 group">
-          <motion.div
-            className="relative h-5 w-5"
-            whileHover={{ rotate: 180 }}
-            transition={{ duration: 0.5, ease: 'easeInOut' }}
-          >
-            <div className="absolute inset-0 rounded border border-[#00d4ff]/30 rotate-45 group-hover:border-[#00d4ff]/80 transition-colors" />
-            <div className="absolute inset-[5px] bg-[#00d4ff]/15 rotate-45 group-hover:bg-[#00d4ff]/30 transition-all" />
-          </motion.div>
-          <span className="font-mono text-xs text-[var(--t3)] group-hover:text-[#00d4ff] transition-colors">MSR · 2026</span>
+          <div className="relative h-5 w-5">
+            <div className="absolute inset-0 rounded-md" style={{ background: 'linear-gradient(135deg, #1e3a5f, #2563eb)', opacity: 0.3 }} />
+            <div className="absolute inset-[3px] rounded-sm bg-[var(--bg)] group-hover:bg-[var(--panel)] transition-colors" />
+          </div>
+          <span className="font-mono text-xs text-[var(--t3)] group-hover:text-[var(--accent1)] transition-colors">MSR · 2026</span>
         </NavLink>
         <p className="font-mono text-xs text-[var(--t3)] text-center">
           Built with React · Tailwind CSS · Framer Motion
@@ -26,13 +30,13 @@ export default function Footer() {
             { label: 'GitHub',   href: 'https://github.com/Sathvik33' },
             { label: 'LinkedIn', href: 'https://linkedin.com/in/maru-sathvik-reddy-' },
             { label: 'Email',    href: 'mailto:marusathvikreddy@gmail.com' },
-          ].map(l => (
+          ].map((l, i) => (
             <motion.a
               key={l.label}
               href={l.href}
               target="_blank"
               rel="noreferrer"
-              className="font-mono text-xs text-[var(--t3)] hover:text-[#00d4ff] transition-colors duration-200"
+              className="font-mono text-xs text-[var(--t3)] hover:text-[var(--accent1)] transition-colors duration-200"
               whileHover={{ y: -2 }}
               transition={{ type: 'spring', stiffness: 400 }}
             >
@@ -41,6 +45,6 @@ export default function Footer() {
           ))}
         </div>
       </div>
-    </footer>
+    </motion.footer>
   )
 }

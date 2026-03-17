@@ -10,38 +10,31 @@ export default {
         mono: ['"JetBrains Mono"', 'monospace'],
       },
       colors: {
-        obsidian: '#07080d',
-        surface: '#0e1017',
-        panel: '#13151f',
-        border: '#1e2130',
-        cyan: {
-          glow: '#00d4ff',
-          dim: '#0099bb',
-        },
-        amber: {
-          glow: '#ff8c42',
+        lavender: '#f8f7ff',
+        surface: '#ffffff',
+        panel: '#f0eeff',
+        border: '#e2dff5',
+        accent: {
+          violet: '#7c5cfc',
+          coral: '#ff6b8a',
+          sky: '#38bdf8',
         },
         text: {
-          primary: '#e8eaf2',
-          secondary: '#8b8fa8',
-          muted: '#4a4d60',
+          primary: '#1a1340',
+          secondary: '#4a4270',
+          muted: '#8b84b0',
         },
       },
       backgroundImage: {
-        'grid-pattern':
-          'linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px)',
-        'hero-gradient':
-          'radial-gradient(ellipse 80% 60% at 50% -10%, rgba(0,212,255,0.12) 0%, transparent 70%)',
-        'glow-cyan':
-          'radial-gradient(circle, rgba(0,212,255,0.15) 0%, transparent 70%)',
-      },
-      backgroundSize: {
-        grid: '60px 60px',
+        'gradient-main': 'linear-gradient(135deg, #7c5cfc 0%, #ff6b8a 50%, #38bdf8 100%)',
+        'gradient-subtle': 'linear-gradient(135deg, rgba(124,92,252,0.08) 0%, rgba(255,107,138,0.08) 50%, rgba(56,189,248,0.08) 100%)',
       },
       animation: {
         'spin-slow': 'spin 8s linear infinite',
         'pulse-glow': 'pulseGlow 3s ease-in-out infinite',
         float: 'float 6s ease-in-out infinite',
+        'bounce-gentle': 'bounceGentle 2s ease-in-out infinite',
+        marquee: 'marquee 30s linear infinite',
       },
       keyframes: {
         pulseGlow: {
@@ -52,11 +45,20 @@ export default {
           '0%, 100%': { transform: 'translateY(0px)' },
           '50%': { transform: 'translateY(-12px)' },
         },
+        bounceGentle: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-6px)' },
+        },
+        marquee: {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
       },
       boxShadow: {
-        'glow-cyan': '0 0 30px rgba(0,212,255,0.2), 0 0 60px rgba(0,212,255,0.05)',
-        'glow-sm': '0 0 15px rgba(0,212,255,0.15)',
-        card: '0 4px 24px rgba(0,0,0,0.4), 0 1px 2px rgba(0,0,0,0.6)',
+        'glow-violet': '0 0 30px rgba(124,92,252,0.2), 0 0 60px rgba(124,92,252,0.05)',
+        'glow-sm': '0 0 15px rgba(124,92,252,0.15)',
+        'card': '0 4px 24px rgba(26,19,64,0.06), 0 1px 2px rgba(26,19,64,0.04)',
+        'card-hover': '0 20px 40px rgba(124,92,252,0.1), 0 8px 16px rgba(124,92,252,0.06)',
       },
     },
   },

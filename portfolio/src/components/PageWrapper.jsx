@@ -1,19 +1,20 @@
 import { motion } from 'framer-motion'
 
-// Direction-aware variants: pages slide in/out horizontally
 const variants = {
-  initial: { opacity: 0, x: 40, filter: 'blur(4px)' },
+  initial: { opacity: 0, y: 30, scale: 0.98, filter: 'blur(6px)' },
   animate: {
     opacity: 1,
-    x: 0,
+    y: 0,
+    scale: 1,
     filter: 'blur(0px)',
-    transition: { duration: 0.45, ease: [0.4, 0, 0.2, 1] },
+    transition: { duration: 0.5, ease: [0.4, 0, 0.2, 1] },
   },
   exit: {
     opacity: 0,
-    x: -40,
-    filter: 'blur(4px)',
-    transition: { duration: 0.3, ease: [0.4, 0, 0.2, 1] },
+    y: -20,
+    scale: 0.98,
+    filter: 'blur(6px)',
+    transition: { duration: 0.35, ease: [0.4, 0, 0.2, 1] },
   },
 }
 

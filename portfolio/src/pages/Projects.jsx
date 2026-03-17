@@ -3,9 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import PageWrapper from '../components/PageWrapper'
 import { projects, badgeStyles } from '../data/projects'
-
-const C = { hidden:{}, visible:{ transition:{ staggerChildren:0.08, delayChildren:0.05 } } }
-const F = { hidden:{ opacity:0, y:24 }, visible:{ opacity:1, y:0, transition:{ duration:0.55, ease:[0.4,0,0.2,1] } } }
+import useScrollAnimation from '../hooks/useScrollAnimation'
 
 const GH_ICON = (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
@@ -13,37 +11,37 @@ const GH_ICON = (
   </svg>
 )
 
-function ProjectCard({ project }) {
+function ProjectCard({ project, index }) {
+  const { ref, inView } = useScrollAnimation({ rootMargin: '0px 0px -30px 0px' })
   const [hovered, setHovered] = useState(false)
+  const isEven = index % 2 === 0
+  const colors = ['#2563eb', '#0ea5e9', '#10b981']
+  const accent = colors[index % 3]
+
   return (
     <motion.div
-      variants={F}
-      className="gradient-border group relative rounded-xl bg-[var(--surface)] p-6 card-hover cursor-default flex flex-col"
+      ref={ref}
+      className="glass-card gradient-border group relative rounded-xl p-6 cursor-default flex flex-col"
+      initial={{ opacity: 0, x: isEven ? -60 : 60, rotateY: isEven ? -5 : 5 }}
+      animate={inView ? { opacity: 1, x: 0, rotateY: 0 } : {}}
+      transition={{ duration: 0.7, delay: index * 0.08, ease: [0.4, 0, 0.2, 1] }}
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
-      whileHover={{ y: -4 }}
-      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+      whileHover={{ y: -6, boxShadow: `0 20px 50px ${accent}12` }}
     >
       <AnimatePresence>
         {hovered && (
-          <motion.div
-            className="pointer-events-none absolute inset-0 rounded-xl"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            style={{
-              background:
-                'radial-gradient(circle at 50% 0%, rgba(0,212,255,0.1) 0%, rgba(124,58,237,0.05) 50%, transparent 70%)',
-            }}
-          />
+          <motion.div className="pointer-events-none absolute inset-0 rounded-xl"
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            style={{ background: `radial-gradient(circle at 50% 0%, ${accent}06 0%, transparent 70%)` }} />
         )}
       </AnimatePresence>
 
-      <div className="mb-4 flex items-start justify-between gap-3 relative z-10">
+      <div className="mb-4 flex items-start justify-between gap-3">
         <div>
           <motion.span
-            className={`inline-block rounded border px-2 py-0.5 font-mono text-[10px] font-medium uppercase tracking-wider ${badgeStyles[project.badgeColor]}`}
-            whileHover={{ scale: 1.05 }}
+            className={`inline-block rounded-full border px-3 py-1 font-mono text-[10px] font-medium uppercase tracking-wider ${badgeStyles[project.badgeColor]}`}
+            animate={hovered ? { scale: 1.05 } : { scale: 1 }}
           >
             {project.badge}
           </motion.span>
@@ -51,48 +49,41 @@ function ProjectCard({ project }) {
         </div>
         {project.github && (
           <motion.a
-            href={project.github}
-            target="_blank"
-            rel="noreferrer"
-            onClick={(e) => e.stopPropagation()}
-            className="flex h-8 w-8 items-center justify-center rounded border border-[var(--border)] text-[var(--t3)] hover:border-[#00d4ff]/40 hover:text-[#00d4ff] transition-all duration-200 bg-[var(--surface)]"
-            whileHover={{ scale: 1.1, rotate: 5 }}
-            whileTap={{ scale: 0.95 }}
+            href={project.github} target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()}
+            className="flex h-8 w-8 items-center justify-center rounded-lg border border-[var(--border)] text-[var(--t3)] hover:text-[var(--accent1)] hover:border-[var(--accent1)] transition-all duration-200"
+            whileHover={{ scale: 1.15, rotate: 5 }}
           >
             {GH_ICON}
           </motion.a>
         )}
       </div>
 
-      <h3 className="relative z-10 font-display text-lg font-bold text-[var(--t1)] mb-2 group-hover:text-gradient transition-all duration-200">
-        {project.title}
-      </h3>
-      <p className="relative z-10 font-body text-sm text-[var(--t3)] leading-relaxed mb-4 flex-1">
-        {project.description}
-      </p>
+      <h3 className="font-display text-lg font-bold text-[var(--t1)] mb-2 group-hover:text-[var(--accent1)] transition-colors duration-300">{project.title}</h3>
+      <p className="font-body text-sm text-[var(--t3)] leading-relaxed mb-4 flex-1">{project.description}</p>
 
-      <div className="relative z-10 mb-5 space-y-1">
-        {project.highlights.map((h, i) => (
+      <div className="mb-5 space-y-1.5">
+        {project.highlights.map((h, hi) => (
           <motion.div
             key={h}
             className="flex items-start gap-2"
             initial={{ opacity: 0, x: -10 }}
-            animate={hovered ? { opacity: 1, x: 0 } : { opacity: 0.7, x: 0 }}
-            transition={{ delay: i * 0.05 }}
+            animate={inView ? { opacity: 1, x: 0 } : {}}
+            transition={{ delay: index * 0.08 + hi * 0.05 + 0.3 }}
           >
-            <span className="mt-1 text-[#00d4ff] font-mono text-[10px]">▸</span>
+            <span className="mt-1 font-mono text-[10px]" style={{ color: accent }}>▸</span>
             <span className="font-mono text-[11px] text-[var(--t2)]">{h}</span>
           </motion.div>
         ))}
       </div>
 
-      <div className="relative z-10 flex flex-wrap gap-1.5 border-t border-[var(--border)] pt-4">
-        {project.tech.map((t) => (
+      <div className="flex flex-wrap gap-1.5 border-t border-[var(--border)] pt-4">
+        {project.tech.map((t, ti) => (
           <motion.span
             key={t}
-            className="skill-tag"
-            whileHover={{ scale: 1.05 }}
-            transition={{ type: 'spring', stiffness: 400 }}
+            className="rounded-full bg-[var(--panel)] px-2.5 py-0.5 font-mono text-[10px] text-[var(--t3)] border border-[var(--border)]"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={hovered ? { opacity: 1, scale: 1 } : { opacity: 0.8, scale: 1 }}
+            transition={{ delay: ti * 0.03 }}
           >
             {t}
           </motion.span>
@@ -104,32 +95,74 @@ function ProjectCard({ project }) {
 
 export default function Projects() {
   const navigate = useNavigate()
-  const [showAll, setShowAll] = useState(false)
-  const displayed = projects
+  const { ref: headerRef, inView: headerInView } = useScrollAnimation()
 
   return (
     <PageWrapper>
       <section className="relative min-h-[calc(100vh-72px)] py-24">
-        <div className="pointer-events-none absolute -left-60 top-1/3 h-[500px] w-[500px] rounded-full bg-[#00d4ff]/4 blur-[120px]" />
+        <motion.div
+          className="pointer-events-none absolute -left-40 top-1/3 h-[400px] w-[400px] rounded-full"
+          style={{ background: 'radial-gradient(circle, rgba(37,99,235,0.05) 0%, transparent 70%)' }}
+          animate={{ y: [0, -50, 0] }}
+          transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
+        />
+        <motion.div
+          className="pointer-events-none absolute right-[-80px] top-[20%] h-[300px] w-[300px] rounded-full"
+          style={{ background: 'radial-gradient(circle, rgba(14,165,233,0.04) 0%, transparent 70%)' }}
+          animate={{ y: [0, 40, 0] }}
+          transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
+        />
+
         <div className="mx-auto max-w-6xl px-6">
-          <motion.div variants={C} initial="hidden" animate="visible">
-            <motion.div variants={F} className="flex items-center gap-4 mb-4">
-              <span className="font-mono text-xs text-[#00d4ff] tracking-widest uppercase">03 · Projects</span>
-              <div className="h-px flex-1 max-w-xs bg-gradient-to-r from-[#00d4ff]/30 to-transparent" />
-            </motion.div>
-            <motion.div variants={F} className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-12">
-              <h2 className="font-display text-4xl font-extrabold text-[var(--t1)] leading-tight">Things I've built.</h2>
-              <a href="https://github.com/Sathvik33" target="_blank" rel="noreferrer" className="font-mono text-xs text-[var(--t3)] hover:text-[#00d4ff] transition-colors">github.com/Sathvik33 ↗</a>
-            </motion.div>
-
-            <div className="grid gap-5 grid-cols-1 mb-8">
-              <AnimatePresence>{displayed.map(p => <ProjectCard key={p.id} project={p} />)}</AnimatePresence>
+          <motion.div ref={headerRef}>
+            <div className="flex items-center gap-4 mb-4">
+              <span className="font-mono text-xs gradient-text tracking-widest uppercase font-bold">03 · Projects</span>
+              <motion.div
+                className="h-[2px] flex-1 max-w-xs rounded-full"
+                style={{ background: 'linear-gradient(90deg, #2563eb, #0ea5e9, transparent)', transformOrigin: 'left' }}
+                initial={{ scaleX: 0 }}
+                animate={headerInView ? { scaleX: 1 } : {}}
+                transition={{ duration: 0.8 }}
+              />
             </div>
-
-            <motion.div variants={F} className="flex justify-between">
-              <button onClick={() => navigate('/stack')} className="font-mono text-xs text-[var(--t3)] hover:text-[#00d4ff] transition-colors">← Stack</button>
-              <button onClick={() => navigate('/Certifications')} className="font-mono text-xs text-[var(--t3)] hover:text-[#00d4ff] transition-colors">Certificates →</button>
+            <motion.div
+              className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-12"
+              initial={{ opacity: 0, y: 20 }}
+              animate={headerInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: 0.2, duration: 0.6 }}
+            >
+              <h2 className="font-display text-4xl font-extrabold leading-tight">
+                <span className="gradient-text">Things I've built.</span>
+              </h2>
+              <motion.a
+                href="https://github.com/Sathvik33" target="_blank" rel="noreferrer"
+                className="font-mono text-xs text-[var(--t3)] hover:text-[var(--accent1)] transition-colors flex items-center gap-1"
+                whileHover={{ x: 3 }}
+              >
+                github.com/Sathvik33 ↗
+              </motion.a>
             </motion.div>
+          </motion.div>
+
+          <div className="grid gap-6 grid-cols-1">
+            {projects.map((p, i) => <ProjectCard key={p.id} project={p} index={i} />)}
+          </div>
+
+          <motion.div className="mt-12 flex justify-between">
+            <motion.button
+              onClick={() => navigate('/stack')}
+              className="font-mono text-xs text-[var(--t3)] hover:text-[var(--accent1)] transition-colors flex items-center gap-2"
+              whileHover={{ x: -5 }}
+            >
+              <span className="text-lg">←</span> Stack
+            </motion.button>
+            <motion.button
+              onClick={() => navigate('/Certifications')}
+              className="font-mono text-xs text-[var(--t3)] hover:text-[var(--accent1)] transition-colors flex items-center gap-2"
+              whileHover={{ x: 5 }}
+            >
+              Certificates <span className="text-lg">→</span>
+            </motion.button>
           </motion.div>
         </div>
       </section>
