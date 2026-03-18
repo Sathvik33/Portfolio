@@ -42,8 +42,8 @@ export default function About() {
               animate={titleInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6 }}
             >
-              <span className="gradient-text">Bridging Theory</span> & <br />
-              <span className="text-[var(--t1)]">Production AI.</span>
+              <span className="gradient-text">About</span>{' '}
+              <span className="text-[var(--t1)]">Me.</span>
             </motion.h2>
           </motion.div>
 
