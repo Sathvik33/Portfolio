@@ -17,13 +17,14 @@ function FlipCard({ project, index, visible }) {
 
   return (
     <motion.div
-      className="relative"
+      className="relative cursor-pointer"
       style={{ perspective: '1200px', height: '340px' }}
       initial={{ opacity: 0, y: 50 }}
       animate={visible ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
       transition={{ duration: 0.55, delay: index * 0.09, ease: [0.4, 0, 0.2, 1] }}
       onHoverStart={() => setFlipped(true)}
       onHoverEnd={() => setFlipped(false)}
+      onClick={() => setFlipped(!flipped)} // flip on tap for mobile too
     >
       <motion.div
         className="absolute inset-0 w-full h-full"
@@ -33,62 +34,63 @@ function FlipCard({ project, index, visible }) {
       >
         {/* ── FRONT ── */}
         <div
-          className="absolute inset-0 rounded-2xl overflow-hidden border border-[var(--border)] bg-[var(--panel)]"
+          className="absolute inset-0 rounded-2xl overflow-hidden border border-[var(--border)] bg-white shadow-sm"
           style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
         >
           {/* Cover image */}
-          <div className="w-full h-48 overflow-hidden">
+          <div className="w-full h-[180px] overflow-hidden relative">
             <img
               src={project.image}
               alt={project.title}
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
             />
-            {/* Gradient overlay */}
-            <div className="absolute inset-0 h-48" style={{
-              background: 'linear-gradient(180deg, transparent 50%, rgba(17,24,54,0.95) 100%)'
+            {/* Soft gradient fade into white */}
+            <div className="absolute inset-0 h-[180px]" style={{
+              background: 'linear-gradient(180deg, transparent 40%, rgba(255,255,255,1) 100%)'
             }} />
           </div>
           {/* Title area */}
-          <div className="p-5 pt-3 flex flex-col gap-2">
-            <span className={`inline-block self-start rounded-full border px-2.5 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wider ${badgeStyles[project.badgeColor]}`}>
+          <div className="px-5 pb-5 -mt-2 flex flex-col gap-2 relative z-10 bg-white h-full">
+            <span className={`inline-block self-start rounded-full border px-2.5 py-0.5 font-display text-[11px] font-bold uppercase tracking-wider ${badgeStyles[project.badgeColor]}`}>
               {project.badge}
             </span>
-            <h3 className="font-display text-lg font-bold text-[var(--t1)] leading-snug">{project.title}</h3>
-            <p className="font-mono text-[10px] text-[var(--t3)]">{project.subtitle}</p>
+            <h3 className="font-display text-lg font-bold text-slate-900 leading-snug">{project.title}</h3>
+            <p className="font-display text-xs text-slate-500 font-medium">{project.subtitle}</p>
           </div>
           {/* Hover hint */}
-          <div className="absolute bottom-3 right-4 font-mono text-[9px] text-[var(--t3)] opacity-60 tracking-wider">hover to flip →</div>
+          <div className="absolute bottom-4 right-5 font-display text-[10px] uppercase font-bold text-[var(--accent1)] tracking-widest hidden md:block">
+            hover to flip →
+          </div>
         </div>
 
         {/* ── BACK ── */}
         <div
-          className="absolute inset-0 rounded-2xl border border-[var(--accent1)]/30 p-6 flex flex-col justify-between"
+          className="absolute inset-0 rounded-2xl border border-[var(--border)] p-6 flex flex-col justify-between shadow-lg"
           style={{
             backfaceVisibility: 'hidden',
             WebkitBackfaceVisibility: 'hidden',
             transform: 'rotateY(180deg)',
-            background: 'linear-gradient(135deg, rgba(6,182,212,0.08), rgba(59,130,246,0.06))',
-            backdropFilter: 'blur(16px)',
+            background: 'var(--accent-mint)',
           }}
         >
           <div>
-            <span className={`inline-block rounded-full border px-2.5 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wider mb-3 ${badgeStyles[project.badgeColor]}`}>
+            <span className={`inline-block rounded-full border px-2.5 py-0.5 font-display text-[11px] font-bold uppercase tracking-wider mb-4 bg-white ${badgeStyles[project.badgeColor].split(' ')[1]} border-slate-200`}>
               {project.badge}
             </span>
-            <h3 className="font-display text-lg font-bold text-[var(--t1)] mb-3">{project.title}</h3>
-            <p className="font-body text-sm text-[var(--t2)] leading-relaxed">{project.description}</p>
+            <h3 className="font-display text-xl font-bold text-slate-900 mb-2">{project.title}</h3>
+            <p className="font-body text-sm text-slate-700 leading-relaxed drop-shadow-sm">{project.description}</p>
           </div>
 
           <div>
-            <div className="flex flex-wrap gap-1.5 mb-4">
+            <div className="flex flex-wrap gap-1.5 mb-5">
               {project.tech.slice(0, 5).map(t => (
-                <span key={t} className="rounded-full bg-white/5 border border-[var(--border)] px-2 py-0.5 font-mono text-[10px] text-[var(--t3)]">
+                <span key={t} className="rounded-md bg-white border border-slate-200 px-2 py-1 font-mono text-[10px] text-slate-600 shadow-sm">
                   {t}
                 </span>
               ))}
               {project.tech.length > 5 && (
-                <span className="rounded-full bg-white/5 border border-[var(--border)] px-2 py-0.5 font-mono text-[10px] text-[var(--t3)]">
-                  +{project.tech.length - 5} more
+                <span className="rounded-md bg-white/50 border border-slate-200 px-2 py-1 font-mono text-[10px] text-slate-500 shadow-sm">
+                  +{project.tech.length - 5}
                 </span>
               )}
             </div>
@@ -98,7 +100,7 @@ function FlipCard({ project, index, visible }) {
                 target="_blank"
                 rel="noreferrer"
                 onClick={e => e.stopPropagation()}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-[var(--border)] text-[var(--t2)] hover:text-[var(--accent1)] hover:border-[var(--accent1)] transition-all font-mono text-xs"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-xl border border-slate-200 text-slate-700 hover:text-[var(--accent1)] hover:border-[var(--accent1)] hover:shadow-md transition-all font-display font-medium text-sm"
               >
                 {GH_ICON} View on GitHub
               </a>
@@ -123,28 +125,29 @@ export default function Projects() {
   return (
     <PageWrapper>
       <section className="relative min-h-[calc(100vh-72px)] py-24">
-        {/* Background glows */}
+        
+        {/* Soft background blobs for this area */}
         <motion.div
-          className="pointer-events-none absolute -left-40 top-1/3 h-[400px] w-[400px] rounded-full"
-          style={{ background: 'radial-gradient(circle, rgba(6,182,212,0.05) 0%, transparent 70%)' }}
-          animate={{ y: [0, -50, 0] }}
-          transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
+          className="pointer-events-none absolute -left-20 top-1/4 w-[500px] h-[500px] rounded-full blur-[100px] opacity-60"
+          style={{ background: 'var(--accent3)' }}
+          animate={{ y: [0, -30, 0] }}
+          transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
         />
         <motion.div
-          className="pointer-events-none absolute right-[-80px] bottom-[20%] h-[300px] w-[300px] rounded-full"
-          style={{ background: 'radial-gradient(circle, rgba(139,92,246,0.05) 0%, transparent 70%)' }}
-          animate={{ y: [0, 40, 0] }}
-          transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
+          className="pointer-events-none absolute right-[-40px] bottom-[10%] w-[400px] h-[400px] rounded-full blur-[100px] opacity-50"
+          style={{ background: 'var(--accent2)' }}
+          animate={{ y: [0, 50, 0] }}
+          transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
         />
 
-        <div className="mx-auto max-w-6xl px-6">
+        <div className="relative z-10 mx-auto max-w-6xl px-6">
           {/* Header */}
           <motion.div ref={headerRef}>
             <div className="flex items-center gap-4 mb-4">
-              <span className="font-mono text-xs gradient-text tracking-widest uppercase font-bold">03 · Projects</span>
+              <span className="font-display text-xs text-[var(--primary)] uppercase tracking-widest font-bold">03 · Projects</span>
               <motion.div
                 className="h-[2px] flex-1 max-w-xs rounded-full"
-                style={{ background: 'linear-gradient(90deg, #06b6d4, #3b82f6, transparent)', transformOrigin: 'left' }}
+                style={{ background: 'var(--gradient)', transformOrigin: 'left' }}
                 initial={{ scaleX: 0 }}
                 animate={headerInView ? { scaleX: 1 } : {}}
                 transition={{ duration: 0.8 }}
@@ -156,13 +159,13 @@ export default function Projects() {
               animate={headerInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.2, duration: 0.6 }}
             >
-              <h2 className="font-display text-4xl font-extrabold leading-tight">
-                <span className="gradient-text">Things I've built.</span>
+              <h2 className="font-display text-4xl font-extrabold leading-tight text-slate-900">
+                Selected Work
               </h2>
               <motion.a
                 href="https://github.com/Sathvik33"
                 target="_blank" rel="noreferrer"
-                className="font-mono text-xs text-[var(--t3)] hover:text-[var(--accent1)] transition-colors flex items-center gap-1"
+                className="font-display font-medium text-sm text-[var(--accent1)] hover:underline transition-all flex items-center gap-1"
                 whileHover={{ x: 3 }}
               >
                 github.com/Sathvik33 ↗
@@ -171,26 +174,26 @@ export default function Projects() {
           </motion.div>
 
           {/* Top 4 flip cards */}
-          <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2">
+          <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2">
             {topProjects.map((p, i) => (
               <FlipCard key={p.id} project={p} index={i} visible={true} />
             ))}
           </div>
 
           {/* More Projects */}
-          <div className="mt-10 flex flex-col items-center gap-8">
+          <div className="mt-12 flex flex-col items-center gap-8">
             {/* Toggle button */}
             <motion.button
               onClick={() => setShowMore(v => !v)}
-              className="group flex items-center gap-3 px-7 py-3 rounded-xl border border-[var(--border)] font-display font-bold text-sm text-[var(--t2)] transition-all hover:border-[var(--accent1)] hover:text-[var(--accent1)] bg-white/5 backdrop-blur-sm"
+              className="group flex items-center gap-3 px-8 py-3.5 rounded-xl border border-[var(--border)] bg-white font-display font-bold text-sm text-slate-700 transition-all hover:border-[var(--accent1)] hover:text-[var(--accent1)] hover:shadow-md"
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.97 }}
             >
-              <span>{showMore ? 'Hide Projects' : 'More Projects'}</span>
+              <span>{showMore ? 'Collapse view' : 'Explore more projects'}</span>
               <motion.span
                 animate={{ rotate: showMore ? 180 : 0 }}
                 transition={{ duration: 0.3 }}
-                className="text-lg leading-none"
+                className="text-lg leading-none text-slate-400 group-hover:text-[var(--accent1)]"
               >
                 ↓
               </motion.span>
@@ -200,7 +203,7 @@ export default function Projects() {
             <AnimatePresence>
               {showMore && (
                 <motion.div
-                  className="w-full grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+                  className="w-full grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
@@ -215,17 +218,17 @@ export default function Projects() {
           </div>
 
           {/* Page nav */}
-          <motion.div className="mt-16 flex justify-between">
+          <motion.div className="mt-20 flex justify-between border-t border-slate-200 pt-8">
             <motion.button
               onClick={() => navigate('/stack')}
-              className="font-mono text-xs text-[var(--t3)] hover:text-[var(--accent1)] transition-colors flex items-center gap-2"
+              className="font-display font-semibold text-sm text-slate-500 hover:text-[var(--accent1)] transition-colors flex items-center gap-2"
               whileHover={{ x: -5 }}
             >
               <span className="text-lg">←</span> Stack
             </motion.button>
             <motion.button
               onClick={() => navigate('/Certifications')}
-              className="font-mono text-xs text-[var(--t3)] hover:text-[var(--accent1)] transition-colors flex items-center gap-2"
+              className="font-display font-semibold text-sm text-slate-500 hover:text-[var(--accent1)] transition-colors flex items-center gap-2"
               whileHover={{ x: 5 }}
             >
               Certificates <span className="text-lg">→</span>

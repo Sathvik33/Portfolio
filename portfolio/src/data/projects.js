@@ -86,11 +86,11 @@ export const projects = [
 ]
 
 export const badgeStyles = {
-  cyan:   'bg-cyan-500/10 text-cyan-400 border-cyan-500/25',
-  amber:  'bg-amber-500/10 text-amber-400 border-amber-500/25',
-  green:  'bg-green-500/10 text-green-400 border-green-500/25',
-  purple: 'bg-purple-500/10 text-purple-400 border-purple-500/25',
-  gold:   'bg-yellow-500/10 text-yellow-400 border-yellow-500/25',
-  blue:   'bg-blue-500/10 text-blue-400 border-blue-500/25',
-  violet: 'bg-violet-500/10 text-violet-400 border-violet-500/25',
+  cyan:   'bg-cyan-50 text-cyan-700 border-cyan-200',
+  amber:  'bg-amber-50 text-amber-700 border-amber-200',
+  green:  'bg-emerald-50 text-emerald-700 border-emerald-200',
+  purple: 'bg-purple-50 text-purple-700 border-purple-200',
+  gold:   'bg-yellow-50 text-yellow-700 border-yellow-200',
+  blue:   'bg-blue-50 text-blue-700 border-blue-200',
+  violet: 'bg-violet-50 text-violet-700 border-violet-200',
 }

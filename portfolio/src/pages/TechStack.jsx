@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
-import { useMemo, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import * as THREE from 'three'
 import PageWrapper from '../components/PageWrapper'
 import useScrollAnimation from '../hooks/useScrollAnimation'
 
@@ -25,156 +26,95 @@ const flattenedSkills = skillGroups.flatMap((group) =>
 // -- Components --
 
 function EmbeddingSpace() {
-  const [hoveredNode, setHoveredNode] = useState(null)
-  
-  // Generate random stable positions for nodes between 10% and 90% of the container
-  const nodes = useMemo(() => {
-    return flattenedSkills.map((skill) => ({
-      ...skill,
-      id: skill.name,
-      x: 10 + Math.random() * 80, // %
-      y: 10 + Math.random() * 80, // %
-      size: 14 + Math.random() * 8, // px font size
-      delay: Math.random() * 2,
-      duration: 10 + Math.random() * 10,
-    }))
-  }, [])
+  const [vantaEffect, setVantaEffect] = useState(null)
+  const vantaRef = useRef(null)
 
-  // Generate connection lines between nodes of the same category
-  const connections = useMemo(() => {
-    const lines = []
-    skillGroups.forEach(group => {
-      const groupNodes = nodes.filter(n => n.category === group.category)
-      for (let i = 0; i < groupNodes.length; i++) {
-        for (let j = i + 1; j < groupNodes.length; j++) {
-          // Only connect some of them to prevent clutter
-          if (Math.random() > 0.4) {
-            lines.push({ id: `${groupNodes[i].id}-${groupNodes[j].id}`, n1: groupNodes[i], n2: groupNodes[j], color: group.color })
-          }
-        }
+  useEffect(() => {
+    let effect;
+    window.THREE = THREE;
+    import('vanta/dist/vanta.globe.min').then((module) => {
+      const GLOBE = module.default
+      if (!vantaEffect && vantaRef.current) {
+        effect = GLOBE({
+          el: vantaRef.current,
+          THREE: THREE,
+          mouseControls: true,
+          touchControls: true,
+          gyroControls: false,
+          minHeight: 200.00,
+          minWidth: 200.00,
+          scale: 1.00,
+          scaleMobile: 1.00,
+          backgroundColor: 0xf6f8f7,
+          color: 0x000000,
+          color2: 0x2beead,
+          size: 0.90
+        })
+        setVantaEffect(effect)
       }
     })
-    return lines
-  }, [nodes])
+
+    return () => {
+      if (vantaEffect) vantaEffect.destroy()
+      if (effect) effect.destroy()
+    }
+  }, [vantaEffect])
 
   return (
-    <div className="relative w-full h-[600px] outline-card rounded-2xl overflow-hidden mt-12 group">
-      <div className="absolute inset-0 bg-[var(--panel)] opacity-50" />
-      <div className="absolute inset-0 grid-bg opacity-20" />
+    <div ref={vantaRef} className="relative w-full h-[600px] outline-card rounded-2xl overflow-hidden mt-12 group border border-[var(--border)] shadow-sm">
       
-      {/* Title */}
-      <div className="absolute top-6 left-6 z-20 pointer-events-none">
-        <h3 className="font-mono text-sm uppercase tracking-widest text-[var(--t2)] font-bold">Latent Space Visualization</h3>
-        <p className="font-mono text-[10px] text-[var(--t3)] mt-1">Dimensionality Reduction: UMAP | Epochs: 500</p>
-      </div>
-
-      {/* SVG for Connections */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-none z-0">
-        {connections.map((line) => {
-          const isHighlighted = hoveredNode && (line.n1.id === hoveredNode || line.n2.id === hoveredNode)
-          const categoryHovered = hoveredNode && nodes.find(n => n.id === hoveredNode)?.category === line.n1.category
-          
-          let opacity = 0.05
-          if (isHighlighted) opacity = 0.4
-          else if (categoryHovered) opacity = 0.15
-          else if (hoveredNode) opacity = 0.02
-
-          return (
-            <motion.line
-              key={line.id}
-              x1={`${line.n1.x}%`}
-              y1={`${line.n1.y}%`}
-              x2={`${line.n2.x}%`}
-              y2={`${line.n2.y}%`}
-              stroke={line.color}
-              strokeWidth={isHighlighted ? 2 : 1}
-              initial={{ opacity: 0 }}
-              animate={{ opacity }}
-              transition={{ duration: 0.3 }}
-            />
-          )
-        })}
-      </svg>
-
-      {/* Nodes */}
-      {nodes.map((node) => {
-        const isHovered = hoveredNode === node.id
-        const isRelated = hoveredNode && nodes.find(n => n.id === hoveredNode)?.category === node.category
+      {/* Floating Skill Overlay to map them over the globe */}
+      {flattenedSkills.map((skill, index) => {
+        // Distribute in a pseudo circle mapping to the globe
+        const angle = (index / flattenedSkills.length) * Math.PI * 2
+        const radX = 30 + Math.random() * 18 // Avoid the exact center to wrap around
+        const radY = 30 + Math.random() * 18
+        const sX = 50 + Math.cos(angle) * radX
+        const sY = 50 + Math.sin(angle) * radY
         
-        let nodeOpacity = 0.8
-        let nodeScale = 1
-        if (hoveredNode) {
-          if (isHovered) { nodeOpacity = 1; nodeScale = 1.2 }
-          else if (isRelated) { nodeOpacity = 0.9; nodeScale = 1.05 }
-          else { nodeOpacity = 0.2; nodeScale = 0.9 }
-        }
-
         return (
           <motion.div
-            key={node.id}
-            className="absolute z-10 flex items-center justify-center cursor-crosshair"
-            style={{ 
-              left: `${node.x}%`, 
-              top: `${node.y}%`,
-              transform: 'translate(-50%, -50%)',
+            key={skill.name}
+            className="absolute z-10 px-3 py-1.5 rounded-full font-mono text-[11px] whitespace-nowrap border bg-white/70 backdrop-blur-md shadow-sm pointer-events-none flex items-center gap-1.5"
+            style={{
+              borderColor: `${skill.color}55`, // very faint border
+              color: '#0f172a',
+              left: `${sX}%`,
+              top: `${sY}%`,
+              transform: 'translate(-50%, -50%)'
             }}
             initial={{ opacity: 0, scale: 0 }}
-            animate={{ 
-              opacity: nodeOpacity,
-              scale: nodeScale,
+            animate={{
+              opacity: [0.7, 1, 0.7],
+              scale: [1, 1.05, 1],
               y: [0, -15, 0],
               x: [0, 10, 0]
             }}
-            transition={{ 
-              opacity: { duration: 0.3 },
-              scale: { duration: 0.3 },
-              y: { duration: node.duration, repeat: Infinity, ease: "easeInOut", delay: node.delay },
-              x: { duration: node.duration * 1.2, repeat: Infinity, ease: "easeInOut", delay: node.delay * 1.5 }
+            transition={{
+              duration: 5 + Math.random() * 5,
+              repeat: Infinity,
+              ease: 'easeInOut',
+              delay: Math.random() * 2
             }}
-            onMouseEnter={() => setHoveredNode(node.id)}
-            onMouseLeave={() => setHoveredNode(null)}
           >
-            {/* Glowing dot */}
-            <div 
-              className="relative rounded-full"
-              style={{ 
-                width: isHovered ? 12 : 8, 
-                height: isHovered ? 12 : 8, 
-                backgroundColor: node.color,
-                boxShadow: isHovered ? `0 0 20px ${node.color}, 0 0 40px ${node.color}` : `0 0 10px ${node.color}`
-              }}
-            >
-              <div 
-                className="absolute inset-0 rounded-full animate-ping opacity-20" 
-                style={{ backgroundColor: node.color }} 
-              />
-            </div>
-            
-            {/* Label */}
-            <div 
-              className="absolute top-full mt-2 font-mono whitespace-nowrap px-2 py-0.5 rounded backdrop-blur-md border"
-              style={{
-                fontSize: `${node.size}px`,
-                color: isHovered || isRelated ? '#fff' : 'var(--t2)',
-                backgroundColor: isHovered ? `${node.color}22` : 'rgba(10, 15, 37, 0.6)',
-                borderColor: isHovered ? node.color : 'var(--border)',
-                fontWeight: isHovered ? 700 : (isRelated ? 600 : 400),
-                zIndex: isHovered ? 30 : 10,
-                pointerEvents: 'none'
-              }}
-            >
-              {node.name}
-            </div>
+            <span className="inline-block w-1.5 h-1.5 rounded-full" style={{ backgroundColor: skill.color }} />
+            {skill.name}
           </motion.div>
         )
       })}
 
-      {/* Legend */}
-      <div className="absolute bottom-6 right-6 z-20 flex flex-col gap-2 pointer-events-none bg-[var(--surface)]/80 backdrop-blur-md p-4 rounded-xl border border-[var(--border)]">
+      {/* Title / Info overlay */}
+      <div className="absolute top-6 left-6 z-20 pointer-events-none p-4 rounded-xl backdrop-blur-md bg-white/60 border border-white/20 shadow-sm">
+        <h3 className="font-mono text-sm uppercase tracking-widest text-[#0f172a] font-bold">Skills Topology</h3>
+        <p className="font-mono text-[10px] text-[#475569] mt-1">Dimensionality Reduction: Vanta.GLOBE</p>
+      </div>
+
+      {/* Legend overlay */}
+      <div className="absolute bottom-6 right-6 z-20 flex flex-col gap-2 pointer-events-none bg-white/60 backdrop-blur-md p-4 rounded-xl border border-white/40 shadow-sm">
         {skillGroups.map(group => (
           <div key={group.category} className="flex items-center gap-2">
             <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: group.color, boxShadow: `0 0 8px ${group.color}` }} />
-            <span className="font-mono text-xs text-[var(--t2)]">{group.category}</span>
+            <span className="font-mono text-xs text-[#475569] font-medium">{group.category}</span>
           </div>
         ))}
       </div>
