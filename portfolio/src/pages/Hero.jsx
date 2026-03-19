@@ -1,7 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
-import { useEffect, useState, useRef } from 'react'
-import * as THREE from 'three'
+import { useState, useEffect } from 'react'
 import PageWrapper from '../components/PageWrapper'
 
 const fadeUp = { hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.4, 0, 0.2, 1] } } }
@@ -41,45 +40,10 @@ function ScrollHint() {
 
 export default function Hero() {
   const navigate = useNavigate()
-  const [vantaEffect, setVantaEffect] = useState(null)
-  const vantaRef = useRef(null)
-
-  useEffect(() => {
-    let effect
-    // Vanta requires THREE to be available globally in Vite
-    window.THREE = THREE
-    
-    import('vanta/dist/vanta.birds.min').then((module) => {
-      const BIRDS = module.default
-      if (!vantaEffect && vantaRef.current) {
-        effect = BIRDS({
-          el: vantaRef.current,
-          THREE: THREE,
-          mouseControls: true,
-          touchControls: true,
-          gyroControls: false,
-          minHeight: 200.00,
-          minWidth: 200.00,
-          scale: 1.00,
-          scaleMobile: 1.00,
-          separation: 38.00,
-          backgroundColor: 0xf6f8f7,
-          color1: 0x000000,
-          color2: 0x2beead
-        })
-        setVantaEffect(effect)
-      }
-    })
-
-    return () => {
-      if (vantaEffect) vantaEffect.destroy()
-      if (effect) effect.destroy()
-    }
-  }, [vantaEffect])
 
   return (
     <PageWrapper>
-      <section ref={vantaRef} className="relative min-h-[calc(100vh-72px)] flex items-center justify-center overflow-hidden py-12 lg:py-0">
+      <section className="relative min-h-[calc(100vh-72px)] flex items-center justify-center overflow-hidden py-12 lg:py-0">
         
         <div className="relative z-10 mx-auto max-w-4xl px-6 w-full mt-10">
           <motion.div variants={stagger} initial="hidden" animate="visible" className="flex flex-col">
@@ -161,7 +125,7 @@ export default function Hero() {
 
               {/* Profile photo */}
               <motion.div
-                className="relative w-48 h-48 md:w-64 md:h-64 shrink-0"
+                className="relative w-48 h-48 md:w-64 md:h-64 shrink-0 -mt-8 md:-mt-16"
                 animate={{ y: [0, -8, 0] }}
                 transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
               >
