@@ -33,7 +33,7 @@ const bentoCategories = [
     span: "col-span-1 md:col-span-1 lg:col-span-1",
     icon: "⚙️",
     bgColor: "from-emerald-500/5 to-teal-500/5",
-    borderColor: "hover:border-emerald-400/50",
+    borderColor: "hover:border-[var(--accent1)]/50",
     skills: ["FastAPI", "RESTful APIs", "Flask"]
   },
   {
@@ -88,7 +88,7 @@ export default function TechStack() {
               <span className="font-mono text-xs text-[var(--accent1)] tracking-widest uppercase font-bold">02 · Skills & Expertise</span>
               <motion.div
                 className="h-[2px] flex-1 max-w-xs rounded-full"
-                style={{ background: 'linear-gradient(90deg, var(--accent1), var(--accent2), transparent)', transformOrigin: 'left' }}
+                style={{ background: 'var(--gradient-h)', transformOrigin: 'left' }}
                 initial={{ scaleX: 0 }}
                 animate={headerInView ? { scaleX: 1 } : {}}
                 transition={{ duration: 0.8 }}

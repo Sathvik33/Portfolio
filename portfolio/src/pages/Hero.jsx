@@ -51,13 +51,13 @@ export default function Hero() {
             {/* Badge */}
             <motion.div variants={fadeRight} className="mb-6 inline-block self-start">
               <motion.div
-                className="px-4 py-1.5 rounded-full shadow-sm"
-                style={{ background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.1)' }}
-                whileHover={{ scale: 1.05, boxShadow: '0 4px 15px rgba(0,0,0,0.1)' }}
+                className="px-4 py-1.5 rounded-full"
+                style={{ background: 'var(--accent-soft)', border: '1px solid var(--border)' }}
+                whileHover={{ scale: 1.05, boxShadow: '0 4px 15px rgba(99,102,241,0.15)' }}
                 transition={{ type: 'spring', stiffness: 400 }}
               >
-                <span className="font-display text-xs text-black uppercase tracking-widest font-bold">
-                  ● Student & Developer
+                <span className="font-display text-xs text-[var(--accent1)] uppercase tracking-widest font-bold">
+                  ● Student &amp; Developer
                 </span>
               </motion.div>
             </motion.div>
@@ -67,7 +67,7 @@ export default function Hero() {
               <div className="flex-1">
                 <h1 className="font-display text-5xl font-extrabold leading-tight tracking-tight sm:text-6xl md:text-7xl">
                   <motion.span
-                    className="inline-block text-black"
+                    className="inline-block text-[var(--t1)]"
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2, duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
@@ -76,23 +76,23 @@ export default function Hero() {
                   </motion.span>
                   <br />
                   <motion.span
-                    className="inline-block text-black"
+                    className="inline-block text-[var(--t1)]"
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4, duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
                   >
-                    AI systems <span className="text-black font-black">from scratch.</span>
+                    AI systems <span className="gradient-text font-black">from scratch.</span>
                   </motion.span>
                 </h1>
 
-                {/* Soft supportive description */}
+                {/* Description */}
                 <motion.p
-                  className="mt-6 font-body text-lg text-black leading-relaxed max-w-lg"
+                  className="mt-6 font-body text-lg text-[var(--t2)] leading-relaxed max-w-lg"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.6, duration: 0.7 }}
                 >
-                  Hi, I'm <strong className="text-black font-semibold">Maru Sathvik Reddy</strong>, an aspiring machine learning engineer and computer science student. I engineer AI solutions tailored to complex problems.
+                  Hi, I'm <strong className="text-[var(--t1)] font-semibold">Maru Sathvik Reddy</strong>, an aspiring machine learning engineer and computer science student. I engineer AI solutions tailored to complex problems.
                 </motion.p>
 
                 {/* CTA Buttons */}
@@ -104,8 +104,9 @@ export default function Hero() {
                 >
                   <motion.button
                     onClick={() => navigate('/about')}
-                    className="px-8 py-3.5 font-display font-bold text-sm text-black bg-[var(--accent1)] rounded-xl shadow-lg border border-[#2beead] cursor-pointer"
-                    whileHover={{ scale: 1.05 }}
+                    className="px-8 py-3.5 font-display font-bold text-sm text-white rounded-xl shadow-lg cursor-pointer"
+                    style={{ background: 'var(--gradient)' }}
+                    whileHover={{ scale: 1.05, boxShadow: '0 12px 30px rgba(99,102,241,0.3)' }}
                     whileTap={{ scale: 0.98 }}
                     transition={{ type: 'spring', stiffness: 400 }}
                   >
@@ -114,7 +115,7 @@ export default function Hero() {
 
                   <motion.a
                     href="/Sathvik_CV.pdf" download="Sathvik_CV.pdf" target="_blank" rel="noreferrer"
-                    className="px-8 py-3.5 font-display font-bold text-sm text-black bg-white rounded-xl border border-black hover:bg-slate-100 transition-colors"
+                    className="px-8 py-3.5 font-display font-bold text-sm text-[var(--t1)] bg-[var(--panel)] rounded-xl border border-[var(--border)] hover:border-[var(--accent1)] transition-colors"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.98 }}
                   >
@@ -129,9 +130,9 @@ export default function Hero() {
                 animate={{ y: [0, -8, 0] }}
                 transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
               >
-                <div className="absolute -inset-2 rounded-full bg-[#2beead]/20 blur-xl mix-blend-screen" />
-                <div className="relative p-2 rounded-full h-full shadow-[0_0_30px_rgba(43,238,173,0.15)] border border-white/10 backdrop-blur-md">
-                  <div className="w-full h-full overflow-hidden rounded-full bg-[#fff]/10">
+                <div className="absolute -inset-2 rounded-full opacity-20 blur-xl" style={{ background: 'var(--gradient)' }} />
+                <div className="relative p-2 rounded-full h-full border border-[var(--border)] backdrop-blur-md">
+                  <div className="w-full h-full overflow-hidden rounded-full bg-[var(--surface)]">
                     <img
                       src="/profile.jpg"
                       alt="Maru Sathvik Reddy"

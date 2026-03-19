@@ -17,7 +17,7 @@ export default function Footer() {
       <div className="mx-auto max-w-6xl px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
         <NavLink to="/" className="flex items-center gap-2 group">
           <div className="relative h-5 w-5">
-            <div className="absolute inset-0 rounded-md" style={{ background: 'linear-gradient(135deg, #1e3a5f, #2563eb)', opacity: 0.3 }} />
+            <div className="absolute inset-0 rounded-md" style={{ background: 'var(--gradient)', opacity: 0.3 }} />
             <div className="absolute inset-[3px] rounded-sm bg-[var(--bg)] group-hover:bg-[var(--panel)] transition-colors" />
           </div>
           <span className="font-mono text-xs text-[var(--t3)] group-hover:text-[var(--accent1)] transition-colors">MSR · 2026</span>

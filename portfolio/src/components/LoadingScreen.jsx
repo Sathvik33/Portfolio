@@ -31,20 +31,20 @@ export default function LoadingScreen({ onComplete }) {
   return (
     <motion.div
       className="fixed inset-0 z-50 flex items-center justify-center"
-      style={{ background: 'linear-gradient(135deg, #f5f6fa 0%, #eef0f6 50%, #e8ecf4 100%)' }}
+      style={{ background: 'var(--bg)' }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
     >
       {/* Animated orbs */}
       <motion.div
         className="absolute w-[300px] h-[300px] rounded-full"
-        style={{ background: 'radial-gradient(circle, rgba(37,99,235,0.1) 0%, transparent 70%)' }}
+        style={{ background: 'radial-gradient(circle, var(--accent-soft) 0%, transparent 70%)' }}
         animate={{ x: [0, 60, -30, 0], y: [0, -40, 20, 0], scale: [1, 1.1, 0.95, 1] }}
         transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
       />
       <motion.div
         className="absolute w-[200px] h-[200px] rounded-full"
-        style={{ background: 'radial-gradient(circle, rgba(14,165,233,0.08) 0%, transparent 70%)', top: '20%', right: '30%' }}
+        style={{ background: 'radial-gradient(circle, var(--accent2) 0%, transparent 70%)', top: '20%', right: '30%' }}
         animate={{ x: [0, -40, 30, 0], y: [0, 30, -20, 0], scale: [1, 0.9, 1.1, 1] }}
         transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
       />
@@ -53,13 +53,13 @@ export default function LoadingScreen({ onComplete }) {
         <motion.div className="mb-10 flex items-center gap-3" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
           <div className="relative h-10 w-10">
             <motion.div
-              className="absolute inset-0 rounded-xl border-2 border-[#2563eb]"
+              className="absolute inset-0 rounded-xl border-2 border-[var(--accent1)]"
               animate={{ rotate: 360 }}
               transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
             />
             <motion.div
               className="absolute inset-1.5 rounded-lg"
-              style={{ background: 'linear-gradient(135deg, rgba(37,99,235,0.15), rgba(14,165,233,0.15))' }}
+              style={{ background: 'var(--accent-soft)' }}
               animate={{ scale: [1, 1.1, 1] }}
               transition={{ duration: 2, repeat: Infinity }}
             />
@@ -80,14 +80,14 @@ export default function LoadingScreen({ onComplete }) {
         <div className="relative h-[3px] w-full overflow-hidden rounded-full bg-[var(--border)]">
           <motion.div
             className="h-full rounded-full"
-            style={{ background: 'linear-gradient(90deg, #1e3a5f, #2563eb, #0ea5e9)' }}
+            style={{ background: 'var(--gradient-h)' }}
             initial={{ width: 0 }}
             animate={{ width: `${progress}%` }}
             transition={{ duration: 0.1 }}
           />
           <motion.div
             className="absolute top-0 h-full w-12 blur-sm"
-            style={{ background: 'linear-gradient(90deg, transparent, rgba(37,99,235,0.5), transparent)', left: `${progress - 6}%` }}
+            style={{ background: 'linear-gradient(90deg, transparent, rgba(99,102,241,0.5), transparent)', left: `${progress - 6}%` }}
           />
         </div>
         <div className="mt-3 flex justify-between">

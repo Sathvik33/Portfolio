@@ -64,7 +64,7 @@ function ScrollRevealItem({ children, index = 0 }) {
 
 export default function Resume() {
   const [activeTab, setActiveTab] = useState('Education')
-  const colors = ['#2563eb', '#0ea5e9', '#10b981', '#2563eb', '#0ea5e9']
+  const colors = ['#6366f1', '#8b5cf6', '#a78bfa', '#6366f1', '#8b5cf6']
 
   return (
     <PageWrapper>
@@ -77,7 +77,7 @@ export default function Resume() {
               <div className="flex items-center justify-center gap-4 mb-6">
                 <motion.div
                   className="h-[2px] w-12 rounded-full"
-                  style={{ background: 'linear-gradient(90deg, transparent, #2563eb)' }}
+                  style={{ background: 'linear-gradient(90deg, transparent, var(--accent1))' }}
                   initial={{ scaleX: 0 }}
                   animate={{ scaleX: 1 }}
                   transition={{ delay: 0.2, duration: 0.6 }}
@@ -85,7 +85,7 @@ export default function Resume() {
                 <span className="font-mono text-xs gradient-text tracking-widest uppercase font-bold">05 · Curriculum Vitae</span>
                 <motion.div
                   className="h-[2px] w-12 rounded-full"
-                  style={{ background: 'linear-gradient(90deg, #0ea5e9, transparent)' }}
+                  style={{ background: 'linear-gradient(90deg, var(--accent1), transparent)' }}
                   initial={{ scaleX: 0 }}
                   animate={{ scaleX: 1 }}
                   transition={{ delay: 0.4, duration: 0.6 }}
@@ -138,7 +138,7 @@ export default function Resume() {
                 className={`relative rounded-full px-6 py-2.5 text-xs font-mono font-bold transition-all duration-300 ${
                   activeTab === tab 
                   ? 'text-white' 
-                  : 'text-[var(--t2)] border border-[var(--border)] bg-white/50 hover:border-[var(--accent1)] hover:text-[var(--accent1)]'
+                  : 'text-[var(--t2)] border border-[var(--border)] bg-[var(--panel)] hover:border-[var(--accent1)] hover:text-[var(--accent1)]'
                 }`}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.97 }}
@@ -147,7 +147,7 @@ export default function Resume() {
                   <motion.div
                     layoutId="tab-bg"
                     className="absolute inset-0 rounded-full"
-                    style={{ background: 'linear-gradient(135deg, #1e3a5f, #2563eb)' }}
+                    style={{ background: 'var(--gradient)' }}
                     transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                   />
                 )}
@@ -182,7 +182,7 @@ export default function Resume() {
                               <div className="text-2xl font-display font-bold text-[var(--t1)] mb-1">{item.title}</div>
                               <div className="text-sm font-mono text-[var(--t3)]">{item.location}</div>
                             </div>
-                            <span className="inline-block rounded-full px-3 py-1 text-xs font-mono font-bold text-[var(--accent1)] whitespace-nowrap" style={{ background: 'rgba(37,99,235,0.06)' }}>
+                            <span className="inline-block rounded-full px-3 py-1 text-xs font-mono font-bold text-[var(--accent1)] whitespace-nowrap" style={{ background: 'var(--accent-soft)' }}>
                               {item.period}
                             </span>
                           </div>

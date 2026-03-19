@@ -4,12 +4,12 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useTheme } from '../context/ThemeContext'
 
 const navLinks = [
-  { label: 'About',    to: '/about'    },
-  { label: 'Stack',    to: '/stack'    },
-  { label: 'Projects', to: '/projects' },
+  { label: 'About',          to: '/about'          },
+  { label: 'Stack',          to: '/stack'          },
+  { label: 'Projects',       to: '/projects'       },
   { label: 'Certifications', to: '/certifications' },
-  { label: 'Resume', to: '/resume' },
-  { label: 'Contact',  to: '/contact'  },
+  { label: 'Resume',         to: '/resume'         },
+  { label: 'Contact',        to: '/contact'        },
 ]
 
 function ThemeToggle() {
@@ -25,7 +25,7 @@ function ThemeToggle() {
       <span className="absolute right-1.5 text-[10px]">🌙</span>
       <motion.div
         className="relative z-10 h-5 w-5 rounded-full shadow-sm"
-        style={{ background: 'linear-gradient(135deg, #1e3a5f, #2563eb)' }}
+        style={{ background: 'var(--gradient)' }}
         animate={{ x: dark ? 22 : 0 }}
         transition={{ type: 'spring', stiffness: 500, damping: 30 }}
       />
@@ -37,6 +37,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const navigate = useNavigate()
+  const { dark } = useTheme()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
@@ -46,15 +47,19 @@ export default function Navbar() {
 
   const handleMobileNav = (to) => { setMenuOpen(false); navigate(to) }
 
+  const navBg = scrolled
+    ? dark
+      ? 'rgba(9,9,11,0.9)'
+      : 'rgba(248,250,252,0.9)'
+    : 'transparent'
+
   return (
     <>
       <motion.nav
         className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${
-          scrolled
-            ? 'backdrop-blur-xl border-b border-[var(--border)] shadow-sm'
-            : 'bg-transparent'
+          scrolled ? 'backdrop-blur-xl border-b border-[var(--border)] shadow-sm' : 'bg-transparent'
         }`}
-        style={scrolled ? { backgroundColor: 'rgba(245,246,250,0.85)' } : {}}
+        style={scrolled ? { backgroundColor: navBg } : {}}
         initial={{ y: -60, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
@@ -65,7 +70,7 @@ export default function Navbar() {
             <div className="relative h-8 w-8">
               <motion.div
                 className="absolute inset-0 rounded-lg"
-                style={{ background: 'linear-gradient(135deg, #1e3a5f, #2563eb)' }}
+                style={{ background: 'var(--gradient)' }}
                 whileHover={{ rotate: 90, scale: 1.1 }}
                 transition={{ type: 'spring', stiffness: 300 }}
               />
@@ -86,7 +91,7 @@ export default function Navbar() {
                 className={({ isActive }) =>
                   `relative px-4 py-2 font-body text-sm transition-all duration-300 group rounded-lg ${
                     isActive
-                      ? 'text-[var(--accent1)] bg-[var(--accent1)]/[0.06]'
+                      ? 'text-[var(--accent1)] bg-[var(--accent-soft)]'
                       : 'text-[var(--t2)] hover:text-[var(--t1)] hover:bg-[var(--panel)]'
                   }`
                 }
@@ -98,7 +103,7 @@ export default function Navbar() {
                       <motion.span
                         layoutId="nav-indicator"
                         className="absolute bottom-0.5 left-3 right-3 h-[2px] rounded-full"
-                        style={{ background: 'linear-gradient(90deg, #1e3a5f, #2563eb)' }}
+                        style={{ background: 'var(--gradient-h)' }}
                         transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                       />
                     )}
@@ -114,9 +119,9 @@ export default function Navbar() {
           <div className="flex items-center gap-3 md:hidden">
             <ThemeToggle />
             <button onClick={() => setMenuOpen(!menuOpen)} className="flex flex-col gap-[5px] p-2" aria-label="Toggle menu">
-              <motion.span animate={menuOpen ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }}   className="block h-[1.5px] w-5 bg-[var(--t2)] rounded-full" />
-              <motion.span animate={menuOpen ? { opacity: 0 }            : { opacity: 1 }}   className="block h-[1.5px] w-5 bg-[var(--t2)] rounded-full" />
-              <motion.span animate={menuOpen ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }} className="block h-[1.5px] w-5 bg-[var(--t2)] rounded-full" />
+              <motion.span animate={menuOpen ? { rotate: 45, y: 7 }   : { rotate: 0, y: 0 }}   className="block h-[1.5px] w-5 bg-[var(--t2)] rounded-full" />
+              <motion.span animate={menuOpen ? { opacity: 0 }          : { opacity: 1 }}         className="block h-[1.5px] w-5 bg-[var(--t2)] rounded-full" />
+              <motion.span animate={menuOpen ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }}   className="block h-[1.5px] w-5 bg-[var(--t2)] rounded-full" />
             </button>
           </div>
         </div>
@@ -127,7 +132,7 @@ export default function Navbar() {
         {menuOpen && (
           <motion.div
             className="fixed inset-0 z-30 backdrop-blur-2xl flex flex-col items-center justify-center"
-            style={{ backgroundColor: 'rgba(245,246,250,0.97)' }}
+            style={{ backgroundColor: dark ? 'rgba(9,9,11,0.97)' : 'rgba(248,250,252,0.97)' }}
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
           >

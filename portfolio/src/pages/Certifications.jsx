@@ -30,11 +30,8 @@ const certs = [
   },
 ]
 
-const colors = ['#2563eb', '#0ea5e9', '#10b981', '#2563eb', '#0ea5e9']
-
 function CertCard({ cert, index }) {
   const { ref, inView } = useScrollAnimation({ rootMargin: '0px 0px -40px 0px' })
-  const accent = colors[index % colors.length]
   
   return (
     <motion.a 
@@ -42,33 +39,37 @@ function CertCard({ cert, index }) {
       href={cert.link} 
       target="_blank" 
       rel="noreferrer"
-      className="glass-card gradient-border p-8 block group relative overflow-hidden flex flex-col h-full cursor-pointer"
+      className="glass-card p-8 block group relative overflow-hidden flex flex-col h-full cursor-pointer"
       initial={{ opacity: 0, y: 40, scale: 0.95 }}
       animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
       transition={{ duration: 0.6, delay: index * 0.1, ease: [0.4, 0, 0.2, 1] }}
-      whileHover={{ y: -6, boxShadow: `0 20px 50px ${accent}12` }}
+      whileHover={{ y: -6, boxShadow: '0 20px 50px rgba(99,102,241,0.18)' }}
     >
+      {/* Subtle gradient overlay on hover */}
+      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl pointer-events-none"
+        style={{ background: 'linear-gradient(135deg, var(--accent-soft) 0%, transparent 100%)' }} />
+
       <motion.div
-        className="h-20 w-20 bg-[var(--panel)] border border-[var(--border)] rounded-xl flex items-center justify-center mb-6 shadow-sm"
+        className="h-20 w-20 bg-[var(--surface)] border border-[var(--border)] rounded-xl flex items-center justify-center mb-6 shadow-sm relative z-10"
         whileHover={{ scale: 1.1, rotate: 5 }}
         transition={{ type: 'spring', stiffness: 400 }}
       >
         {cert.logo}
       </motion.div>
       
-      <div className="font-mono text-[10px] uppercase tracking-widest mb-3 font-bold group-hover:text-[var(--accent1)] transition-colors" style={{ color: 'var(--t3)' }}>
+      <div className="font-mono text-[10px] uppercase tracking-widest mb-3 font-bold text-[var(--t3)] group-hover:text-[var(--accent1)] transition-colors relative z-10">
         {cert.issuer}
       </div>
       
-      <h3 className="font-display font-bold text-xl text-[var(--t1)] mb-6 leading-snug flex-1 group-hover:text-[var(--accent1)] transition-colors duration-300">
+      <h3 className="font-display font-bold text-xl text-[var(--t1)] mb-6 leading-snug flex-1 group-hover:text-[var(--accent1)] transition-colors duration-300 relative z-10">
         {cert.name}
       </h3>
       
-      <div className="flex items-center justify-between mt-auto border-t border-[var(--border)] pt-5">
+      <div className="flex items-center justify-between mt-auto border-t border-[var(--border)] pt-5 relative z-10">
         <span className="font-mono text-xs font-bold text-[var(--t2)]">{cert.date}</span>
         <motion.span
           className="font-mono text-xs font-bold text-white px-4 py-2 rounded-full flex items-center gap-2"
-          style={{ background: 'linear-gradient(135deg, #1e3a5f, #2563eb)' }}
+          style={{ background: 'var(--gradient)' }}
           whileHover={{ scale: 1.05 }}
         >
           View Document
@@ -84,7 +85,7 @@ function CertCard({ cert, index }) {
   )
 }
 
-export default function Certificates() {
+export default function Certifications() {
   const { ref: headerRef, inView: headerInView } = useScrollAnimation()
 
   return (
@@ -96,7 +97,7 @@ export default function Certificates() {
             <span className="font-mono text-xs gradient-text tracking-widest uppercase font-bold">04 · Certificates</span>
             <motion.div
               className="h-[2px] flex-1 max-w-xs rounded-full"
-              style={{ background: 'linear-gradient(90deg, #2563eb, #0ea5e9, transparent)', transformOrigin: 'left' }}
+              style={{ background: 'var(--gradient-h)', transformOrigin: 'left' }}
               initial={{ scaleX: 0 }}
               animate={headerInView ? { scaleX: 1 } : {}}
               transition={{ duration: 0.8 }}

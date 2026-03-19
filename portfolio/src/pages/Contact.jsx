@@ -13,8 +13,6 @@ const socials = [
     icon:<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg> },
 ]
 
-const colors = ['#2563eb', '#0ea5e9', '#10b981']
-
 export default function Contact() {
   const navigate = useNavigate()
   const { ref: headerRef, inView: headerInView } = useScrollAnimation()
@@ -24,9 +22,10 @@ export default function Contact() {
   return (
     <PageWrapper>
       <section className="relative min-h-[calc(100vh-72px)] py-24">
+        {/* Ambient glow */}
         <motion.div
           className="pointer-events-none absolute left-1/2 bottom-0 -translate-x-1/2 h-[400px] w-[600px] rounded-full"
-          style={{ background: 'radial-gradient(circle, rgba(37,99,235,0.05) 0%, transparent 70%)' }}
+          style={{ background: 'radial-gradient(circle, var(--accent-soft) 0%, transparent 70%)' }}
           animate={{ scale: [1, 1.1, 1], y: [0, -30, 0] }}
           transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
         />
@@ -37,7 +36,7 @@ export default function Contact() {
               <span className="font-mono text-xs gradient-text tracking-widest uppercase font-bold">05 · Contact</span>
               <motion.div
                 className="h-[2px] flex-1 max-w-xs rounded-full"
-                style={{ background: 'linear-gradient(90deg, #2563eb, #0ea5e9, transparent)', transformOrigin: 'left' }}
+                style={{ background: 'var(--gradient-h)', transformOrigin: 'left' }}
                 initial={{ scaleX: 0 }}
                 animate={headerInView ? { scaleX: 1 } : {}}
                 transition={{ duration: 0.8 }}
@@ -75,10 +74,10 @@ export default function Contact() {
                     initial={{ opacity: 0, x: -40 }}
                     animate={socialsInView ? { opacity: 1, x: 0 } : {}}
                     transition={{ delay: i * 0.1, duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
-                    whileHover={{ x: 6, boxShadow: `0 8px 30px ${colors[i]}10` }}
+                    whileHover={{ x: 6 }}
                   >
                     <motion.div
-                      className="flex h-10 w-10 items-center justify-center rounded-lg border border-[var(--border)] bg-[var(--panel)] text-[var(--t2)] group-hover:border-[var(--accent1)] group-hover:text-[var(--accent1)] transition-all duration-200"
+                      className="flex h-10 w-10 items-center justify-center rounded-lg border border-[var(--border)] bg-[var(--surface)] text-[var(--t2)] group-hover:border-[var(--accent1)] group-hover:text-[var(--accent1)] transition-all duration-200"
                       whileHover={{ rotate: 5, scale: 1.1 }}
                     >
                       {s.icon}
@@ -108,8 +107,8 @@ export default function Contact() {
               >
                 <div className="flex items-center gap-3 mb-2">
                   <span className="relative flex h-3 w-3">
-                    <span className="absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 animate-ping" />
-                    <span className="relative inline-flex h-3 w-3 rounded-full bg-green-400" />
+                    <span className="absolute inline-flex h-full w-full rounded-full bg-[var(--accent1)] opacity-75 animate-ping" />
+                    <span className="relative inline-flex h-3 w-3 rounded-full bg-[var(--accent1)]" />
                   </span>
                   <span className="font-display text-sm font-bold text-[var(--t1)]">Available for opportunities</span>
                 </div>
@@ -120,7 +119,7 @@ export default function Contact() {
               </motion.div>
             </div>
 
-            {/* Right — Decorative / Info */}
+            {/* Right — Info card */}
             <motion.div
               className="flex items-center justify-center"
               initial={{ opacity: 0, scale: 0.9 }}
@@ -135,7 +134,7 @@ export default function Contact() {
                 >
                   <motion.div
                     className="w-20 h-20 mx-auto mb-6 rounded-2xl flex items-center justify-center"
-                    style={{ background: 'linear-gradient(135deg, rgba(37,99,235,0.1), rgba(14,165,233,0.1))' }}
+                    style={{ background: 'var(--accent-soft)' }}
                     animate={{ rotate: [0, 5, -5, 0] }}
                     transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
                   >
@@ -148,23 +147,24 @@ export default function Contact() {
                   <motion.a
                     href="mailto:marusathvikreddy@gmail.com"
                     className="inline-block px-6 py-3 rounded-xl font-display font-bold text-sm text-white"
-                    style={{ background: 'linear-gradient(135deg, #1e3a5f, #2563eb)' }}
-                    whileHover={{ scale: 1.05, boxShadow: '0 12px 30px rgba(37,99,235,0.25)' }}
+                    style={{ background: 'var(--gradient)' }}
+                    whileHover={{ scale: 1.05, boxShadow: '0 12px 30px rgba(99,102,241,0.25)' }}
                     whileTap={{ scale: 0.98 }}
                   >
                     ✉️ Send Email
                   </motion.a>
                 </motion.div>
 
+                {/* Decorative elements */}
                 <motion.div
                   className="absolute -top-4 -right-4 w-12 h-12 rounded-xl opacity-15"
-                  style={{ background: 'linear-gradient(135deg, #1e3a5f, #2563eb)' }}
+                  style={{ background: 'var(--gradient)' }}
                   animate={{ rotate: [0, 90, 0], scale: [1, 1.1, 1] }}
                   transition={{ duration: 8, repeat: Infinity }}
                 />
                 <motion.div
-                  className="absolute -bottom-3 -left-3 w-8 h-8 rounded-full opacity-12"
-                  style={{ background: '#0ea5e9' }}
+                  className="absolute -bottom-3 -left-3 w-8 h-8 rounded-full opacity-20"
+                  style={{ background: 'var(--accent1)' }}
                   animate={{ y: [0, -10, 0] }}
                   transition={{ duration: 5, repeat: Infinity }}
                 />
