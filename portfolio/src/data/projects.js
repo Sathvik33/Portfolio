@@ -43,7 +43,7 @@ export const projects = [
     tech: ['Python', 'FastAPI', 'LangGraph', 'Ollama', 'Redis', 'Streamlit', 'Docker'],
     github: 'https://github.com/Sathvik33/ResearchForge-AI',
     badge: 'Open Source',
-    badgeColor: 'violet',
+    badgeColor: 'red',
     image: '/project-covers/researchforge.png',
     priority: 4,
   },
@@ -88,9 +88,9 @@ export const projects = [
 export const badgeStyles = {
   cyan:   'bg-cyan-50 text-cyan-700 border-cyan-200',
   amber:  'bg-amber-50 text-amber-700 border-amber-200',
-  green:  'bg-indigo-50 text-indigo-700 border-indigo-200',
+  green:  'bg-zinc-50 text-zinc-700 border-zinc-200',
   purple: 'bg-purple-50 text-purple-700 border-purple-200',
   gold:   'bg-yellow-50 text-yellow-700 border-yellow-200',
   blue:   'bg-blue-50 text-blue-700 border-blue-200',
-  violet: 'bg-violet-50 text-violet-700 border-violet-200',
+  violet: 'bg-rose-50 text-rose-700 border-rose-200',
 }

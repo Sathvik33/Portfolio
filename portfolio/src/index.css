@@ -4,42 +4,42 @@
 
 /* ─── LIGHT MODE (default) ──────────────────────────────────────────────── */
 :root {
-  --bg:      #f8fafc;        /* slate-50: clean off-white */
-  --surface: #ffffff;
-  --panel:   #ffffff;
-  --border:  #e2e8f0;        /* slate-200 */
-  --t1:      #0f172a;        /* slate-900: near-black */
-  --t2:      #334155;        /* slate-700: dark gray */
-  --t3:      #64748b;        /* slate-500: medium gray */
-  --accent1: #6366f1;        /* indigo-500: vibrant primary */
-  --accent2: #f1f5ff;        /* soft indigo tint */
-  --accent3: #fdf4ff;        /* soft violet tint */
-  --accent-soft: #eef2ff;    /* indigo-50: soft card accent */
-  --gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-  --gradient-h: linear-gradient(90deg, #6366f1 0%, #8b5cf6 100%);
-  --primary: #6366f1;
-  --shadow-card: 0 4px 24px rgba(99, 102, 241, 0.07);
-  --shadow-hover: 0 16px 48px rgba(99, 102, 241, 0.14);
+  --bg:      #f5f0e8;        /* warm cream */
+  --surface: #faf7f2;        /* lighter cream for cards */
+  --panel:   #faf7f2;
+  --border:  #e8e0d0;        /* warm beige border */
+  --t1:      #1a1208;        /* warm near-black */
+  --t2:      #3d2e1a;        /* warm dark brown */
+  --t3:      #7a6a52;        /* warm medium brown */
+  --accent1: #c0392b;        /* deep red — professional, not neon */
+  --accent2: #f5ece0;        /* warm peach tint */
+  --accent3: #f0e8d8;        /* warm sand tint */
+  --accent-soft: #f5ece0;
+  --gradient: linear-gradient(135deg, #c0392b 0%, #96281b 100%);
+  --gradient-h: linear-gradient(90deg, #c0392b 0%, #96281b 100%);
+  --primary: #c0392b;
+  --shadow-card: 0 4px 24px rgba(192, 57, 43, 0.07);
+  --shadow-hover: 0 16px 48px rgba(192, 57, 43, 0.13);
 }
 
 /* ─── DARK MODE ─────────────────────────────────────────────────────────── */
 html.dark {
-  --bg:      #09090b;        /* near-black */
-  --surface: #111113;
-  --panel:   #18181b;        /* zinc-900 */
-  --border:  #27272a;        /* zinc-800 */
-  --t1:      #f4f4f5;        /* zinc-100: near-white */
-  --t2:      #a1a1aa;        /* zinc-400 */
-  --t3:      #71717a;        /* zinc-500 */
-  --accent1: #818cf8;        /* indigo-400: lighter for dark bg */
-  --accent2: #1e1b4b;        /* deep indigo for dark surfaces */
-  --accent3: #1a1625;        /* deep violet for dark cards */
-  --accent-soft: #1e1b4b;    /* indigo-900 */
-  --gradient: linear-gradient(135deg, #818cf8 0%, #a78bfa 100%);
-  --gradient-h: linear-gradient(90deg, #818cf8 0%, #a78bfa 100%);
-  --primary: #818cf8;
-  --shadow-card: 0 4px 24px rgba(0,0,0,0.4);
-  --shadow-hover: 0 16px 48px rgba(129, 140, 248, 0.12);
+  --bg:      #0e0c0a;        /* warm near-black */
+  --surface: #161310;
+  --panel:   #1c1814;        /* warm dark brown */
+  --border:  #2a2318;        /* warm dark border */
+  --t1:      #f0ead8;        /* warm off-white */
+  --t2:      #b8a88a;        /* warm tan */
+  --t3:      #7a6a52;        /* warm medium brown */
+  --accent1: #e05c4a;        /* warm red for dark bg */
+  --accent2: #3d1a10;        /* deep warm red */
+  --accent3: #2a1208;        /* deeper warm */
+  --accent-soft: #3d1a10;
+  --gradient: linear-gradient(135deg, #e05c4a 0%, #c0392b 100%);
+  --gradient-h: linear-gradient(90deg, #e05c4a 0%, #c0392b 100%);
+  --primary: #e05c4a;
+  --shadow-card: 0 4px 24px rgba(0,0,0,0.5);
+  --shadow-hover: 0 16px 48px rgba(224, 92, 74, 0.12);
 }
 
 /* ─── GLOBALS ────────────────────────────────────────────────────────────── */
@@ -47,14 +47,14 @@ html.dark {
 html { scroll-behavior: smooth; }
 
 body, a, button, [role="button"] {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><circle cx="14" cy="14" r="6" fill="%236366f1" opacity="0.2" /><circle cx="14" cy="14" r="3.5" fill="%230f172a" /></svg>') 14 14, auto !important;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><circle cx="14" cy="14" r="6" fill="%23c0392b" opacity="0.2" /><circle cx="14" cy="14" r="3.5" fill="%231a1208" /></svg>') 14 14, auto !important;
 }
 
 html.dark body,
 html.dark a,
 html.dark button,
 html.dark [role="button"] {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><circle cx="14" cy="14" r="6" fill="%23818cf8" opacity="0.25" /><circle cx="14" cy="14" r="3.5" fill="%23f4f4f5" /></svg>') 14 14, auto !important;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><circle cx="14" cy="14" r="6" fill="%23e05c4a" opacity="0.25" /><circle cx="14" cy="14" r="3.5" fill="%23f0ead8" /></svg>') 14 14, auto !important;
 }
 
 body {
@@ -125,14 +125,11 @@ html.dark .blob { opacity: 0.35; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--t3); }
 
-::selection { background: rgba(99,102,241,0.25); color: var(--t1); }
+::selection { background: rgba(239,68,68,0.25); color: var(--t1); }
 
-/* ─── Gradient text ─────────────────────────────────────────────────────── */
+/* ─── Accent text (plain, professional) ─────────────────────────────────── */
 .gradient-text {
-  background: var(--gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--accent1);
 }
 
 /* ─── Card / Glass surface ──────────────────────────────────────────────── */

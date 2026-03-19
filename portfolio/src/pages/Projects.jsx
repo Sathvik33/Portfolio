@@ -153,11 +153,11 @@ function FlipCard({ project, index, visible }) {
                 onClick={e => e.stopPropagation()}
                 className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-display font-bold text-sm transition-all duration-200"
                 style={{
-                  background: 'var(--gradient)',
+                  background: '#161b22',
                   color: '#fff',
                 }}
-                onMouseEnter={e => { e.currentTarget.style.opacity = '0.9'; e.currentTarget.style.transform = 'translateY(-1px)' }}
-                onMouseLeave={e => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'translateY(0)' }}
+                onMouseEnter={e => { e.currentTarget.style.background = '#000000'; e.currentTarget.style.transform = 'translateY(-1px)' }}
+                onMouseLeave={e => { e.currentTarget.style.background = '#161b22'; e.currentTarget.style.transform = 'translateY(0)' }}
               >
                 {GH_ICON} View on GitHub
               </a>
@@ -202,7 +202,7 @@ export default function Projects() {
           {/* ── Header ── */}
           <motion.div ref={headerRef} className="mb-14">
             <div className="flex items-center gap-4 mb-4">
-              <span className="font-mono text-xs gradient-text tracking-widest uppercase font-bold">
+              <span className="font-mono text-xs text-[var(--accent1)] tracking-widest uppercase font-bold">
                 03 · Projects
               </span>
               <motion.div
@@ -225,7 +225,7 @@ export default function Projects() {
                   className="font-display text-4xl md:text-5xl font-extrabold leading-tight"
                   style={{ color: 'var(--t1)' }}
                 >
-                  Selected <span className="gradient-text">Work</span>
+                  Selected <span className="text-[var(--accent1)]">Work</span>
                 </h2>
                 <p className="font-body text-base mt-2" style={{ color: 'var(--t3)' }}>
                   Hover or tap a card to see details
@@ -235,7 +235,9 @@ export default function Projects() {
                 href="https://github.com/Sathvik33"
                 target="_blank" rel="noreferrer"
                 className="font-mono font-bold text-sm flex items-center gap-1.5 transition-all"
-                style={{ color: 'var(--accent1)' }}
+                style={{ color: '#161b22' }}
+                onMouseEnter={e => e.currentTarget.style.color = '#000000'}
+                onMouseLeave={e => e.currentTarget.style.color = '#161b22'}
                 whileHover={{ x: 3 }}
               >
                 github.com/Sathvik33 ↗

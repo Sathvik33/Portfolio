@@ -64,7 +64,7 @@ function ScrollRevealItem({ children, index = 0 }) {
 
 export default function Resume() {
   const [activeTab, setActiveTab] = useState('Education')
-  const colors = ['#6366f1', '#8b5cf6', '#a78bfa', '#6366f1', '#8b5cf6']
+  const colors = ['#ef4444', '#f87171', '#fb7185', '#ef4444', '#f87171']
 
   return (
     <PageWrapper>
@@ -82,7 +82,7 @@ export default function Resume() {
                   animate={{ scaleX: 1 }}
                   transition={{ delay: 0.2, duration: 0.6 }}
                 />
-                <span className="font-mono text-xs gradient-text tracking-widest uppercase font-bold">05 · Curriculum Vitae</span>
+                <span className="font-mono text-xs text-[var(--accent1)] tracking-widest uppercase font-bold">05 · Curriculum Vitae</span>
                 <motion.div
                   className="h-[2px] w-12 rounded-full"
                   style={{ background: 'linear-gradient(90deg, var(--accent1), transparent)' }}
@@ -97,7 +97,7 @@ export default function Resume() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3, duration: 0.7 }}
               >
-                <span className="gradient-text">Interactive</span> <span className="text-[var(--t1)]">Resume</span>
+                <span className="text-[var(--accent1)]">Interactive</span> <span className="text-[var(--t1)]">Resume</span>
               </motion.h1>
               
               {/* Contact Chips */}
@@ -234,7 +234,7 @@ export default function Resume() {
                         whileHover={{ y: -3 }}
                       >
                         <div className="border-b border-[var(--border)] pb-4 mb-4">
-                          <div className="text-2xl font-display font-bold gradient-text">{p.title}</div>
+                          <div className="text-2xl font-display font-bold text-[var(--accent1)]">{p.title}</div>
                           <p className="text-xs font-mono font-bold text-[var(--t3)] mt-2 uppercase tracking-widest">{p.subtitle}</p>
                         </div>
                         <p className="text-base text-[var(--t2)] leading-relaxed">{p.description}</p>

@@ -44,7 +44,7 @@ export default function Hero() {
   return (
     <PageWrapper>
       <section className="relative min-h-[calc(100vh-72px)] flex items-center justify-center overflow-hidden py-12 lg:py-0">
-        
+
         <div className="relative z-10 mx-auto max-w-4xl px-6 w-full mt-10">
           <motion.div variants={stagger} initial="hidden" animate="visible" className="flex flex-col">
 
@@ -53,7 +53,7 @@ export default function Hero() {
               <motion.div
                 className="px-4 py-1.5 rounded-full"
                 style={{ background: 'var(--accent-soft)', border: '1px solid var(--border)' }}
-                whileHover={{ scale: 1.05, boxShadow: '0 4px 15px rgba(99,102,241,0.15)' }}
+                whileHover={{ scale: 1.05, boxShadow: '0 4px 15px rgba(239,68,68,0.15)' }}
                 transition={{ type: 'spring', stiffness: 400 }}
               >
                 <span className="font-display text-xs text-[var(--accent1)] uppercase tracking-widest font-bold">
@@ -63,16 +63,16 @@ export default function Hero() {
             </motion.div>
 
             {/* Name and Tagline */}
-            <motion.div variants={fadeUp} className="flex flex-col md:flex-row md:items-center gap-6 md:gap-12 mb-10">
+            <motion.div variants={fadeUp} className="flex flex-col md:flex-row md:items-start gap-6 md:gap-12 mb-10">
               <div className="flex-1">
-                <h1 className="font-display text-5xl font-extrabold leading-tight tracking-tight sm:text-6xl md:text-7xl">
+                <h1 className="font-display text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl md:text-5xl">
                   <motion.span
                     className="inline-block text-[var(--t1)]"
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2, duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
                   >
-                    Building robust
+                    Building intelligent systems — from model to deployment.
                   </motion.span>
                   <br />
                   <motion.span
@@ -81,7 +81,6 @@ export default function Hero() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4, duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
                   >
-                    AI systems <span className="gradient-text font-black">from scratch.</span>
                   </motion.span>
                 </h1>
 
@@ -106,7 +105,7 @@ export default function Hero() {
                     onClick={() => navigate('/about')}
                     className="px-8 py-3.5 font-display font-bold text-sm text-white rounded-xl shadow-lg cursor-pointer"
                     style={{ background: 'var(--gradient)' }}
-                    whileHover={{ scale: 1.05, boxShadow: '0 12px 30px rgba(99,102,241,0.3)' }}
+                    whileHover={{ scale: 1.05, boxShadow: '0 12px 30px rgba(239,68,68,0.3)' }}
                     whileTap={{ scale: 0.98 }}
                     transition={{ type: 'spring', stiffness: 400 }}
                   >
@@ -126,11 +125,11 @@ export default function Hero() {
 
               {/* Profile photo */}
               <motion.div
-                className="relative w-48 h-48 md:w-64 md:h-64 shrink-0 -mt-8 md:-mt-16"
+                className="relative w-48 h-48 md:w-64 md:h-64 shrink-0 mt-2 md:mt-4"
                 animate={{ y: [0, -8, 0] }}
                 transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
               >
-                <div className="absolute -inset-2 rounded-full opacity-20 blur-xl" style={{ background: 'var(--gradient)' }} />
+                <div className="absolute -inset-4 rounded-full opacity-25 blur-3xl transition-colors duration-1000" style={{ background: 'var(--border)' }} />
                 <div className="relative p-2 rounded-full h-full border border-[var(--border)] backdrop-blur-md">
                   <div className="w-full h-full overflow-hidden rounded-full bg-[var(--surface)]">
                     <img

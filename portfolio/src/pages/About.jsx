@@ -40,8 +40,8 @@ export default function About() {
               animate={titleInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6 }}
             >
-              <span className="gradient-text">About</span>{' '}
-              <span className="text-[var(--t1)]">Me.</span>
+              <span className="text-[var(--t1)]">About </span>
+              <span className="text-[var(--accent1)]">Me.</span>
             </motion.h2>
           </motion.div>
 
@@ -51,29 +51,32 @@ export default function About() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1], delay: 0.1 }}
             >
-              I am a Computer Science undergraduate at{' '}
-              <strong className="text-[var(--t1)] bg-[var(--accent-soft)] px-1.5 py-0.5 rounded font-semibold">
-                Lovely Professional University
-              </strong>
-              . My core engineering philosophy is simple: understand what is happening inside the black box before deploying it.
+              I'm a Computer Science undergraduate at Lovely Professional University,
+              with a deep focus on machine learning, agentic AI systems, and local
+              LLM deployment. I get uncomfortable using tools I don't fully understand
+              — so I build from the ground up instead.
             </motion.p>
+
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1], delay: 0.2 }}
             >
-              Recently, I completed an intensive Machine Learning training program at{' '}
-              <strong className="text-[var(--t1)] bg-[var(--accent3)] px-1.5 py-0.5 rounded font-semibold">
-                Elevate Labs
-              </strong>
-              , where I built automated candidate screening systems using NLP and cosine similarity algorithms.
+              My stack runs deep through PyTorch, LangGraph, FastAPI, and Redis —
+              across transformer architectures, multi-agent pipelines, RAG systems,
+              and the backend infrastructure to deploy them. Whether it's implementing
+              attention from scratch or designing a stateful agent workflow, I care
+              about understanding the internals, not just the output.
             </motion.p>
+
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1], delay: 0.3 }}
             >
-              Whether I am hand-coding a Transformer's causal self-attention layers in PyTorch or designing a multi-agent LangGraph architecture with Redis semantic caching, my goal is always to engineer robust, mathematically sound, and highly optimized AI systems.
+              I'm focused on building AI systems that are robust, well-reasoned, and
+              production-ready — and continuously pushing into the parts of this field
+              that most people still treat as a black box.
             </motion.p>
           </div>
 

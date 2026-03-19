@@ -87,7 +87,7 @@ export default function LoadingScreen({ onComplete }) {
           />
           <motion.div
             className="absolute top-0 h-full w-12 blur-sm"
-            style={{ background: 'linear-gradient(90deg, transparent, rgba(99,102,241,0.5), transparent)', left: `${progress - 6}%` }}
+            style={{ background: 'linear-gradient(90deg, transparent, rgba(239,68,68,0.5), transparent)', left: `${progress - 6}%` }}
           />
         </div>
         <div className="mt-3 flex justify-between">

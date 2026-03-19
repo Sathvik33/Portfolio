@@ -43,7 +43,7 @@ function CertCard({ cert, index }) {
       initial={{ opacity: 0, y: 40, scale: 0.95 }}
       animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
       transition={{ duration: 0.6, delay: index * 0.1, ease: [0.4, 0, 0.2, 1] }}
-      whileHover={{ y: -6, boxShadow: '0 20px 50px rgba(99,102,241,0.18)' }}
+      whileHover={{ y: -6, boxShadow: '0 20px 50px rgba(239,68,68,0.18)' }}
     >
       {/* Subtle gradient overlay on hover */}
       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl pointer-events-none"
@@ -94,7 +94,7 @@ export default function Certifications() {
         <motion.div ref={headerRef}>
           
           <div className="flex items-center gap-4 mb-8">
-            <span className="font-mono text-xs gradient-text tracking-widest uppercase font-bold">04 · Certificates</span>
+            <span className="font-mono text-xs text-[var(--accent1)] tracking-widest uppercase font-bold">04 · Certificates</span>
             <motion.div
               className="h-[2px] flex-1 max-w-xs rounded-full"
               style={{ background: 'var(--gradient-h)', transformOrigin: 'left' }}
@@ -111,7 +111,7 @@ export default function Certifications() {
             transition={{ delay: 0.2, duration: 0.6 }}
           >
             <h2 className="font-display text-4xl font-extrabold tracking-tight">
-              <span className="gradient-text">Verified</span> <span className="text-[var(--t1)]">Credentials.</span>
+              <span className="text-[var(--accent1)]">Verified</span> <span className="text-[var(--t1)]">Credentials.</span>
             </h2>
             <p className="font-body text-[var(--t2)] mt-3">Official certifications and completion records.</p>
           </motion.div>

@@ -8,7 +8,7 @@ export const skillGroups = [
   {
     category: 'ML / Deep Learning',
     icon: '⚡',
-    color: '#a78bfa',
+    color: '#ef4444',
     skills: ['PyTorch', 'Scikit-learn', 'HuggingFace', 'XGBoost', 'Optuna', 'CUDA', 'TensorFlow'],
   },
   {
