@@ -1,5 +1,5 @@
-import { motion } from 'framer-motion'
-import { useState } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import { useState, useRef } from 'react'
 import useScrollAnimation from '../hooks/useScrollAnimation'
 
 const socials = [
@@ -21,22 +21,48 @@ export default function Contact() {
   const { ref: sectionRef, inView } = useScrollAnimation({ rootMargin: '-80px' })
   const [formData, setFormData] = useState({ name: '', email: '', message: '' })
   const [focused, setFocused] = useState('')
+  const containerRef = useRef(null)
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start end', 'end start'],
+  })
+
+  const decoY1 = useTransform(scrollYProgress, [0, 1], [50, -50])
+  const decoY2 = useTransform(scrollYProgress, [0, 1], [30, -70])
+  const glowScale = useTransform(scrollYProgress, [0.3, 0.7], [0.8, 1.2])
 
   const handleChange = (e) => setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }))
 
   return (
-    <section id="contact" className="section-padding relative">
-      {/* Subtle ambient glow */}
+    <section id="contact" className="section-padding relative overflow-hidden" ref={containerRef}>
+      {/* Ambient glow that scales with scroll */}
       <motion.div
-        className="pointer-events-none absolute left-1/2 bottom-0 -translate-x-1/2 h-[400px] w-[600px] rounded-full opacity-[0.04]"
-        style={{ background: 'radial-gradient(circle, var(--accent1) 0%, transparent 70%)' }}
-        animate={{ scale: [1, 1.1, 1] }}
-        transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
+        className="pointer-events-none absolute left-1/2 bottom-0 -translate-x-1/2 h-[500px] w-[700px] rounded-full opacity-[0.05]"
+        style={{
+          background: 'radial-gradient(circle, var(--accent1) 0%, transparent 70%)',
+          scale: glowScale,
+        }}
       />
 
-      <div ref={sectionRef} className="mx-auto max-w-6xl">
+      {/* Parallax shapes */}
+      <motion.div
+        className="absolute right-10 top-32 w-16 h-16 rounded-full border border-[var(--accent1)]/10 opacity-[0.08] pointer-events-none"
+        style={{ y: decoY1 }}
+      />
+      <motion.div
+        className="absolute left-16 bottom-20 w-3 h-3 rounded-full bg-[var(--accent3)] opacity-[0.12] pointer-events-none"
+        style={{ y: decoY2 }}
+      />
+
+      <div ref={sectionRef} className="mx-auto max-w-6xl relative z-10">
         {/* Header */}
-        <div className="flex items-center gap-4 mb-4">
+        <motion.div
+          className="flex items-center gap-4 mb-4"
+          initial={{ opacity: 0, x: -40 }}
+          animate={inView ? { opacity: 1, x: 0 } : {}}
+          transition={{ duration: 0.7 }}
+        >
           <span className="font-mono text-xs text-[var(--accent1)] tracking-widest uppercase font-bold">
             05 · Contact
           </span>
@@ -45,15 +71,15 @@ export default function Contact() {
             style={{ background: 'var(--gradient-h)', transformOrigin: 'left' }}
             initial={{ scaleX: 0 }}
             animate={inView ? { scaleX: 1 } : {}}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 1, delay: 0.2 }}
           />
-        </div>
+        </motion.div>
 
         <motion.h2
           className="font-display text-3xl md:text-4xl font-extrabold leading-tight mb-3"
-          initial={{ opacity: 0, y: 24 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.1 }}
+          initial={{ opacity: 0, y: 30, filter: 'blur(6px)' }}
+          animate={inView ? { opacity: 1, y: 0, filter: 'blur(0px)' } : {}}
+          transition={{ duration: 0.7, delay: 0.1 }}
         >
           <span className="gradient-text">Let's build</span>{' '}
           <span className="text-[var(--t1)]">something.</span>
@@ -61,31 +87,31 @@ export default function Contact() {
 
         <motion.p
           className="font-body text-base text-[var(--t3)] max-w-xl mb-12"
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ delay: 0.3 }}
+          initial={{ opacity: 0, y: 16 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: 0.3, duration: 0.5 }}
         >
           Actively seeking opportunities in ML / AI Engineering. Open to research roles, backend, or anything at the intersection of ML and systems.
         </motion.p>
 
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
-          {/* Left — Contact form */}
+          {/* Left — Contact form with interactive fields */}
           <motion.form
             className="space-y-5"
-            initial={{ opacity: 0, x: -30 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            initial={{ opacity: 0, x: -40, filter: 'blur(4px)' }}
+            animate={inView ? { opacity: 1, x: 0, filter: 'blur(0px)' } : {}}
+            transition={{ duration: 0.7, delay: 0.2 }}
             onSubmit={(e) => e.preventDefault()}
           >
             {[
               { name: 'name', label: 'Name', type: 'text', placeholder: 'Your name' },
               { name: 'email', label: 'Email', type: 'email', placeholder: 'your@email.com' },
             ].map((field) => (
-              <div key={field.name} className="relative">
+              <div key={field.name} className="relative group">
                 <label
                   className={`absolute left-4 transition-all duration-300 font-mono text-xs pointer-events-none ${
                     focused === field.name || formData[field.name]
-                      ? '-top-2.5 text-[var(--accent1)] bg-[var(--bg)] px-1'
+                      ? '-top-2.5 text-[var(--accent1)] bg-[var(--bg)] px-1.5 scale-90'
                       : 'top-3.5 text-[var(--t3)]'
                   }`}
                 >
@@ -99,16 +125,16 @@ export default function Contact() {
                   onFocus={() => setFocused(field.name)}
                   onBlur={() => setFocused('')}
                   placeholder={focused === field.name ? field.placeholder : ''}
-                  className="w-full px-4 py-3.5 rounded-xl bg-[var(--surface)] border border-[var(--border)] text-[var(--t1)] font-body text-sm outline-none transition-all duration-300 focus:border-[var(--accent1)] focus:shadow-glow-sm"
+                  className="w-full px-4 py-3.5 rounded-xl bg-[var(--surface)] border border-[var(--border)] text-[var(--t1)] font-body text-sm outline-none transition-all duration-300 focus:border-[var(--accent1)] focus:shadow-[0_0_20px_rgba(6,182,212,0.1)]"
                 />
               </div>
             ))}
 
-            <div className="relative">
+            <div className="relative group">
               <label
                 className={`absolute left-4 transition-all duration-300 font-mono text-xs pointer-events-none ${
                   focused === 'message' || formData.message
-                    ? '-top-2.5 text-[var(--accent1)] bg-[var(--bg)] px-1'
+                    ? '-top-2.5 text-[var(--accent1)] bg-[var(--bg)] px-1.5 scale-90'
                     : 'top-3.5 text-[var(--t3)]'
                 }`}
               >
@@ -122,27 +148,31 @@ export default function Contact() {
                 onBlur={() => setFocused('')}
                 placeholder={focused === 'message' ? 'Tell me about your project or opportunity...' : ''}
                 rows="4"
-                className="w-full px-4 py-3.5 rounded-xl bg-[var(--surface)] border border-[var(--border)] text-[var(--t1)] font-body text-sm outline-none transition-all duration-300 focus:border-[var(--accent1)] focus:shadow-glow-sm resize-none"
+                className="w-full px-4 py-3.5 rounded-xl bg-[var(--surface)] border border-[var(--border)] text-[var(--t1)] font-body text-sm outline-none transition-all duration-300 focus:border-[var(--accent1)] focus:shadow-[0_0_20px_rgba(6,182,212,0.1)] resize-none"
               />
             </div>
 
             <motion.button
               type="submit"
-              className="px-8 py-3.5 rounded-xl font-display font-bold text-sm text-white shadow-lg"
+              className="group relative px-8 py-3.5 rounded-xl font-display font-bold text-sm text-white shadow-lg overflow-hidden"
               style={{ background: 'var(--gradient)' }}
               whileHover={{ scale: 1.03, boxShadow: '0 12px 30px rgba(6,182,212,0.2)' }}
               whileTap={{ scale: 0.97 }}
             >
-              Send Message
+              <span className="relative z-10">Send Message</span>
+              <motion.div
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 100%)' }}
+              />
             </motion.button>
           </motion.form>
 
           {/* Right — Social links + availability */}
           <motion.div
             className="space-y-4"
-            initial={{ opacity: 0, x: 30 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.3 }}
+            initial={{ opacity: 0, x: 40, filter: 'blur(4px)' }}
+            animate={inView ? { opacity: 1, x: 0, filter: 'blur(0px)' } : {}}
+            transition={{ duration: 0.7, delay: 0.35 }}
           >
             {socials.map((s, i) => (
               <motion.a
@@ -151,28 +181,33 @@ export default function Contact() {
                 target="_blank"
                 rel="noreferrer"
                 className="group flex items-center gap-4 glass-card rounded-xl p-4"
-                initial={{ opacity: 0, y: 16 }}
+                initial={{ opacity: 0, y: 20 }}
                 animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: 0.4 + i * 0.1, duration: 0.4 }}
-                whileHover={{ x: 4 }}
+                transition={{ delay: 0.5 + i * 0.1, duration: 0.5 }}
+                whileHover={{ x: 6 }}
               >
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-[var(--border)] bg-[var(--surface)] text-[var(--t2)] group-hover:border-[var(--accent1)] group-hover:text-[var(--accent1)] transition-all duration-200">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-[var(--border)] bg-[var(--surface)] text-[var(--t2)] group-hover:border-[var(--accent1)] group-hover:text-[var(--accent1)] transition-all duration-300">
                   {s.icon}
                 </div>
                 <div className="flex-1">
                   <div className="font-mono text-[11px] text-[var(--t3)] uppercase tracking-wider">{s.label}</div>
                   <div className="font-body text-sm text-[var(--t2)] group-hover:text-[var(--t1)] transition-colors">{s.value}</div>
                 </div>
-                <span className="font-mono text-xs text-[var(--t3)] group-hover:text-[var(--accent1)] transition-colors">↗</span>
+                <motion.span
+                  className="font-mono text-xs text-[var(--t3)] group-hover:text-[var(--accent1)] transition-colors"
+                  whileHover={{ x: 3 }}
+                >
+                  ↗
+                </motion.span>
               </motion.a>
             ))}
 
             {/* Availability badge */}
             <motion.div
               className="glass-card rounded-xl p-5 mt-2"
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 24 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.7, duration: 0.4 }}
+              transition={{ delay: 0.8, duration: 0.5 }}
             >
               <div className="flex items-center gap-3 mb-2">
                 <span className="relative flex h-3 w-3">

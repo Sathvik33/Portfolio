@@ -1,5 +1,5 @@
-import { motion, AnimatePresence } from 'framer-motion'
-import { useState } from 'react'
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
+import { useState, useRef, useCallback } from 'react'
 import { projects } from '../data/projects'
 import useScrollAnimation from '../hooks/useScrollAnimation'
 
@@ -9,7 +9,6 @@ const GH_ICON = (
   </svg>
 )
 
-/* ── Badge color map for dark theme ── */
 const badgeColorMap = {
   cyan: { bg: 'rgba(6,182,212,0.1)', text: '#06b6d4', border: 'rgba(6,182,212,0.3)' },
   amber: { bg: 'rgba(245,158,11,0.1)', text: '#f59e0b', border: 'rgba(245,158,11,0.3)' },
@@ -32,149 +31,197 @@ function Badge({ label, color = 'cyan' }) {
   )
 }
 
-/* ── Featured project card — large ─────────────────────────────────────── */
-function FeaturedCard({ project, index }) {
-  const { ref, inView } = useScrollAnimation()
+/* ── 3D Tilt Card wrapper ─────────────────────────────────────────────── */
+function TiltCard({ children, className = '' }) {
+  const cardRef = useRef(null)
+
+  const onMouseMove = useCallback((e) => {
+    const el = cardRef.current
+    if (!el) return
+    const rect = el.getBoundingClientRect()
+    const x = (e.clientX - rect.left) / rect.width - 0.5
+    const y = (e.clientY - rect.top) / rect.height - 0.5
+    el.style.transform = `perspective(800px) rotateY(${x * 6}deg) rotateX(${-y * 6}deg) scale3d(1.01,1.01,1.01)`
+  }, [])
+
+  const onMouseLeave = useCallback(() => {
+    if (cardRef.current) cardRef.current.style.transform = 'perspective(800px) rotateY(0) rotateX(0) scale3d(1,1,1)'
+  }, [])
 
   return (
-    <motion.div
-      ref={ref}
-      className="group relative glass-card rounded-2xl overflow-hidden"
-      initial={{ opacity: 0, y: 40 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, delay: index * 0.15 }}
-      whileHover={{ y: -6 }}
-      style={{ transition: 'transform 0.4s cubic-bezier(0.4,0,0.2,1)' }}
+    <div
+      ref={cardRef}
+      className={className}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
+      style={{ transition: 'transform 0.4s cubic-bezier(0.4,0,0.2,1)', transformStyle: 'preserve-3d' }}
     >
-      {/* Top gradient accent */}
-      <div className="absolute top-0 left-0 right-0 h-[3px]" style={{ background: 'var(--gradient-h)' }} />
+      {children}
+    </div>
+  )
+}
 
-      <div className="grid md:grid-cols-2 gap-0">
-        {/* Image side */}
-        <div className="relative h-56 md:h-full overflow-hidden">
-          <img
-            src={project.image}
-            alt={project.title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[var(--panel)] opacity-60 hidden md:block" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[var(--panel)] to-transparent opacity-60 md:hidden" />
-        </div>
+/* ── Featured project card — cinematic scroll reveal ─────────────────── */
+function FeaturedCard({ project, index }) {
+  const cardRef = useRef(null)
+  const { scrollYProgress } = useScroll({
+    target: cardRef,
+    offset: ['start end', 'center center'],
+  })
 
-        {/* Content side */}
-        <div className="p-6 md:p-8 flex flex-col justify-between">
-          <div>
-            <div className="flex items-center gap-3 mb-3">
-              <Badge label={project.badge} color={project.badgeColor} />
-              <span className="font-mono text-[11px] text-[var(--t3)]">{project.subtitle}</span>
-            </div>
+  const y = useTransform(scrollYProgress, [0, 1], [80, 0])
+  const opacity = useTransform(scrollYProgress, [0, 0.4], [0, 1])
+  const scale = useTransform(scrollYProgress, [0, 1], [0.92, 1])
+  const imgScale = useTransform(scrollYProgress, [0, 1], [1.15, 1])
 
-            <h3 className="font-display text-xl md:text-2xl font-bold text-[var(--t1)] mb-3 group-hover:text-[var(--accent1)] transition-colors duration-300">
-              {project.title}
-            </h3>
+  return (
+    <motion.div ref={cardRef} style={{ y, opacity, scale }}>
+      <TiltCard className="group relative glass-card rounded-2xl overflow-hidden">
+        {/* Top gradient accent */}
+        <div className="absolute top-0 left-0 right-0 h-[3px]" style={{ background: 'var(--gradient-h)' }} />
 
-            <p className="font-body text-sm text-[var(--t2)] leading-relaxed mb-5">
-              {project.description}
-            </p>
+        <div className="grid md:grid-cols-2 gap-0">
+          {/* Image side with scroll-zoom */}
+          <div className="relative h-56 md:h-full overflow-hidden">
+            <motion.img
+              src={project.image}
+              alt={project.title}
+              className="w-full h-full object-cover"
+              style={{ scale: imgScale }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[var(--panel)] opacity-60 hidden md:block" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[var(--panel)] to-transparent opacity-60 md:hidden" />
+
+            {/* Hover overlay */}
+            <div className="absolute inset-0 bg-[var(--accent1)]/0 group-hover:bg-[var(--accent1)]/5 transition-colors duration-500" />
           </div>
 
-          <div>
-            {/* Tech tags */}
-            <div className="flex flex-wrap gap-1.5 mb-5">
-              {project.tech.map(t => (
-                <span
-                  key={t}
-                  className="rounded-lg px-2.5 py-1 font-mono text-[10px] font-medium border"
-                  style={{ background: 'var(--surface)', color: 'var(--t2)', borderColor: 'var(--border)' }}
-                >
-                  {t}
-                </span>
-              ))}
-            </div>
+          {/* Content side */}
+          <div className="p-6 md:p-8 flex flex-col justify-between">
+            <div>
+              <div className="flex items-center gap-3 mb-3">
+                <Badge label={project.badge} color={project.badgeColor} />
+                <span className="font-mono text-[11px] text-[var(--t3)]">{project.subtitle}</span>
+              </div>
 
-            {/* Links */}
-            <div className="flex gap-3">
-              {project.github && (
-                <a
-                  href={project.github}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-display font-bold text-xs text-[var(--t1)] bg-[var(--surface)] border border-[var(--border)] hover:border-[var(--accent1)] hover:text-[var(--accent1)] transition-all duration-200"
-                >
-                  {GH_ICON} View on GitHub
-                </a>
+              <h3 className="font-display text-xl md:text-2xl font-bold text-[var(--t1)] mb-3 group-hover:text-[var(--accent1)] transition-colors duration-300">
+                {project.title}
+              </h3>
+
+              <p className="font-body text-sm text-[var(--t2)] leading-relaxed mb-4">
+                {project.description}
+              </p>
+
+              {project.impact && (
+                <div className="mb-5 inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-[var(--border)] bg-[var(--surface)]">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                  <span className="font-mono text-[10px] text-[var(--t3)]">{project.impact}</span>
+                </div>
               )}
             </div>
+
+            <div>
+              {/* Tech tags with staggered reveal on hover */}
+              <div className="flex flex-wrap gap-1.5 mb-5">
+                {project.tech.map((t, i) => (
+                  <motion.span
+                    key={t}
+                    className="rounded-lg px-2.5 py-1 font-mono text-[10px] font-medium border
+                      group-hover:border-[var(--accent1)]/30 transition-colors duration-300"
+                    style={{ background: 'var(--surface)', color: 'var(--t2)', borderColor: 'var(--border)' }}
+                    whileHover={{ scale: 1.1 }}
+                  >
+                    {t}
+                  </motion.span>
+                ))}
+              </div>
+
+              {/* Links */}
+              <div className="flex gap-3">
+                {project.github && (
+                  <motion.a
+                    href={project.github}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-display font-bold text-xs text-[var(--t1)] bg-[var(--surface)] border border-[var(--border)] hover:border-[var(--accent1)] hover:text-[var(--accent1)] transition-all duration-200"
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
+                  >
+                    {GH_ICON} View on GitHub
+                  </motion.a>
+                )}
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      </TiltCard>
     </motion.div>
   )
 }
 
-/* ── Regular project card ─────────────────────────────────────────────── */
+/* ── Regular project card with tilt ───────────────────────────────────── */
 function ProjectCard({ project, index }) {
   return (
     <motion.div
-      className="group glass-card rounded-2xl overflow-hidden flex flex-col"
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay: index * 0.08 }}
-      whileHover={{ y: -4 }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
     >
-      {/* Image */}
-      <div className="relative h-44 overflow-hidden">
-        <img
-          src={project.image}
-          alt={project.title}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-[var(--panel)] to-transparent opacity-50" />
-        <div className="absolute top-3 left-3">
-          <Badge label={project.badge} color={project.badgeColor} />
+      <TiltCard className="group glass-card rounded-2xl overflow-hidden flex flex-col h-full">
+        {/* Image */}
+        <div className="relative h-44 overflow-hidden">
+          <img
+            src={project.image}
+            alt={project.title}
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[var(--panel)] to-transparent opacity-50" />
+          <div className="absolute inset-0 bg-[var(--accent1)]/0 group-hover:bg-[var(--accent1)]/5 transition-colors duration-500" />
+          <div className="absolute top-3 left-3">
+            <Badge label={project.badge} color={project.badgeColor} />
+          </div>
         </div>
-      </div>
 
-      {/* Content */}
-      <div className="p-5 flex flex-col flex-1">
-        <h3 className="font-display text-base font-bold text-[var(--t1)] mb-1 group-hover:text-[var(--accent1)] transition-colors">
-          {project.title}
-        </h3>
-        <p className="font-mono text-[11px] text-[var(--t3)] mb-3">{project.subtitle}</p>
-        <p className="font-body text-sm text-[var(--t2)] leading-relaxed mb-4 flex-1">
-          {project.description}
-        </p>
+        {/* Content */}
+        <div className="p-5 flex flex-col flex-1">
+          <h3 className="font-display text-base font-bold text-[var(--t1)] mb-1 group-hover:text-[var(--accent1)] transition-colors">
+            {project.title}
+          </h3>
+          <p className="font-mono text-[11px] text-[var(--t3)] mb-3">{project.subtitle}</p>
+          <p className="font-body text-sm text-[var(--t2)] leading-relaxed mb-4 flex-1">
+            {project.description}
+          </p>
 
-        {/* Tech tags */}
-        <div className="flex flex-wrap gap-1 mb-4">
-          {project.tech.slice(0, 5).map(t => (
-            <span
-              key={t}
-              className="rounded-lg px-2 py-0.5 font-mono text-[9px] font-medium border"
-              style={{ background: 'var(--surface)', color: 'var(--t3)', borderColor: 'var(--border)' }}
+          {/* Tech */}
+          <div className="flex flex-wrap gap-1 mb-4">
+            {project.tech.slice(0, 5).map(t => (
+              <span
+                key={t}
+                className="rounded-lg px-2 py-0.5 font-mono text-[9px] font-medium border"
+                style={{ background: 'var(--surface)', color: 'var(--t3)', borderColor: 'var(--border)' }}
+              >
+                {t}
+              </span>
+            ))}
+            {project.tech.length > 5 && (
+              <span className="rounded-lg px-2 py-0.5 font-mono text-[9px] font-medium border" style={{ color: 'var(--t3)', borderColor: 'var(--border)' }}>
+                +{project.tech.length - 5}
+              </span>
+            )}
+          </div>
+
+          {project.github && (
+            <a
+              href={project.github}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 font-mono text-xs font-semibold text-[var(--t3)] hover:text-[var(--accent1)] transition-colors"
             >
-              {t}
-            </span>
-          ))}
-          {project.tech.length > 5 && (
-            <span className="rounded-lg px-2 py-0.5 font-mono text-[9px] font-medium border" style={{ color: 'var(--t3)', borderColor: 'var(--border)' }}>
-              +{project.tech.length - 5}
-            </span>
+              {GH_ICON} GitHub ↗
+            </a>
           )}
         </div>
-
-        {/* GitHub link */}
-        {project.github && (
-          <a
-            href={project.github}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-2 font-mono text-xs font-semibold text-[var(--t3)] hover:text-[var(--accent1)] transition-colors"
-          >
-            {GH_ICON} GitHub ↗
-          </a>
-        )}
-      </div>
+      </TiltCard>
     </motion.div>
   )
 }
@@ -184,25 +231,40 @@ const FEATURED_COUNT = 2
 export default function Projects() {
   const [showMore, setShowMore] = useState(false)
   const { ref: headerRef, inView: headerInView } = useScrollAnimation()
+  const containerRef = useRef(null)
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start end', 'end start'],
+  })
+
+  const decoY = useTransform(scrollYProgress, [0, 1], [80, -80])
 
   const sortedProjects = [...projects].sort((a, b) => a.priority - b.priority)
   const featured = sortedProjects.slice(0, FEATURED_COUNT)
   const rest = sortedProjects.slice(FEATURED_COUNT)
 
   return (
-    <section id="projects" className="section-padding relative">
-      {/* Ambient blobs */}
+    <section id="projects" className="section-padding relative overflow-hidden" ref={containerRef}>
+      {/* Ambient parallax blobs */}
       <motion.div
         className="pointer-events-none absolute -left-20 top-1/4 w-[500px] h-[500px] rounded-full blur-[120px] opacity-[0.04]"
-        style={{ background: 'var(--accent2)' }}
-        animate={{ y: [0, -30, 0] }}
-        transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
+        style={{ background: 'var(--accent2)', y: decoY }}
+      />
+      <motion.div
+        className="pointer-events-none absolute -right-20 bottom-1/4 w-[400px] h-[400px] rounded-full blur-[100px] opacity-[0.03]"
+        style={{ background: 'var(--accent3)', y: useTransform(scrollYProgress, [0, 1], [-40, 40]) }}
       />
 
       <div className="relative z-10 mx-auto max-w-6xl" ref={headerRef}>
 
         {/* Header */}
-        <div className="flex items-center gap-4 mb-4">
+        <motion.div
+          className="flex items-center gap-4 mb-4"
+          initial={{ opacity: 0, x: -40 }}
+          animate={headerInView ? { opacity: 1, x: 0 } : {}}
+          transition={{ duration: 0.7 }}
+        >
           <span className="font-mono text-xs text-[var(--accent1)] tracking-widest uppercase font-bold">
             03 · Projects
           </span>
@@ -211,13 +273,13 @@ export default function Projects() {
             style={{ background: 'var(--gradient-h)', transformOrigin: 'left' }}
             initial={{ scaleX: 0 }}
             animate={headerInView ? { scaleX: 1 } : {}}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 1, delay: 0.2 }}
           />
-        </div>
+        </motion.div>
 
         <motion.div
-          className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-12"
-          initial={{ opacity: 0, y: 20 }}
+          className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-14"
+          initial={{ opacity: 0, y: 24 }}
           animate={headerInView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.2, duration: 0.6 }}
         >
@@ -230,17 +292,18 @@ export default function Projects() {
               What I've built — from scratch, shipped, and iterated on.
             </p>
           </div>
-          <a
+          <motion.a
             href="https://github.com/Sathvik33"
             target="_blank" rel="noreferrer"
             className="font-mono text-sm font-semibold text-[var(--t3)] hover:text-[var(--accent1)] transition-colors flex items-center gap-1.5"
+            whileHover={{ x: 3 }}
           >
             {GH_ICON} github.com/Sathvik33 ↗
-          </a>
+          </motion.a>
         </motion.div>
 
-        {/* Featured projects */}
-        <div className="space-y-6 mb-10">
+        {/* Featured projects — cinematic scroll reveals */}
+        <div className="space-y-8 mb-12">
           {featured.map((p, i) => (
             <FeaturedCard key={p.id} project={p} index={i} />
           ))}
@@ -251,7 +314,7 @@ export default function Projects() {
           <motion.button
             onClick={() => setShowMore(v => !v)}
             className="group flex items-center gap-3 px-8 py-3.5 rounded-xl border font-display font-bold text-sm transition-all border-[var(--border)] bg-[var(--panel)] text-[var(--t2)] hover:border-[var(--accent1)] hover:text-[var(--accent1)]"
-            whileHover={{ scale: 1.03 }}
+            whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.97 }}
           >
             <span>{showMore ? 'Show less' : 'Explore more projects'}</span>

@@ -6,6 +6,7 @@ import { ThemeProvider } from './context/ThemeContext'
 import LoadingScreen from './components/LoadingScreen'
 import Navbar from './components/Navbar'
 import ScrollProgress from './components/ScrollProgress'
+import SectionTransition from './components/SectionTransition'
 import Footer from './components/Footer'
 
 import Hero from './pages/Hero'
@@ -16,15 +17,20 @@ import Certificates from './pages/Certificates'
 import Contact from './pages/Contact'
 import Resume from './pages/Resume'
 
-/* ── Main single-page layout (all sections stacked) ── */
+/* ── Scroll-based single-page journey ── */
 function HomePage() {
   return (
     <>
       <Hero />
+      <SectionTransition accent="cyan" />
       <About />
+      <SectionTransition accent="blue" flip />
       <Skills />
+      <SectionTransition accent="violet" />
       <Projects />
+      <SectionTransition accent="cyan" flip />
       <Certificates />
+      <SectionTransition accent="blue" />
       <Contact />
     </>
   )

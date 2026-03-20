@@ -1,5 +1,5 @@
-import { motion, AnimatePresence } from 'framer-motion'
-import { useState, useEffect, useCallback } from 'react'
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import MagneticButton from '../components/MagneticButton'
 
@@ -30,15 +30,56 @@ function RotatingRole() {
         <motion.span
           key={roles[index]}
           className="inline-block gradient-text"
-          initial={{ y: 30, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: -30, opacity: 0 }}
-          transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+          initial={{ y: 30, opacity: 0, filter: 'blur(4px)' }}
+          animate={{ y: 0, opacity: 1, filter: 'blur(0px)' }}
+          exit={{ y: -30, opacity: 0, filter: 'blur(4px)' }}
+          transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
         >
           {roles[index]}
         </motion.span>
       </AnimatePresence>
     </span>
+  )
+}
+
+/* Floating particles that drift gently in the hero */
+function FloatingParticles() {
+  const particles = Array.from({ length: 20 }, (_, i) => ({
+    id: i,
+    x: Math.random() * 100,
+    y: Math.random() * 100,
+    size: Math.random() * 3 + 1,
+    duration: Math.random() * 20 + 15,
+    delay: Math.random() * 10,
+  }))
+
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {particles.map(p => (
+        <motion.div
+          key={p.id}
+          className="absolute rounded-full"
+          style={{
+            width: p.size,
+            height: p.size,
+            left: `${p.x}%`,
+            top: `${p.y}%`,
+            background: `rgba(6,182,212,${0.15 + Math.random() * 0.15})`,
+          }}
+          animate={{
+            y: [0, -80 - Math.random() * 60, 0],
+            x: [0, (Math.random() - 0.5) * 60, 0],
+            opacity: [0, 0.6, 0],
+          }}
+          transition={{
+            duration: p.duration,
+            delay: p.delay,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
+        />
+      ))}
+    </div>
   )
 }
 
@@ -54,19 +95,23 @@ function ScrollHint() {
     <AnimatePresence>
       {visible && (
         <motion.div
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 pointer-events-none"
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0 }}
           transition={{ delay: 2.5 }}
         >
-          <span className="font-mono text-[10px] tracking-widest uppercase text-[var(--t3)]">scroll</span>
+          <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-[var(--t3)]">explore</span>
           <motion.div
-            className="w-[1px] h-7 rounded-full"
-            style={{ background: 'linear-gradient(180deg, var(--accent1), transparent)' }}
-            animate={{ scaleY: [0, 1, 0], opacity: [0, 1, 0] }}
-            transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
-          />
+            className="w-5 h-8 rounded-full border border-[var(--border)] flex justify-center pt-1.5"
+          >
+            <motion.div
+              className="w-1 h-1.5 rounded-full"
+              style={{ background: 'var(--accent1)' }}
+              animate={{ y: [0, 10, 0], opacity: [1, 0.3, 1] }}
+              transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+            />
+          </motion.div>
         </motion.div>
       )}
     </AnimatePresence>
@@ -78,6 +123,19 @@ const headlineWords = ['Building', 'intelligent', 'systems', '—', 'from', 'mod
 export default function Hero() {
   const mouse = useMouseGlow()
   const navigate = useNavigate()
+  const sectionRef = useRef(null)
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start start', 'end start'],
+  })
+
+  // Scroll-driven parallax for hero content
+  const contentY = useTransform(scrollYProgress, [0, 1], [0, 120])
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
+  const photoScale = useTransform(scrollYProgress, [0, 0.6], [1, 0.85])
+  const photoY = useTransform(scrollYProgress, [0, 1], [0, 80])
+  const bgScale = useTransform(scrollYProgress, [0, 1], [1, 1.15])
 
   const scrollTo = (id) => {
     const el = document.getElementById(id)
@@ -88,34 +146,60 @@ export default function Hero() {
   }
 
   return (
-    <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Mouse-reactive gradient background */}
-      <div
-        className="pointer-events-none absolute inset-0 opacity-30 transition-all duration-1000"
-        style={{
-          background: `radial-gradient(800px circle at ${mouse.x * 100}% ${mouse.y * 100}%, rgba(6,182,212,0.12), rgba(59,130,246,0.06), transparent 60%)`,
-        }}
-      />
+    <section ref={sectionRef} id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Multi-layer animated background */}
+      <motion.div className="absolute inset-0" style={{ scale: bgScale }}>
+        {/* Mouse-reactive gradient */}
+        <div
+          className="absolute inset-0 opacity-40 transition-all duration-700"
+          style={{
+            background: `radial-gradient(900px circle at ${mouse.x * 100}% ${mouse.y * 100}%, rgba(6,182,212,0.15), rgba(59,130,246,0.08), transparent 60%)`,
+          }}
+        />
 
-      {/* Floating ambient orbs */}
+        {/* Animated gradient mesh */}
+        <motion.div
+          className="absolute inset-0 opacity-20"
+          animate={{
+            background: [
+              'radial-gradient(600px at 20% 30%, rgba(6,182,212,0.12) 0%, transparent 70%)',
+              'radial-gradient(600px at 80% 70%, rgba(139,92,246,0.12) 0%, transparent 70%)',
+              'radial-gradient(600px at 50% 20%, rgba(59,130,246,0.1) 0%, transparent 70%)',
+              'radial-gradient(600px at 20% 30%, rgba(6,182,212,0.12) 0%, transparent 70%)',
+            ],
+          }}
+          transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
+        />
+
+        {/* Floating orbs with parallax depth */}
+        <motion.div
+          className="absolute w-[600px] h-[600px] rounded-full opacity-[0.08] blur-[120px]"
+          style={{ background: 'var(--accent1)', top: '5%', left: '-15%' }}
+          animate={{ y: [0, -60, 0], x: [0, 40, 0] }}
+          transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
+        />
+        <motion.div
+          className="absolute w-[400px] h-[400px] rounded-full opacity-[0.06] blur-[80px]"
+          style={{ background: 'var(--accent3)', bottom: '10%', right: '-8%' }}
+          animate={{ y: [0, 40, 0], x: [0, -30, 0] }}
+          transition={{ duration: 25, repeat: Infinity, ease: 'easeInOut', delay: 5 }}
+        />
+        <motion.div
+          className="absolute w-[300px] h-[300px] rounded-full opacity-[0.04] blur-[60px]"
+          style={{ background: 'var(--accent2)', top: '60%', left: '50%' }}
+          animate={{ y: [0, -25, 0], x: [0, 20, 0] }}
+          transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut', delay: 8 }}
+        />
+
+        <FloatingParticles />
+        <div className="absolute inset-0 bg-grid" />
+      </motion.div>
+
+      {/* Content with scroll-driven parallax */}
       <motion.div
-        className="pointer-events-none absolute w-[500px] h-[500px] rounded-full opacity-[0.07] blur-[100px]"
-        style={{ background: 'var(--accent1)', top: '10%', left: '-10%' }}
-        animate={{ y: [0, -40, 0], x: [0, 30, 0] }}
-        transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
-      />
-      <motion.div
-        className="pointer-events-none absolute w-[400px] h-[400px] rounded-full opacity-[0.05] blur-[80px]"
-        style={{ background: 'var(--accent3)', bottom: '5%', right: '-5%' }}
-        animate={{ y: [0, 30, 0], x: [0, -20, 0] }}
-        transition={{ duration: 25, repeat: Infinity, ease: 'easeInOut', delay: 3 }}
-      />
-
-      {/* Grid texture */}
-      <div className="absolute inset-0 bg-grid" />
-
-      {/* Content */}
-      <div className="relative z-10 mx-auto max-w-5xl px-6 w-full">
+        className="relative z-10 mx-auto max-w-5xl px-6 w-full"
+        style={{ y: contentY, opacity: contentOpacity }}
+      >
         <div className="flex flex-col lg:flex-row lg:items-center lg:gap-16">
 
           {/* Left — Text */}
@@ -123,28 +207,28 @@ export default function Hero() {
             {/* Badge */}
             <motion.div
               className="mb-6 inline-block"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              initial={{ opacity: 0, x: -30, filter: 'blur(8px)' }}
+              animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+              transition={{ duration: 0.8, delay: 0.2 }}
             >
-              <div
-                className="px-4 py-1.5 rounded-full border border-[var(--border)] bg-[var(--panel)]"
-              >
+              <div className="px-4 py-1.5 rounded-full border border-[var(--border)] bg-[var(--panel)]">
                 <span className="font-mono text-[11px] text-[var(--accent1)] uppercase tracking-widest font-semibold">
                   ● Open to Opportunities
                 </span>
               </div>
             </motion.div>
 
-            {/* Staggered Headline */}
-            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-extrabold leading-[1.1] tracking-tight mb-4">
+            {/* Staggered Headline — each word animates with blur resolve */}
+            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-extrabold leading-[1.08] tracking-tight mb-5">
               {headlineWords.map((word, i) => (
                 <motion.span
                   key={i}
-                  className="inline-block mr-[0.3em] text-[var(--t1)]"
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 + i * 0.08, duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+                  className={`inline-block mr-[0.28em] ${
+                    word === '—' ? 'text-[var(--accent1)]' : 'text-[var(--t1)]'
+                  }`}
+                  initial={{ opacity: 0, y: 40, filter: 'blur(8px)' }}
+                  animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                  transition={{ delay: 0.3 + i * 0.09, duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
                 >
                   {word}
                 </motion.span>
@@ -152,21 +236,21 @@ export default function Hero() {
             </h1>
 
             {/* Rotating role */}
-            <motion.p
-              className="font-body text-xl text-[var(--t2)] mb-4"
+            <motion.div
+              className="font-body text-xl text-[var(--t2)] mb-5"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 1, duration: 0.6 }}
+              transition={{ delay: 1.1, duration: 0.6 }}
             >
               <RotatingRole />
-            </motion.p>
+            </motion.div>
 
-            {/* Description */}
+            {/* Description — letter-perfect reveal */}
             <motion.p
-              className="font-body text-lg text-[var(--t2)] leading-relaxed max-w-lg mb-8"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.2, duration: 0.6 }}
+              className="font-body text-lg text-[var(--t2)] leading-relaxed max-w-lg mb-9"
+              initial={{ opacity: 0, y: 20, filter: 'blur(4px)' }}
+              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              transition={{ delay: 1.3, duration: 0.7 }}
             >
               Hi, I'm <strong className="text-[var(--t1)] font-semibold">Maru Sathvik Reddy</strong> — a CS undergraduate building production-grade AI systems, from transformers to agentic pipelines.
             </motion.p>
@@ -174,16 +258,20 @@ export default function Hero() {
             {/* CTA Buttons */}
             <motion.div
               className="flex flex-wrap gap-4"
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.4, duration: 0.5 }}
+              transition={{ delay: 1.5, duration: 0.6 }}
             >
               <MagneticButton
                 onClick={() => scrollTo('projects')}
-                className="px-8 py-3.5 font-display font-bold text-sm text-white rounded-xl shadow-lg"
+                className="group relative px-8 py-3.5 font-display font-bold text-sm text-white rounded-xl shadow-lg overflow-hidden"
                 style={{ background: 'var(--gradient)' }}
               >
-                View Projects
+                <span className="relative z-10">View Projects</span>
+                <motion.div
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                  style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 100%)' }}
+                />
               </MagneticButton>
 
               <MagneticButton
@@ -202,20 +290,35 @@ export default function Hero() {
             </motion.div>
           </div>
 
-          {/* Right — Profile photo */}
+          {/* Right — Profile photo with scroll parallax */}
           <motion.div
             className="relative w-48 h-48 md:w-64 md:h-64 shrink-0 mt-12 lg:mt-0 mx-auto lg:mx-0"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.8, duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
+            initial={{ opacity: 0, scale: 0.7, filter: 'blur(12px)' }}
+            animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+            transition={{ delay: 0.6, duration: 1, ease: [0.4, 0, 0.2, 1] }}
+            style={{ scale: photoScale, y: photoY }}
           >
-            {/* Glow ring */}
+            {/* Animated glow ring */}
             <motion.div
-              className="absolute -inset-4 rounded-full opacity-30 blur-3xl"
+              className="absolute -inset-5 rounded-full opacity-30 blur-3xl"
               style={{ background: 'var(--gradient)' }}
-              animate={{ scale: [1, 1.1, 1], opacity: [0.2, 0.35, 0.2] }}
-              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+              animate={{
+                scale: [1, 1.15, 1],
+                opacity: [0.2, 0.4, 0.2],
+                rotate: [0, 180, 360],
+              }}
+              transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
             />
+
+            {/* Orbiting accent ring */}
+            <motion.div
+              className="absolute -inset-2 rounded-full border border-[var(--accent1)]/20"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+            >
+              <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-[var(--accent1)] opacity-60" />
+            </motion.div>
+
             <div className="relative p-[3px] rounded-full h-full" style={{ background: 'var(--gradient)' }}>
               <div className="w-full h-full overflow-hidden rounded-full bg-[var(--bg)]">
                 <img
@@ -228,7 +331,7 @@ export default function Hero() {
             </div>
           </motion.div>
         </div>
-      </div>
+      </motion.div>
 
       <ScrollHint />
     </section>
