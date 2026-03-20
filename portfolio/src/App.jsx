@@ -5,28 +5,38 @@ import { ThemeProvider } from './context/ThemeContext'
 
 import LoadingScreen from './components/LoadingScreen'
 import Navbar from './components/Navbar'
+import ScrollProgress from './components/ScrollProgress'
 import Footer from './components/Footer'
 
-import Hero     from './pages/Hero'
-import About    from './pages/About'
-import TechStack from './pages/TechStack'
+import Hero from './pages/Hero'
+import About from './pages/About'
+import Skills from './pages/Skills'
 import Projects from './pages/Projects'
-import Contact  from './pages/Contact'
-import Certifications from './pages/Certifications'
+import Certificates from './pages/Certificates'
+import Contact from './pages/Contact'
 import Resume from './pages/Resume'
 
-function AnimatedRoutes() {
+/* ── Main single-page layout (all sections stacked) ── */
+function HomePage() {
+  return (
+    <>
+      <Hero />
+      <About />
+      <Skills />
+      <Projects />
+      <Certificates />
+      <Contact />
+    </>
+  )
+}
+
+function AppRoutes() {
   const location = useLocation()
   return (
-    <AnimatePresence mode="wait" onExitComplete={() => window.scrollTo({ top: 0, left: 0, behavior: 'instant' })}>
+    <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<Hero />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/stack" element={<TechStack />} />
-        <Route path="/projects" element={<Projects />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/resume" element={<Resume />} />
-        <Route path="/certifications" element={<Certifications />} />
-        <Route path="/contact" element={<Contact />} />
       </Routes>
     </AnimatePresence>
   )
@@ -37,23 +47,19 @@ function PortfolioApp() {
 
   return (
     <BrowserRouter>
-      {/* Animated background blobs */}
-      <div className="blob blob-1" />
-      <div className="blob blob-2" />
-      <div className="blob blob-3" />
-
       <AnimatePresence>
         {loading && <LoadingScreen onComplete={() => setLoading(false)} />}
       </AnimatePresence>
 
       {!loading && (
-        <div className="relative z-10 flex min-h-screen flex-col">
+        <>
+          <ScrollProgress />
           <Navbar />
-          <main className="flex-1">
-            <AnimatedRoutes />
+          <main>
+            <AppRoutes />
           </main>
           <Footer />
-        </div>
+        </>
       )}
     </BrowserRouter>
   )

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import PageWrapper from '../components/PageWrapper'
+import { useNavigate } from 'react-router-dom'
 import useScrollAnimation from '../hooks/useScrollAnimation'
 
 import oracleImg from '../images/Oracle_AI.png'
@@ -42,6 +42,8 @@ const certificates = [
   { name: 'Machine Learning & Data Science', issuer: 'Cipher Schools', image: cipherImg },
 ]
 
+const tabColors = ['#06b6d4', '#3b82f6', '#8b5cf6', '#06b6d4', '#3b82f6']
+
 const tabContentVariants = {
   hidden: { opacity: 0, y: 20, scale: 0.98 },
   visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.45, staggerChildren: 0.08 } },
@@ -64,13 +66,27 @@ function ScrollRevealItem({ children, index = 0 }) {
 
 export default function Resume() {
   const [activeTab, setActiveTab] = useState('Education')
-  const colors = ['#ef4444', '#f87171', '#fb7185', '#ef4444', '#f87171']
+  const navigate = useNavigate()
 
   return (
-    <PageWrapper>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.4 }}
+    >
       <section className="relative min-h-[calc(100vh-72px)] py-24 z-10">
         <div className="mx-auto max-w-4xl px-6">
-          
+
+          {/* Back button */}
+          <motion.button
+            onClick={() => navigate('/')}
+            className="mb-8 font-mono text-xs font-bold text-[var(--t3)] hover:text-[var(--accent1)] transition-colors flex items-center gap-2"
+            whileHover={{ x: -3 }}
+          >
+            <span className="text-lg">←</span> Back to Portfolio
+          </motion.button>
+
           {/* Header Section */}
           <div className="text-center mb-12">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
@@ -82,7 +98,7 @@ export default function Resume() {
                   animate={{ scaleX: 1 }}
                   transition={{ delay: 0.2, duration: 0.6 }}
                 />
-                <span className="font-mono text-xs text-[var(--accent1)] tracking-widest uppercase font-bold">05 · Curriculum Vitae</span>
+                <span className="font-mono text-xs text-[var(--accent1)] tracking-widest uppercase font-bold">Curriculum Vitae</span>
                 <motion.div
                   className="h-[2px] w-12 rounded-full"
                   style={{ background: 'linear-gradient(90deg, var(--accent1), transparent)' }}
@@ -97,9 +113,10 @@ export default function Resume() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3, duration: 0.7 }}
               >
-                <span className="text-[var(--accent1)]">Interactive</span> <span className="text-[var(--t1)]">Resume</span>
+                <span className="gradient-text">Interactive</span>{' '}
+                <span className="text-[var(--t1)]">Resume</span>
               </motion.h1>
-              
+
               {/* Contact Chips */}
               <motion.div
                 className="mt-4 flex flex-wrap justify-center gap-3"
@@ -126,18 +143,30 @@ export default function Resume() {
                   </motion.a>
                 ))}
               </motion.div>
+
+              {/* Download PDF */}
+              <motion.div className="mt-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }}>
+                <a
+                  href="/Sathvik_CV.pdf"
+                  download="Sathvik_CV.pdf"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-display font-bold text-sm text-white shadow-md hover:shadow-lg transition-shadow"
+                  style={{ background: 'var(--gradient)' }}
+                >
+                  ↓ Download PDF
+                </a>
+              </motion.div>
             </motion.div>
           </div>
 
-          {/* Tab Navigation with layoutId indicator */}
+          {/* Tab Navigation */}
           <div className="mb-12 flex flex-wrap justify-center gap-3 border-b border-[var(--border)] pb-6">
             {tabs.map((tab) => (
               <motion.button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
                 className={`relative rounded-full px-6 py-2.5 text-xs font-mono font-bold transition-all duration-300 ${
-                  activeTab === tab 
-                  ? 'text-white' 
+                  activeTab === tab
+                  ? 'text-white'
                   : 'text-[var(--t2)] border border-[var(--border)] bg-[var(--panel)] hover:border-[var(--accent1)] hover:text-[var(--accent1)]'
                 }`}
                 whileHover={{ scale: 1.05 }}
@@ -165,7 +194,7 @@ export default function Resume() {
               animate="visible"
               exit="exit"
             >
-              
+
               {/* Education Tab */}
               {activeTab === 'Education' && (
                 <div className="space-y-6">
@@ -173,9 +202,9 @@ export default function Resume() {
                     <ScrollRevealItem key={item.title} index={index}>
                       <motion.div
                         className="glass-card rounded-xl p-8 relative overflow-hidden"
-                        whileHover={{ y: -3, boxShadow: '0 12px 30px rgba(37,99,235,0.06)' }}
+                        whileHover={{ y: -3 }}
                       >
-                        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-12 rounded-full" style={{ background: colors[index] }} />
+                        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-12 rounded-full" style={{ background: tabColors[index % tabColors.length] }} />
                         <div className="pl-4">
                           <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-4 border-b border-[var(--border)] pb-4">
                             <div>
@@ -204,7 +233,7 @@ export default function Resume() {
                         className="glass-card rounded-xl p-8"
                         whileHover={{ y: -3 }}
                       >
-                        <div className="mb-6 text-sm font-mono font-bold uppercase tracking-widest border-b border-[var(--border)] pb-3" style={{ color: colors[gi] }}>
+                        <div className="mb-6 text-sm font-mono font-bold uppercase tracking-widest border-b border-[var(--border)] pb-3" style={{ color: tabColors[gi % tabColors.length] }}>
                           {group.title}
                         </div>
                         <div className="flex flex-wrap gap-2.5">
@@ -212,7 +241,7 @@ export default function Resume() {
                             <motion.span
                               key={item}
                               className="skill-tag cursor-default font-bold"
-                              whileHover={{ scale: 1.1, borderColor: colors[gi], color: colors[gi] }}
+                              whileHover={{ scale: 1.1, borderColor: tabColors[gi % tabColors.length], color: tabColors[gi % tabColors.length] }}
                             >
                               {item}
                             </motion.span>
@@ -253,7 +282,7 @@ export default function Resume() {
                         className="glass-card rounded-xl p-8 flex gap-4"
                         whileHover={{ y: -3 }}
                       >
-                        <span className="mt-1 font-bold" style={{ color: colors[index % 3] }}>―</span>
+                        <span className="mt-1 font-bold" style={{ color: tabColors[index % tabColors.length] }}>―</span>
                         <p className="text-base text-[var(--t2)] leading-relaxed">{item}</p>
                       </motion.div>
                     </ScrollRevealItem>
@@ -268,17 +297,17 @@ export default function Resume() {
                     <ScrollRevealItem key={index} index={index}>
                       <motion.div
                         className="glass-card rounded-xl overflow-hidden flex flex-col group"
-                        whileHover={{ y: -4, boxShadow: `0 20px 40px ${colors[index % 3]}10` }}
+                        whileHover={{ y: -4 }}
                       >
                         <div className="h-56 w-full bg-[var(--panel)] border-b border-[var(--border)] overflow-hidden flex items-center justify-center relative">
                           {item.image ? (
-                            <img 
-                              src={item.image} 
-                              alt={item.name} 
-                              className="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700" 
+                            <img
+                              src={item.image}
+                              alt={item.name}
+                              className="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700"
                             />
                           ) : (
-                            <span className="font-mono text-xs text-[var(--t3)]">Screenshot Missing</span>
+                            <span className="font-mono text-xs text-[var(--t3)]">Certificate</span>
                           )}
                         </div>
                         <div className="p-6 flex flex-col justify-center">
@@ -297,9 +326,9 @@ export default function Resume() {
 
             </motion.div>
           </AnimatePresence>
-          
+
         </div>
       </section>
-    </PageWrapper>
+    </motion.div>
   )
 }

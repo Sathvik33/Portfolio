@@ -10,6 +10,7 @@ export const projects = [
     badgeColor: 'cyan',
     image: '/project-covers/multimodal-rag.png',
     priority: 1,
+    impact: 'End-to-end multimodal retrieval with streaming',
   },
   {
     id: 3,
@@ -22,11 +23,12 @@ export const projects = [
     badgeColor: 'amber',
     image: '/project-covers/financial-agent.png',
     priority: 2,
+    impact: 'Autonomous financial analysis pipeline',
   },
   {
     id: 5,
     title: 'PyPilot — Code LLM',
-    subtitle: 'Built from Scratch · Nov 2025',
+    subtitle: 'Built from Scratch · Jan 2026',
     description: 'A GPT-style decoder-only Transformer built entirely from scratch in PyTorch for Python code generation — no black-box APIs, just math and code.',
     tech: ['Python', 'PyTorch', 'Transformer Decoder', 'HuggingFace Datasets', 'CUDA', 'NLP'],
     github: 'https://github.com/Sathvik33/PyPilot',
@@ -34,6 +36,7 @@ export const projects = [
     badgeColor: 'green',
     image: '/project-covers/pypilot.png',
     priority: 3,
+    impact: 'Custom GPT architecture, trained from scratch',
   },
   {
     id: 1,
@@ -43,9 +46,10 @@ export const projects = [
     tech: ['Python', 'FastAPI', 'LangGraph', 'Ollama', 'Redis', 'Streamlit', 'Docker'],
     github: 'https://github.com/Sathvik33/ResearchForge-AI',
     badge: 'Open Source',
-    badgeColor: 'red',
+    badgeColor: 'purple',
     image: '/project-covers/researchforge.png',
     priority: 4,
+    impact: 'Multi-agent research automation',
   },
   {
     id: 4,
@@ -55,9 +59,10 @@ export const projects = [
     tech: ['FastAPI', 'PyTorch', 'React', 'PostgreSQL', 'JWT', 'Diffusers', 'BitsAndBytes', 'Docker'],
     github: 'https://github.com/Sathvik33/Multi_Model_AI',
     badge: 'Full-Stack',
-    badgeColor: 'purple',
+    badgeColor: 'blue',
     image: '/project-covers/multimodal-platform.png',
     priority: 5,
+    impact: 'Dynamic GPU model management',
   },
   {
     id: 6,
@@ -67,9 +72,10 @@ export const projects = [
     tech: ['Python', 'PyTorch', 'CNN', 'OpenCV', 'NumPy'],
     github: 'https://github.com/Sathvik33/high-resolution-image-denoising-autoencoder',
     badge: 'Deep Learning',
-    badgeColor: 'blue',
+    badgeColor: 'purple',
     image: '/project-covers/denoising.png',
     priority: 6,
+    impact: 'High-fidelity image reconstruction',
   },
   {
     id: 7,
@@ -82,15 +88,6 @@ export const projects = [
     badgeColor: 'gold',
     image: '/project-covers/accident-risk.png',
     priority: 7,
+    impact: 'Global rank #588, real-time dashboard',
   },
 ]
-
-export const badgeStyles = {
-  cyan:   'bg-cyan-50 text-cyan-700 border-cyan-200',
-  amber:  'bg-amber-50 text-amber-700 border-amber-200',
-  green:  'bg-zinc-50 text-zinc-700 border-zinc-200',
-  purple: 'bg-purple-50 text-purple-700 border-purple-200',
-  gold:   'bg-yellow-50 text-yellow-700 border-yellow-200',
-  blue:   'bg-blue-50 text-blue-700 border-blue-200',
-  violet: 'bg-rose-50 text-rose-700 border-rose-200',
-}

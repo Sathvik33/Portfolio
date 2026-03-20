@@ -6,16 +6,16 @@ export function ThemeProvider({ children }) {
   const [dark, setDark] = useState(() => {
     const stored = localStorage.getItem('theme')
     if (stored) return stored === 'dark'
-    return window.matchMedia('(prefers-color-scheme: dark)').matches
+    return true // default to dark
   })
 
   useEffect(() => {
     const root = document.documentElement
     if (dark) {
-      root.classList.add('dark')
+      root.classList.remove('light')
       localStorage.setItem('theme', 'dark')
     } else {
-      root.classList.remove('dark')
+      root.classList.add('light')
       localStorage.setItem('theme', 'light')
     }
   }, [dark])

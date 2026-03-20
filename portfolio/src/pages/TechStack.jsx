@@ -121,7 +121,7 @@ export default function TechStack() {
               transition={{ duration: 0.6, delay: 0.1 }}
             >
               <span className="text-[var(--t1)]">Tools I actually </span>
-              <span className="text-[var(--accent1)]">know deeply.</span>
+              <span className="text-[var(--accent1)]">know deeply</span>
             </motion.h2>
 
             <motion.p
