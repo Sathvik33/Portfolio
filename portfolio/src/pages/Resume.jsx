@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import useScrollAnimation from '../hooks/useScrollAnimation'
 
-import oracleImg from '../images/Oracle_AI.png'
+import oracle from "../images/oracle-ai.png";
 import awsImg from '../images/aws_cert.jpg'
 import ibmImg from '../images/IBM Deep-Learning_page-0001.jpg'
 import gfgImg from '../images/Geeks for geeks_page-0001.jpg'
@@ -34,7 +34,7 @@ const Achivements = [
 ]
 
 const certificates = [
-  { name: 'OCI 2025 AI Foundations Associate', issuer: 'Oracle University', image: oracleImg },
+  { name: 'OCI 2025 AI Foundations Associate', issuer: 'Oracle University', image: oracle },
   { name: 'Machine Learning Exam Basics', issuer: 'Amazon Web Services', image: awsImg },
   { name: 'Deep Learning with TensorFlow', issuer: 'IBM', image: ibmImg },
   { name: 'Generative AI, LLM & RAG', issuer: 'GeeksforGeeks', image: gfgImg },
