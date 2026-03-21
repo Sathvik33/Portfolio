@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
 import { useRef } from 'react'
 import useScrollAnimation from '../hooks/useScrollAnimation'
 
@@ -17,11 +17,16 @@ export default function About() {
     target: containerRef,
     offset: ['start end', 'end start'],
   })
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 })
 
   // Parallax offsets for decorative elements
-  const decoY1 = useTransform(scrollYProgress, [0, 1], [60, -60])
-  const decoY2 = useTransform(scrollYProgress, [0, 1], [40, -80])
-  const decoRotate = useTransform(scrollYProgress, [0, 1], [0, 45])
+  const decoY1 = useTransform(smoothProgress, [0, 1], [100, -100])
+  const decoY2 = useTransform(smoothProgress, [0, 1], [80, -120])
+  const decoRotate = useTransform(smoothProgress, [0, 1], [0, 90])
+  
+  // Parallax offsets for content
+  const textY = useTransform(smoothProgress, [0, 1], [60, -40])
+  const statsY = useTransform(smoothProgress, [0, 1], [120, -80])
 
   return (
     <section id="about" className="section-padding relative overflow-hidden" ref={containerRef}>
@@ -67,19 +72,19 @@ export default function About() {
           transition={{ duration: 0.7, delay: 0.15 }}
         >
           <span className="text-[var(--t1)]">About </span>
-          <span className="gradient-text">Me</span>
+          <span className="text-[var(--accent1)]">Me</span>
         </motion.h2>
 
         {/* Split layout */}
         <div className="grid gap-12 lg:grid-cols-5">
 
           {/* Left — Text with staggered paragraph reveals */}
-          <div className="lg:col-span-3 space-y-6">
+          <motion.div className="lg:col-span-3 space-y-6" style={{ y: textY }}>
             {[
               <p key="p1" className="font-body text-lg text-[var(--t2)] leading-relaxed">
                 I'm a Computer Science undergraduate at Lovely Professional University with a deep focus on
                 <strong className="text-[var(--t1)]"> machine learning</strong>,
-                <strong className="text-[var(--t1)]"> agentic AI systems</strong>, and
+                <strong className="text-[var(--t1)]"> AI systems</strong>, and
                 <strong className="text-[var(--t1)]"> local LLM deployment</strong>. I build from the ground up — not to reinvent wheels, but to understand the engine.
               </p>,
               <p key="p2" className="font-body text-lg text-[var(--t2)] leading-relaxed">
@@ -98,10 +103,10 @@ export default function About() {
                 {paragraph}
               </motion.div>
             ))}
-          </div>
+          </motion.div>
 
           {/* Right — Stats grid with stagger + hover depth */}
-          <div className="lg:col-span-2 grid grid-cols-2 gap-4">
+          <motion.div className="lg:col-span-2 grid grid-cols-2 gap-4" style={{ y: statsY }}>
             {stats.map((stat, i) => (
               <motion.div
                 key={stat.label}
@@ -116,11 +121,11 @@ export default function About() {
                 >
                   {stat.icon}
                 </motion.div>
-                <div className="font-display text-2xl font-extrabold gradient-text mb-1">{stat.value}</div>
+                <div className="font-display text-2xl font-extrabold text-[var(--accent1)] mb-1">{stat.value}</div>
                 <div className="font-mono text-[10px] text-[var(--t3)] uppercase tracking-wider">{stat.label}</div>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

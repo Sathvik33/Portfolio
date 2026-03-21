@@ -9,12 +9,11 @@ import ibmImg from '../images/IBM Deep-Learning_page-0001.jpg'
 import gfgImg from '../images/Geeks for geeks_page-0001.jpg'
 import cipherImg from '../images/Updated Cipher Schools-ML certificate_page-0001.jpg'
 
-const tabs = ['Education', 'Skills', 'Projects', 'Extracurricular', 'Certificates']
+const tabs = ['Education', 'Skills', 'Projects', 'Achivements', 'Certificates']
 
 const education = [
   { title: 'Lovely Professional University', location: 'Punjab, India', period: 'Since August 2023', detail: 'B.Tech in Computer Science and Engineering', score: 'CGPA: 7.28*' },
   { title: "Sri Chaitanya Junior College", location: 'Hyderabad, Telangana', period: 'April 2021 - March 2023', detail: 'Intermediate', score: 'Percentage: 88.9%' },
-  { title: 'Wisdom Spaes School', location: 'Metpally, Telangana', period: 'March 2021', detail: 'High School', score: 'Percentage: 100%' },
 ]
 
 const skillsGroups = [
@@ -30,7 +29,7 @@ const projectItems = [
   { title: 'Autoregressive Transformer for Python Code Gen', subtitle: 'GitHub project · Nov 25', description: 'Implemented decoder-only Transformer for autoregressive Python code generation using CodeParrot subset. Built causal self-attention, positional and token embeddings, and greedy decoding pipeline.' },
 ]
 
-const extracurricular = [
+const Achivements = [
   'Kaggle Top 15% in Road Accident Risk competition — Global Rank 588 out of 4000+ teams, achieving R² = 0.886 with an ensemble of 8 XGBoost models and 80+ engineered features.',
 ]
 
@@ -113,7 +112,7 @@ export default function Resume() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3, duration: 0.7 }}
               >
-                <span className="gradient-text">Interactive</span>{' '}
+                <span className="text-[var(--accent1)]">Interactive</span>{' '}
                 <span className="text-[var(--t1)]">Resume</span>
               </motion.h1>
 
@@ -273,10 +272,10 @@ export default function Resume() {
                 </div>
               )}
 
-              {/* Extracurricular Tab */}
-              {activeTab === 'Extracurricular' && (
+              {/* Achivements Tab */}
+              {activeTab === 'Achivements' && (
                 <div className="space-y-6">
-                  {extracurricular.map((item, index) => (
+                  {Achivements.map((item, index) => (
                     <ScrollRevealItem key={index} index={index}>
                       <motion.div
                         className="glass-card rounded-xl p-8 flex gap-4"

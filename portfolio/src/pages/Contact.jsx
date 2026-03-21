@@ -81,7 +81,7 @@ export default function Contact() {
           animate={inView ? { opacity: 1, y: 0, filter: 'blur(0px)' } : {}}
           transition={{ duration: 0.7, delay: 0.1 }}
         >
-          <span className="gradient-text">Let's build</span>{' '}
+          <span className="text-[var(--accent1)]">Let's build</span>{' '}
           <span className="text-[var(--t1)]">something.</span>
         </motion.h2>
 

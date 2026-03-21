@@ -1,242 +1,436 @@
-import { motion } from 'framer-motion'
-import { useNavigate } from 'react-router-dom'
-import PageWrapper from '../components/PageWrapper'
-import useScrollAnimation from '../hooks/useScrollAnimation'
+import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'framer-motion'
+import { useState, useRef } from 'react'
 
-// -- Actual Skills Data --
 const categories = [
   {
-    id: 'deep-learning',
+    id: 'ai-ml',
     label: '01',
-    title: 'Deep Learning & Architectures',
-    desc: 'Built from scratch — not fine-tuned, not wrapped.',
+    title: 'AI / ML',
+    desc: 'Architectures and pipelines built from the ground up.',
+    icon: '⚡',
+    color: '#0f172a', /* Professional Slate Black */
     span: 'col-span-1 md:col-span-2 lg:col-span-2',
-    accent: 'from-violet-500/10 to-indigo-500/5',
-    border: 'hover:border-violet-400/40',
-    dot: 'bg-violet-400',
     skills: [
-      'Transformers', 'CNN', 'RNN', 'LSTM',
-      'Encoder–Decoder', 'Auto-Encoders', 'GANs',
-      'Diffusion Models', 'Attention Mechanisms',
+      { name: 'PyTorch', context: 'Built transformers, autoencoders, and diffusion models from scratch' },
+      { name: 'Transformers', context: 'Implemented GPT-style decoder-only architecture (PyPilot)' },
+      { name: 'Scikit-learn', context: 'Feature engineering, ensemble methods, Kaggle top 15%' },
+      { name: 'HuggingFace', context: 'Datasets, tokenizers, model hub for fine-tuning' },
+      { name: 'XGBoost', context: 'Accident risk prediction, Optuna hyperparameter tuning' },
+      { name: 'OpenCV', context: 'Image preprocessing, denoising pipeline, video frame extraction' },
+      { name: 'CUDA', context: 'GPU-accelerated training, custom CUDA kernel experience' },
+      { name: 'Pandas / NumPy', context: 'Data wrangling, feature engineering, analysis' },
+      { name: 'CNNs / RNNs', context: 'Classification, sequence modeling, time-series prediction' },
+      { name: 'Diffusion Models', context: 'DDPM, DDIM, noise scheduling, image synthesis' },
+      { name: 'Attention Mechanisms', context: 'Multi-head self-attention, cross-attention, positional encoding' },
+      { name: 'Sentence-Transformers', context: 'Semantic similarity, GPU embeddings, vector search' },
     ],
   },
   {
     id: 'agentic',
     label: '02',
     title: 'Agentic AI',
-    desc: 'Stateful, multi-actor systems that plan and act.',
+    desc: 'Stateful, multi-actor systems that plan, reason, and act.',
+    icon: '◈',
+    color: '#0284c7',
     span: 'col-span-1 md:col-span-2 lg:col-span-2',
-    accent: 'from-sky-500/10 to-cyan-500/5',
-    border: 'hover:border-sky-400/40',
-    dot: 'bg-sky-400',
     skills: [
-      'LangGraph', 'LangChain', 'LangSmith',
-      'Tool Calling', 'Ollama', 'Embedding Models',
-      'Multi-Agent Systems', 'RAG Pipelines',
+      { name: 'LangChain', context: 'Multi-agent orchestration, tool calling, memory management' },
+      { name: 'LangGraph', context: 'Stateful agent workflows, research automation pipelines' },
+      { name: 'LangSmith', context: 'Tracing, evaluation, and debugging of LLM applications' },
+      { name: 'RAG Pipelines', context: 'Semantic chunking, ChromaDB, production retrieval systems' },
+      { name: 'Ollama', context: 'Local LLM deployment, model management, API integration' },
+      { name: 'Tool Calling', context: 'Custom tool definitions, API integration for agents' },
+      { name: 'Multi-Agent', context: 'Planner-researcher-writer pipelines, role-based agents' },
+      { name: 'ChromaDB', context: 'Vector store for semantic search, RAG document retrieval' },
     ],
   },
   {
-    id: 'ml',
+    id: 'backend',
     label: '03',
-    title: 'ML & Data',
-    desc: 'Classical ML, feature engineering, experimentation.',
-    span: 'col-span-1 md:col-span-1 lg:col-span-1',
-    accent: 'from-emerald-500/10 to-teal-500/5',
-    border: 'hover:border-emerald-400/40',
-    dot: 'bg-emerald-400',
-    skills: [
-      'PyTorch', 'Scikit-learn',
-      'HuggingFace', 'Sentence-Transformers',
-      'Pandas', 'NumPy', 'Matplotlib',
-    ],
-  },
-  {
-    id: 'infra',
-    label: '04',
     title: 'Backend & Infra',
-    desc: 'Production systems that actually stay up.',
-    span: 'col-span-1 md:col-span-1 lg:col-span-1',
-    accent: 'from-orange-500/10 to-amber-500/5',
-    border: 'hover:border-orange-400/40',
-    dot: 'bg-orange-400',
+    desc: 'Production systems built to handle real load.',
+    icon: '▲',
+    color: '#b45309',
+    span: 'col-span-1 md:col-span-2 lg:col-span-2',
     skills: [
-      'FastAPI', 'Docker', 'Nginx',
-      'Redis', 'PostgreSQL', 'Streamlit',
-      'Linux / Bash',
+      { name: 'FastAPI', context: 'REST APIs, streaming responses, WebSocket, async endpoints' },
+      { name: 'PostgreSQL', context: 'Schema design, complex queries, SQLAlchemy ORM' },
+      { name: 'Docker', context: 'Multi-stage builds, compose, containerized ML pipelines' },
+      { name: 'Redis', context: 'Caching layer, semantic cache for RAG systems' },
+      { name: 'Nginx', context: 'Reverse proxy, load balancing, SSL termination' },
+      { name: 'Linux / Bash', context: 'Server management, automation scripts, deployment pipelines' },
+      { name: 'AWS', context: 'EC2, S3, Lambda — cloud deployment and managed services' },
+      { name: 'Render', context: 'Fast web service deployments, background workers, cron jobs' },
+      { name: 'Vercel', context: 'Frontend deployments, edge functions, CI/CD from GitHub' },
     ],
   },
   {
-    id: 'languages',
-    label: '05',
-    title: 'Languages',
-    desc: 'The ones I reach for without thinking.',
-    span: 'col-span-1 md:col-span-full lg:col-span-4',
-    accent: 'from-slate-500/10 to-zinc-500/5',
-    border: 'hover:border-[var(--accent1)]/40',
-    dot: 'bg-[var(--accent1)]',
-    skills: ['Python', 'C++'],
-    isLang: true,
+    id: 'frontend',
+    label: '04',
+    title: 'Frontend & Languages',
+    desc: "The stack behind what you're looking at — and the languages I think in.",
+    icon: '{ }',
+    color: '#047857',
+    span: 'col-span-1 md:col-span-2 lg:col-span-2',
+    skills: [
+      { name: 'Python', context: 'Primary language — ML, backend, scripting, automation' },
+      { name: 'C++', context: 'Data structures, algorithms, competitive programming' },
+      { name: 'React', context: 'Component architecture, hooks, Framer Motion, this portfolio' },
+      { name: 'Tailwind CSS', context: 'Utility-first styling, responsive design, dark mode' },
+      { name: 'Framer Motion', context: 'Scroll animations, layout transitions, gesture-based UI' },
+      { name: 'Streamlit', context: 'Rapid prototyping dashboards, interactive ML demos' },
+      { name: 'Git', context: 'Version control, branching strategies, collaborative workflows' },
+    ],
   },
 ]
+
+// ── Pill with zoom + frosted-light tooltip (dark text, no bleed) ──
+function SkillPill({ skill, catColor }) {
+  const [hovered, setHovered] = useState(false)
+
+  return (
+    <div
+      style={{ position: 'relative', zIndex: hovered ? 999 : 1, overflow: 'visible' }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      {/* Pill */}
+      <motion.span
+        style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          padding: '8px 14px',
+          borderRadius: '8px',
+          fontFamily: 'monospace',
+          fontSize: '12px',
+          fontWeight: 600,
+          cursor: 'default',
+          userSelect: 'none',
+          border: '1px solid var(--border)',
+          color: 'var(--t2)',
+          background: 'var(--panel)',
+          whiteSpace: 'nowrap',
+        }}
+        animate={
+          hovered
+            ? {
+                scale: 1.12,
+                y: -4,
+                color: catColor,
+                borderColor: catColor,
+                backgroundColor: `${catColor}0f`,
+                boxShadow: `0 8px 28px ${catColor}30`,
+              }
+            : {
+                scale: 1,
+                y: 0,
+                boxShadow: '0 0 0 0 transparent',
+              }
+        }
+        transition={{ type: 'spring', stiffness: 460, damping: 28 }}
+      >
+        {skill.name}
+      </motion.span>
+
+      {/* Tooltip — frosted white/light glass, dark text */}
+      <AnimatePresence>
+        {hovered && skill.context && (
+          <motion.div
+            style={{
+              position: 'absolute',
+              bottom: 'calc(100% + 14px)',
+              left: '50%',
+              translateX: '-50%',
+              width: '232px',
+              zIndex: 9999,
+              pointerEvents: 'none',
+              overflow: 'visible',
+            }}
+            initial={{ opacity: 0, y: 8, scale: 0.88 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 8, scale: 0.88 }}
+            transition={{ duration: 0.2, ease: [0.34, 1.2, 0.64, 1] }}
+          >
+            <div
+              style={{
+                position: 'relative',
+                borderRadius: '12px',
+                overflow: 'hidden',
+                border: `1px solid rgba(0,0,0,0.08)`,
+                boxShadow: `
+                  0 20px 60px rgba(0,0,0,0.18),
+                  0 4px 16px rgba(0,0,0,0.10),
+                  0 0 0 1px rgba(255,255,255,0.7) inset
+                `,
+              }}
+            >
+              {/* Solid opaque white base — blocks ALL background bleed */}
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  backgroundColor: 'rgba(255, 255, 255, 0.97)',
+                  zIndex: 0,
+                }}
+              />
+              {/* Frosted glass layer for depth */}
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  backdropFilter: 'blur(20px) saturate(1.8)',
+                  WebkitBackdropFilter: 'blur(20px) saturate(1.8)',
+                  zIndex: 1,
+                }}
+              />
+
+              {/* Content */}
+              <div
+                style={{
+                  position: 'relative',
+                  zIndex: 2,
+                  padding: '13px 16px',
+                  textAlign: 'center',
+                }}
+              >
+                {/* Thin top accent line */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    height: '2.5px',
+                    background: catColor,
+                    borderRadius: '12px 12px 0 0',
+                  }}
+                />
+
+                {/* Skill name */}
+                <span
+                  style={{
+                    display: 'block',
+                    fontFamily: 'monospace',
+                    fontSize: '11px',
+                    fontWeight: 700,
+                    letterSpacing: '0.08em',
+                    textTransform: 'uppercase',
+                    color: catColor,
+                    marginTop: '4px',
+                    marginBottom: '6px',
+                  }}
+                >
+                  {skill.name}
+                </span>
+
+                {/* Context */}
+                <span
+                  style={{
+                    display: 'block',
+                    fontFamily: 'ui-sans-serif, system-ui, sans-serif',
+                    fontSize: '12px',
+                    lineHeight: '1.6',
+                    color: 'rgba(15, 20, 30, 0.82)',
+                    fontWeight: 400,
+                  }}
+                >
+                  {skill.context}
+                </span>
+              </div>
+            </div>
+
+            {/* Arrow */}
+            <div
+              style={{
+                position: 'absolute',
+                bottom: '-6px',
+                left: '50%',
+                transform: 'translateX(-50%) rotate(45deg)',
+                width: '11px',
+                height: '11px',
+                backgroundColor: 'rgba(255,255,255,0.97)',
+                borderRight: '1px solid rgba(0,0,0,0.08)',
+                borderBottom: '1px solid rgba(0,0,0,0.08)',
+              }}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  )
+}
 
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { staggerChildren: 0.08 } },
 }
 
-const itemVariants = {
+const cardVariants = {
   hidden: { opacity: 0, y: 24 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.4, 0, 0.2, 1] } },
 }
 
 export default function TechStack() {
-  const navigate = useNavigate()
-  const { ref: headerRef, inView: headerInView } = useScrollAnimation()
-  const { ref: gridRef, inView: gridInView } = useScrollAnimation({ rootMargin: '-40px' })
+  const containerRef = useRef(null)
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start end', 'end start'],
+  })
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 })
+
+  const bgY = useTransform(smoothProgress, [0, 1], [80, -80])
+  const contentY = useTransform(smoothProgress, [0, 1], [40, -40])
 
   return (
-    <PageWrapper>
-      <section className="relative min-h-screen py-24 z-10">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+    <section
+      id="skills"
+      className="section-padding relative"
+      style={{ overflow: 'visible' }}
+      ref={containerRef}
+    >
+      {/* Subtle ambient glows */}
+      <motion.div
+        className="absolute right-[-80px] top-1/4 w-[360px] h-[360px] rounded-full pointer-events-none"
+        style={{ background: 'radial-gradient(circle, #0f172a18 0%, transparent 70%)', y: bgY }}
+      />
+      <motion.div
+        className="absolute left-[-60px] bottom-1/4 w-[280px] h-[280px] rounded-full pointer-events-none"
+        style={{ background: 'radial-gradient(circle, #0284c714 0%, transparent 70%)', y: bgY }}
+      />
 
-          {/* ── Header ── */}
-          <motion.div ref={headerRef} className="mb-20">
-            <div className="flex items-center gap-4 mb-4">
-              <span className="font-mono text-xs text-[var(--accent1)] tracking-widest uppercase font-bold">
-                02 · Tech Stack
-              </span>
-              <motion.div
-                className="h-[2px] flex-1 max-w-xs rounded-full"
-                style={{ background: 'var(--gradient-h)', transformOrigin: 'left' }}
-                initial={{ scaleX: 0 }}
-                animate={headerInView ? { scaleX: 1 } : {}}
-                transition={{ duration: 0.8 }}
-              />
-            </div>
+      <motion.div className="mx-auto max-w-7xl px-6 lg:px-8 relative z-10" style={{ overflow: 'visible', y: contentY }}>
 
-            <motion.h2
-              className="font-display text-4xl md:text-5xl font-extrabold leading-tight mb-5"
-              initial={{ opacity: 0, y: 20 }}
-              animate={headerInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.1 }}
-            >
-              <span className="text-[var(--t1)]">Tools I actually </span>
-              <span className="text-[var(--accent1)]">know deeply</span>
-            </motion.h2>
-
-            <motion.p
-              className="font-body text-lg text-[var(--t2)] max-w-xl leading-relaxed"
-              initial={{ opacity: 0 }}
-              animate={headerInView ? { opacity: 1 } : {}}
-              transition={{ delay: 0.3 }}
-            >
-              No padding. No buzzwords I can't back up. Every item here is something
-              I've used to ship — or built from scratch to understand.
-            </motion.p>
-          </motion.div>
-
-          {/* ── Grid ── */}
-          <div ref={gridRef}>
-            <motion.div
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5"
-              variants={containerVariants}
-              initial="hidden"
-              animate={gridInView ? 'visible' : 'hidden'}
-            >
-              {categories.map((cat) => (
-                <motion.div
-                  key={cat.id}
-                  variants={itemVariants}
-                  className={`
-                    group relative rounded-3xl border border-[var(--border)]
-                    bg-[var(--surface)] overflow-hidden
-                    transition-all duration-500 hover:shadow-2xl hover:-translate-y-1
-                    ${cat.span} ${cat.border}
-                    ${cat.isLang ? 'p-8' : 'p-7'}
-                  `}
-                >
-                  {/* Hover glow */}
-                  <div className={`absolute inset-0 bg-gradient-to-br ${cat.accent} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-
-                  <div className="relative z-10 h-full flex flex-col">
-
-                    {/* Card header */}
-                    <div className="flex items-start justify-between mb-6">
-                      <div>
-                        <span className="font-mono text-[10px] text-[var(--t3)] tracking-widest mb-1 block">
-                          {cat.label}
-                        </span>
-                        <h3 className="font-display font-bold text-xl text-[var(--t1)] leading-tight group-hover:text-[var(--accent1)] transition-colors duration-300">
-                          {cat.title}
-                        </h3>
-                      </div>
-                      <div className={`w-2 h-2 rounded-full mt-1.5 ${cat.dot} opacity-60 group-hover:opacity-100 transition-opacity`} />
-                    </div>
-
-                    <p className="font-body text-sm text-[var(--t3)] mb-6 leading-relaxed">
-                      {cat.desc}
-                    </p>
-
-                    {/* Skills — large pill layout for Languages, normal for rest */}
-                    {cat.isLang ? (
-                      <div className="flex gap-4 mt-auto flex-wrap">
-                        {cat.skills.map((skill) => (
-                          <motion.span
-                            key={skill}
-                            className="font-mono text-2xl font-extrabold text-[var(--t1)] px-6 py-3 rounded-2xl border border-[var(--border)] bg-[var(--panel)] hover:border-[var(--accent1)] hover:text-[var(--accent1)] transition-all duration-300 cursor-default"
-                            whileHover={{ scale: 1.04, y: -2 }}
-                          >
-                            {skill}
-                          </motion.span>
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="flex flex-wrap gap-2 mt-auto">
-                        {cat.skills.map((skill) => (
-                          <motion.span
-                            key={skill}
-                            className="font-mono text-xs font-semibold px-3 py-1.5 rounded-xl
-                              text-[var(--t2)] bg-[var(--panel)] border border-[var(--border)]
-                              hover:text-[var(--t1)] hover:border-[var(--accent1)] hover:bg-[var(--accent1)]/5
-                              transition-all duration-300 cursor-default"
-                            whileHover={{ scale: 1.05, y: -2 }}
-                          >
-                            {skill}
-                          </motion.span>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-
-          {/* ── Nav ── */}
+        {/* ── Header — professional rewrite ── */}
+        <div className="mb-16">
           <motion.div
-            className="mt-24 flex justify-between items-center border-t border-[var(--border)] pt-8"
-            initial={{ opacity: 0 }}
-            animate={gridInView ? { opacity: 1 } : {}}
-            transition={{ delay: 0.6 }}
+            className="flex items-center gap-3 mb-5"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
           >
-            <motion.button
-              onClick={() => navigate('/about')}
-              className="font-mono text-xs font-bold text-[var(--t3)] hover:text-[var(--accent1)] transition-colors flex items-center gap-2 px-4 py-2 rounded-full border border-transparent hover:border-[var(--accent1)]/30 hover:bg-[var(--accent1)]/5"
-              whileHover={{ x: -2 }}
-            >
-              <span className="text-lg">←</span> About
-            </motion.button>
-            <motion.button
-              onClick={() => navigate('/projects')}
-              className="font-mono text-xs font-bold text-[var(--t3)] hover:text-[var(--accent1)] transition-colors flex items-center gap-2 px-4 py-2 rounded-full border border-transparent hover:border-[var(--accent1)]/30 hover:bg-[var(--accent1)]/5"
-              whileHover={{ x: 2 }}
-            >
-              Projects <span className="text-lg">→</span>
-            </motion.button>
+            <span className="font-mono text-[11px] text-[var(--accent1)] tracking-[0.18em] uppercase font-bold">
+              02 · Tech Stack
+            </span>
+            <motion.div
+              className="h-px flex-1 max-w-[120px]"
+              style={{ background: 'var(--border)', transformOrigin: 'left' }}
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            />
           </motion.div>
 
+          <motion.h2
+            className="font-display font-extrabold leading-[1.12] mb-4"
+            style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.65, delay: 0.1 }}
+          >
+            <span className="text-[var(--t1)]">The stack I've </span>
+            <span className="text-[var(--accent1)]">actually shipped with</span>
+          </motion.h2>
+
+          <motion.p
+            className="font-body text-base text-[var(--t3)] max-w-lg leading-relaxed"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.28, duration: 0.5 }}
+          >
+            Each tool here represents real production use — not tutorials, not demos.
+            Hover any skill to see what I've built with it.
+          </motion.p>
         </div>
-      </section>
-    </PageWrapper>
+
+        {/* ── Cards ── */}
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
+          style={{ overflow: 'visible' }}
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          {categories.map((cat) => (
+            <motion.div
+              key={cat.id}
+              variants={cardVariants}
+              className={`
+                group relative rounded-2xl border border-[var(--border)]
+                bg-[var(--surface)]
+                transition-all duration-400
+                hover:border-[var(--border)] hover:shadow-lg
+                ${cat.span} p-6
+              `}
+              style={{ overflow: 'visible' }}
+              whileHover={{ y: -3, transition: { duration: 0.25 } }}
+            >
+              {/* Left accent bar */}
+              <div
+                className="absolute left-0 top-6 bottom-6 w-[3px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                style={{ background: cat.color }}
+              />
+
+              <div className="relative z-10 h-full flex flex-col" style={{ overflow: 'visible' }}>
+
+                {/* Header */}
+                <div className="flex items-center gap-3 mb-3">
+                  <div
+                    className="w-8 h-8 rounded-lg flex items-center justify-center text-[13px] shrink-0"
+                    style={{
+                      background: `${cat.color}12`,
+                      color: cat.color,
+                      border: `1px solid ${cat.color}25`,
+                    }}
+                  >
+                    {cat.icon}
+                  </div>
+                  <div>
+                    <p className="font-mono text-[9px] text-[var(--t3)] tracking-widest uppercase mb-0.5">
+                      {cat.label}
+                    </p>
+                    <h3
+                      className="font-display font-bold text-[15px] text-[var(--t1)] leading-tight"
+                    >
+                      {cat.title}
+                    </h3>
+                  </div>
+                </div>
+
+                <p className="font-body text-[13px] text-[var(--t3)] mb-5 leading-relaxed pl-0">
+                  {cat.desc}
+                </p>
+
+                {/* Divider */}
+                <div
+                  className="mb-5 h-px"
+                  style={{ background: 'var(--border)' }}
+                />
+
+                {/* Pills */}
+                <div
+                  className="flex flex-wrap gap-2 mt-auto"
+                  style={{ overflow: 'visible' }}
+                >
+                  {cat.skills.map((skill, i) => (
+                    <motion.div
+                      key={skill.name}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: i * 0.035, duration: 0.28 }}
+                      style={{ overflow: 'visible' }}
+                    >
+                      <SkillPill skill={skill} catColor={cat.color} />
+                    </motion.div>
+                  ))}
+                </div>
+
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+
+      </motion.div>
+    </section>
   )
 }

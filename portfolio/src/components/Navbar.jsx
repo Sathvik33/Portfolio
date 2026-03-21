@@ -61,7 +61,7 @@ export default function Navbar() {
           ([entry]) => {
             if (entry.isIntersecting) setActiveSection(id)
           },
-          { threshold: 0.25, rootMargin: '-80px 0px -40% 0px' }
+          { threshold: 0.1, rootMargin: '-72px 0px -20% 0px' }
         )
         observer.observe(el)
         observers.push(observer)

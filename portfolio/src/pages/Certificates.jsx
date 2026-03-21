@@ -182,7 +182,7 @@ export default function Certificates() {
           animate={inView ? { opacity: 1, y: 0, filter: 'blur(0px)' } : {}}
           transition={{ duration: 0.7, delay: 0.1 }}
         >
-          <span className="gradient-text">Verified</span>{' '}
+          <span className="text-[var(--accent1)]">Verified</span>{' '}
           <span className="text-[var(--t1)]">Credentials</span>
         </motion.h2>
 

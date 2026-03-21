@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
+import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion'
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import MagneticButton from '../components/MagneticButton'
@@ -29,7 +29,7 @@ function RotatingRole() {
       <AnimatePresence mode="wait">
         <motion.span
           key={roles[index]}
-          className="inline-block gradient-text"
+          className="inline-block text-[var(--accent1)]"
           initial={{ y: 30, opacity: 0, filter: 'blur(4px)' }}
           animate={{ y: 0, opacity: 1, filter: 'blur(0px)' }}
           exit={{ y: -30, opacity: 0, filter: 'blur(4px)' }}
@@ -129,13 +129,14 @@ export default function Hero() {
     target: sectionRef,
     offset: ['start start', 'end start'],
   })
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 })
 
   // Scroll-driven parallax for hero content
-  const contentY = useTransform(scrollYProgress, [0, 1], [0, 120])
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
-  const photoScale = useTransform(scrollYProgress, [0, 0.6], [1, 0.85])
-  const photoY = useTransform(scrollYProgress, [0, 1], [0, 80])
-  const bgScale = useTransform(scrollYProgress, [0, 1], [1, 1.15])
+  const contentY = useTransform(smoothProgress, [0, 1], [0, 180])
+  const contentOpacity = useTransform(smoothProgress, [0, 0.6], [1, 0])
+  const photoScale = useTransform(smoothProgress, [0, 0.6], [1, 0.8])
+  const photoY = useTransform(smoothProgress, [0, 1], [0, 120])
+  const bgScale = useTransform(smoothProgress, [0, 1], [1, 1.2])
 
   const scrollTo = (id) => {
     const el = document.getElementById(id)
@@ -263,11 +264,11 @@ export default function Hero() {
               transition={{ delay: 1.5, duration: 0.6 }}
             >
               <MagneticButton
-                onClick={() => scrollTo('projects')}
+                onClick={() => scrollTo('about')}
                 className="group relative px-8 py-3.5 font-display font-bold text-sm text-white rounded-xl shadow-lg overflow-hidden"
                 style={{ background: 'var(--gradient)' }}
               >
-                <span className="relative z-10">View Projects</span>
+                <span className="relative z-10">About Me</span>
                 <motion.div
                   className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity"
                   style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 100%)' }}

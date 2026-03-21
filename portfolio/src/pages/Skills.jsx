@@ -169,7 +169,7 @@ export default function Skills() {
           transition={{ duration: 0.7, delay: 0.1 }}
         >
           <span className="text-[var(--t1)]">Tools I actually </span>
-          <span className="gradient-text">know deeply</span>
+          <span className="text-[var(--accent1)]">know deeply</span>
         </motion.h2>
 
         <motion.p

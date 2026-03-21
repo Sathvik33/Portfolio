@@ -117,7 +117,7 @@ export default function Experience() {
           transition={{ duration: 0.6, delay: 0.1 }}
         >
           <span className="text-[var(--t1)]">Journey </span>
-          <span className="gradient-text">so far</span>
+          <span className="text-[var(--accent1)]">so far</span>
         </motion.h2>
 
         {/* Timeline */}

@@ -1,4 +1,4 @@
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
+import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'framer-motion'
 import { useState, useRef, useCallback } from 'react'
 import { projects } from '../data/projects'
 import useScrollAnimation from '../hooks/useScrollAnimation'
@@ -68,11 +68,12 @@ function FeaturedCard({ project, index }) {
     target: cardRef,
     offset: ['start end', 'center center'],
   })
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 })
 
-  const y = useTransform(scrollYProgress, [0, 1], [80, 0])
-  const opacity = useTransform(scrollYProgress, [0, 0.4], [0, 1])
-  const scale = useTransform(scrollYProgress, [0, 1], [0.92, 1])
-  const imgScale = useTransform(scrollYProgress, [0, 1], [1.15, 1])
+  const y = useTransform(smoothProgress, [0, 1], [120, 0])
+  const opacity = useTransform(smoothProgress, [0, 0.4], [0, 1])
+  const scale = useTransform(smoothProgress, [0, 1], [0.9, 1])
+  const imgScale = useTransform(smoothProgress, [0, 1], [1.2, 1])
 
   return (
     <motion.div ref={cardRef} style={{ y, opacity, scale }}>
@@ -237,8 +238,10 @@ export default function Projects() {
     target: containerRef,
     offset: ['start end', 'end start'],
   })
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 })
 
-  const decoY = useTransform(scrollYProgress, [0, 1], [80, -80])
+  const decoY = useTransform(smoothProgress, [0, 1], [120, -120])
+  const decoY2 = useTransform(smoothProgress, [0, 1], [-60, 60])
 
   const sortedProjects = [...projects].sort((a, b) => a.priority - b.priority)
   const featured = sortedProjects.slice(0, FEATURED_COUNT)
@@ -253,7 +256,7 @@ export default function Projects() {
       />
       <motion.div
         className="pointer-events-none absolute -right-20 bottom-1/4 w-[400px] h-[400px] rounded-full blur-[100px] opacity-[0.03]"
-        style={{ background: 'var(--accent3)', y: useTransform(scrollYProgress, [0, 1], [-40, 40]) }}
+        style={{ background: 'var(--accent3)', y: decoY2 }}
       />
 
       <div className="relative z-10 mx-auto max-w-6xl" ref={headerRef}>
@@ -286,7 +289,7 @@ export default function Projects() {
           <div>
             <h2 className="font-display text-3xl md:text-4xl font-extrabold leading-tight">
               <span className="text-[var(--t1)]">Selected </span>
-              <span className="gradient-text">Work</span>
+              <span className="text-[var(--accent1)]">Work</span>
             </h2>
             <p className="font-body text-base mt-2 text-[var(--t3)]">
               What I've built — from scratch, shipped, and iterated on.
