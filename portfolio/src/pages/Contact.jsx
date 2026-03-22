@@ -21,6 +21,7 @@ export default function Contact() {
   const { ref: sectionRef, inView } = useScrollAnimation({ rootMargin: '-80px' })
   const [formData, setFormData] = useState({ name: '', email: '', message: '' })
   const [focused, setFocused] = useState('')
+  const [status, setStatus] = useState('') // Form submission status
   const containerRef = useRef(null)
 
   const { scrollYProgress } = useScroll({
@@ -33,6 +34,40 @@ export default function Contact() {
   const glowScale = useTransform(scrollYProgress, [0.3, 0.7], [0.8, 1.2])
 
   const handleChange = (e) => setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }))
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setStatus('Sending...')
+
+    // Web3Forms configuration - Replace YOUR_ACCESS_KEY_HERE with your key
+    const formPayload = {
+      ...formData,
+      access_key: "4f7ad14a-18e0-486f-81f2-31848ec52151" 
+    }
+
+    try {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(formPayload),
+      })
+      
+      const resData = await res.json()
+      
+      if (resData.success) {
+        setStatus("Message sent successfully!")
+        setFormData({ name: '', email: '', message: '' }) // Clear form
+        setTimeout(() => setStatus(''), 5000) // Hide message after 5s
+      } else {
+        setStatus("Failed to send message. Please try emailing me directly.")
+      }
+    } catch (err) {
+      setStatus("An error occurred. Please try emailing me directly.")
+    }
+  }
 
   return (
     <section id="contact" className="section-padding relative overflow-hidden" ref={containerRef}>
@@ -101,11 +136,11 @@ export default function Contact() {
             initial={{ opacity: 0, x: -40, filter: 'blur(4px)' }}
             animate={inView ? { opacity: 1, x: 0, filter: 'blur(0px)' } : {}}
             transition={{ duration: 0.7, delay: 0.2 }}
-            onSubmit={(e) => e.preventDefault()}
+            onSubmit={handleSubmit}
           >
             {[
-              { name: 'name', label: 'Name', type: 'text', placeholder: 'Your name' },
-              { name: 'email', label: 'Email', type: 'email', placeholder: 'your@email.com' },
+              { name: 'name', label: 'Name', type: 'text', placeholder: 'Your name', required: true },
+              { name: 'email', label: 'Email', type: 'email', placeholder: 'your@email.com', required: true },
             ].map((field) => (
               <div key={field.name} className="relative group">
                 <label
@@ -124,6 +159,7 @@ export default function Contact() {
                   onChange={handleChange}
                   onFocus={() => setFocused(field.name)}
                   onBlur={() => setFocused('')}
+                  required={field.required}
                   placeholder={focused === field.name ? field.placeholder : ''}
                   className="w-full px-4 py-3.5 rounded-xl bg-[var(--surface)] border border-[var(--border)] text-[var(--t1)] font-body text-sm outline-none transition-all duration-300 focus:border-[var(--accent1)] focus:shadow-[0_0_20px_rgba(6,182,212,0.1)]"
                 />
@@ -146,25 +182,36 @@ export default function Contact() {
                 onChange={handleChange}
                 onFocus={() => setFocused('message')}
                 onBlur={() => setFocused('')}
+                required
                 placeholder={focused === 'message' ? 'Tell me about your project or opportunity...' : ''}
                 rows="4"
                 className="w-full px-4 py-3.5 rounded-xl bg-[var(--surface)] border border-[var(--border)] text-[var(--t1)] font-body text-sm outline-none transition-all duration-300 focus:border-[var(--accent1)] focus:shadow-[0_0_20px_rgba(6,182,212,0.1)] resize-none"
               />
             </div>
 
-            <motion.button
-              type="submit"
-              className="group relative px-8 py-3.5 rounded-xl font-display font-bold text-sm text-white shadow-lg overflow-hidden"
-              style={{ background: 'var(--gradient)' }}
-              whileHover={{ scale: 1.03, boxShadow: '0 12px 30px rgba(6,182,212,0.2)' }}
-              whileTap={{ scale: 0.97 }}
-            >
-              <span className="relative z-10">Send Message</span>
-              <motion.div
-                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity"
-                style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 100%)' }}
-              />
-            </motion.button>
+            <div className="flex items-center gap-4">
+              <motion.button
+                type="submit"
+                className="group relative px-8 py-3.5 rounded-xl font-display font-bold text-sm text-white shadow-lg overflow-hidden"
+                style={{ background: 'var(--gradient)' }}
+                whileHover={{ scale: 1.03, boxShadow: '0 12px 30px rgba(6,182,212,0.2)' }}
+                whileTap={{ scale: 0.97 }}
+                disabled={status === 'Sending...'}
+              >
+                <span className="relative z-10">{status === 'Sending...' ? 'Sending...' : 'Send Message'}</span>
+                <motion.div
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                  style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 100%)' }}
+                />
+              </motion.button>
+              
+              {/* Status Message Display */}
+              {status && status !== 'Sending...' && (
+                <span className={`font-mono text-xs ${status.includes('success') ? 'text-emerald-400' : 'text-rose-400'}`}>
+                  {status}
+                </span>
+              )}
+            </div>
           </motion.form>
 
           {/* Right — Social links + availability */}

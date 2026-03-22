@@ -9,7 +9,7 @@ import ibmImg from '../images/IBM Deep-Learning_page-0001.jpg'
 import gfgImg from '../images/Geeks for geeks_page-0001.jpg'
 import cipherImg from '../images/Updated Cipher Schools-ML certificate_page-0001.jpg'
 
-const tabs = ['Education', 'Skills', 'Projects', 'Achivements', 'Certificates']
+const tabs = ['Education', 'Skills', 'Projects', 'Achievements', 'Certificates']
 
 const education = [
   { title: 'Lovely Professional University', location: 'Punjab, India', period: 'Since August 2023', detail: 'B.Tech in Computer Science and Engineering', score: 'CGPA: 7.28*' },
@@ -29,7 +29,7 @@ const projectItems = [
   { title: 'Autoregressive Transformer for Python Code Gen', subtitle: 'GitHub project · Nov 25', description: 'Implemented decoder-only Transformer for autoregressive Python code generation using CodeParrot subset. Built causal self-attention, positional and token embeddings, and greedy decoding pipeline.' },
 ]
 
-const Achivements = [
+const achievementsList = [
   'Kaggle Top 15% in Road Accident Risk competition — Global Rank 588 out of 4000+ teams, achieving R² = 0.886 with an ensemble of 8 XGBoost models and 80+ engineered features.',
 ]
 
@@ -71,7 +71,7 @@ export default function Resume() {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
+      // exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.4 }}
     >
       <section className="relative min-h-[calc(100vh-72px)] py-24 z-10">
@@ -272,10 +272,10 @@ export default function Resume() {
                 </div>
               )}
 
-              {/* Achivements Tab */}
-              {activeTab === 'Achivements' && (
+              {/* Achievements Tab */}
+              {activeTab === 'Achievements' && (
                 <div className="space-y-6">
-                  {Achivements.map((item, index) => (
+                  {achievementsList.map((item, index) => (
                     <ScrollRevealItem key={index} index={index}>
                       <motion.div
                         className="glass-card rounded-xl p-8 flex gap-4"
