@@ -10,9 +10,6 @@ dist/
 build/
 .next/
 out/
-*.png
-*.jpg
-*.pdf
 # Logs
 
 logs
@@ -72,6 +69,3 @@ pnpm-lock.yaml
 .cache/
 .eslintcache
 .vercel
-*.jpg
-*.pdf
-*.png
