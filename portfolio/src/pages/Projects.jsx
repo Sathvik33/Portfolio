@@ -288,8 +288,8 @@ export default function Projects() {
         >
           <div>
             <h2 className="font-display text-3xl md:text-4xl font-extrabold leading-tight">
-              <span className="text-[var(--t1)]">Selected </span>
-              <span className="text-[var(--accent1)]">Work</span>
+              <span className="text-[var(--t1)]">Featured </span>
+              <span className="text-[var(--accent1)]">Projects</span>
             </h2>
             <p className="font-body text-base mt-2 text-[var(--t3)]">
               What I've built — from scratch, shipped, and iterated on.

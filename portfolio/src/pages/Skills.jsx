@@ -7,7 +7,8 @@ const categories = [
     id: 'ai-ml',
     label: 'AI / ML',
     icon: '⚡',
-    color: '#8b5cf6',
+    color: '#8b5cf6', // Violet
+    span: 'md:col-span-2 lg:col-span-2 lg:row-span-2', // Large focus block
     skills: [
       { name: 'PyTorch', context: 'Built transformers, autoencoders, and diffusion models from scratch' },
       { name: 'Transformers', context: 'Implemented GPT-style decoder-only architecture (PyPilot)' },
@@ -23,94 +24,128 @@ const categories = [
     id: 'agentic',
     label: 'Agentic AI',
     icon: '◈',
-    color: '#06b6d4',
+    color: '#06b6d4', // Cyan
+    span: 'md:col-span-1 lg:col-span-1 lg:row-span-1',
     skills: [
       { name: 'LangChain', context: 'Multi-agent orchestration, tool calling, memory management' },
-      { name: 'LangGraph', context: 'Stateful agent workflows, research automation' },
-      { name: 'RAG Pipelines', context: 'Semantic chunking, ChromaDB, production retrieval systems' },
-      { name: 'Ollama', context: 'Local LLM deployment, model management, API integration' },
-      { name: 'Embeddings', context: 'Sentence-Transformers, GPU embeddings, vector similarity' },
-      { name: 'Tool Calling', context: 'Custom tool definitions, API integration for agents' },
-      { name: 'Multi-Agent', context: 'Planner-researcher-writer pipelines, role-based agents' },
+      { name: 'LangGraph', context: 'Stateful workflows, research automation' },
+      { name: 'RAG', context: 'Semantic chunking, ChromaDB, retrieval systems' },
+      { name: 'Ollama', context: 'Local LLM deployment, model management' },
     ],
   },
   {
     id: 'backend',
     label: 'Backend',
     icon: '▲',
-    color: '#3b82f6',
+    color: '#3b82f6', // Blue
+    span: 'md:col-span-1 lg:col-span-1 lg:row-span-1',
     skills: [
-      { name: 'FastAPI', context: 'REST APIs, streaming responses, WebSocket, async endpoints' },
-      { name: 'PostgreSQL', context: 'Schema design, complex queries, SQLAlchemy ORM' },
-      { name: 'Docker', context: 'Multi-stage builds, compose, containerized ML pipelines' },
+      { name: 'FastAPI', context: 'REST APIs, streaming responses, WebSocket' },
+      { name: 'PostgreSQL', context: 'Schema design, complex queries, SQLAlchemy' },
+      { name: 'Docker', context: 'Multi-stage builds, containerized ML pipelines' },
       { name: 'Redis', context: 'Caching layer, semantic cache for RAG systems' },
-      { name: 'Streamlit', context: 'Rapid prototyping dashboards, interactive ML demos' },
-      { name: 'Linux / Bash', context: 'Server management, automation scripts, deployment' },
-      { name: 'Nginx', context: 'Reverse proxy, load balancing, SSL termination' },
     ],
   },
   {
     id: 'frontend',
-    label: 'Frontend & Tools',
+    label: 'Frontend & Infra',
     icon: '{ }',
-    color: '#34d399',
+    color: '#10b981', // Emerald
+    span: 'md:col-span-2 lg:col-span-3 lg:row-span-1', // Wide bottom block
     skills: [
-      { name: 'Python', context: 'Primary language — ML, backend, scripting, automation' },
-      { name: 'C++', context: 'Data structures, algorithms, competitive programming' },
-      { name: 'React', context: 'Component architecture, hooks, Framer Motion, this portfolio' },
-      { name: 'Tailwind CSS', context: 'Utility-first styling, responsive design, dark mode' },
-      { name: 'Git', context: 'Version control, branching, collaborative workflows' },
+      { name: 'Python', context: 'Primary language — ML, backend, scripting' },
+      { name: 'C++', context: 'Data structures, algorithms' },
+      { name: 'React', context: 'Component architecture, Framer Motion' },
+      { name: 'Linux / Bash', context: 'Server management, automation scripts' },
+      { name: 'Git', context: 'Version control, collaborative workflows' },
     ],
   },
 ]
 
-function SkillPill({ skill, catColor }) {
+// --- Spotlight Card Component ---
+// Creates a glowing gradient that follows the user's cursor
+function SpotlightCard({ children, color, className }) {
+  const divRef = useRef(null)
+  const [position, setPosition] = useState({ x: 0, y: 0 })
+  const [opacity, setOpacity] = useState(0)
+
+  const handleMouseMove = (e) => {
+    if (!divRef.current) return
+    const rect = divRef.current.getBoundingClientRect()
+    setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top })
+  }
+
+  return (
+    <motion.div
+      ref={divRef}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setOpacity(1)}
+      onMouseLeave={() => setOpacity(0)}
+      className={`relative rounded-3xl border border-[var(--border)] bg-[var(--surface)] transition-colors duration-300 hover:border-[var(--accent1)]/30 ${className}`}
+      whileHover={{ y: -4 }}
+      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+    >
+      {/* The spotlight effect (hidden overflow so it doesn't bleed out of the card) */}
+      <div className="absolute inset-0 overflow-hidden rounded-3xl pointer-events-none">
+        <div
+          className="absolute inset-0 transition-opacity duration-300"
+          style={{
+            opacity,
+            background: `radial-gradient(600px circle at ${position.x}px ${position.y}px, ${color}15, transparent 40%)`,
+          }}
+        />
+      </div>
+      
+      {/* Content wrapper (relative z-10 so tooltips can still overflow the main card) */}
+      <div className="relative z-10 p-8 h-full flex flex-col">
+        {children}
+      </div>
+    </motion.div>
+  )
+}
+
+function SkillPill({ skill, catColor, index }) {
   const [hovered, setHovered] = useState(false)
 
   return (
     <motion.div
-      className="relative z-10 hover:z-50"
+      className="relative z-10"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      // Subtle continuous floating animation
+      animate={{ y: [0, -4, 0] }}
+      transition={{ 
+        duration: 4, 
+        repeat: Infinity, 
+        ease: 'easeInOut',
+        delay: index * 0.2 // Stagger the floating effect
+      }}
     >
       <motion.span
-        className="inline-flex items-center px-4 py-2.5 rounded-xl font-mono text-xs font-semibold
-          text-[var(--t2)] bg-[var(--panel)] border border-[var(--border)]
-          transition-all duration-300 cursor-default select-none"
+        className="inline-flex items-center px-4 py-2.5 rounded-xl font-mono text-xs font-semibold text-[var(--t2)] bg-[var(--panel)] border border-[var(--border)] transition-all duration-300 cursor-default select-none shadow-sm"
         whileHover={{
-          scale: 1.08,
-          y: -4,
+          scale: 1.1,
           borderColor: catColor,
           color: catColor,
           backgroundColor: `${catColor}10`,
+          zIndex: 50
         }}
-        style={{ transition: 'box-shadow 0.3s' }}
       >
         {skill.name}
-        {/* Glow on hover */}
-        {hovered && (
-          <motion.div
-            className="absolute inset-0 rounded-xl pointer-events-none"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            style={{ boxShadow: `0 0 20px ${catColor}20, inset 0 0 20px ${catColor}05` }}
-          />
-        )}
       </motion.span>
 
       {/* Hover tooltip */}
       <AnimatePresence>
         {hovered && skill.context && (
           <motion.div
-            className="absolute left-1/2 -translate-x-1/2 bottom-full mb-3 z-[100] w-60 px-4 py-3 rounded-xl text-center
-              font-body text-[11px] leading-relaxed text-[var(--t2)] bg-[var(--surface)] border border-[var(--border)]
-              shadow-xl pointer-events-none"
+            className="absolute left-1/2 -translate-x-1/2 bottom-full mb-3 z-[100] w-60 px-4 py-3 rounded-xl text-center font-body text-[11px] leading-relaxed text-[var(--t2)] bg-[var(--surface)] border border-[var(--border)] shadow-2xl pointer-events-none"
             initial={{ opacity: 0, y: 8, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 8, scale: 0.95 }}
             transition={{ duration: 0.2 }}
           >
-            {skill.context}
+            <div className="absolute inset-0 rounded-xl bg-[var(--bg)] opacity-50" />
+            <span className="relative z-10">{skill.context}</span>
             <div className="absolute left-1/2 -translate-x-1/2 top-full w-2.5 h-2.5 rotate-45 bg-[var(--surface)] border-r border-b border-[var(--border)]" />
           </motion.div>
         )}
@@ -120,9 +155,7 @@ function SkillPill({ skill, catColor }) {
 }
 
 export default function Skills() {
-  const [activeTab, setActiveTab] = useState('ai-ml')
   const { ref, inView } = useScrollAnimation({ rootMargin: '-80px' })
-  const activeCategory = categories.find(c => c.id === activeTab)
   const containerRef = useRef(null)
 
   const { scrollYProgress } = useScroll({
@@ -130,20 +163,25 @@ export default function Skills() {
     offset: ['start end', 'end start'],
   })
 
-  const decoX = useTransform(scrollYProgress, [0, 1], [-30, 30])
-  const decoY = useTransform(scrollYProgress, [0, 1], [50, -50])
+  const decoY1 = useTransform(scrollYProgress, [0, 1], [100, -100])
+  const decoY2 = useTransform(scrollYProgress, [0, 1], [-50, 50])
 
   return (
-    <section id="skills" className="section-padding relative overflow-hidden" ref={containerRef}>
-      {/* Animated background accent */}
+    <section id="skills" className="section-padding relative overflow-visible" ref={containerRef}>
+      
+      {/* Abstract Background Elements */}
       <motion.div
-        className="absolute right-0 top-1/4 w-[300px] h-[300px] rounded-full opacity-[0.04] blur-[80px] pointer-events-none"
-        style={{ background: activeCategory?.color || '#8b5cf6', x: decoX, y: decoY }}
+        className="absolute left-[10%] top-1/4 w-96 h-96 rounded-full opacity-[0.03] blur-[100px] pointer-events-none bg-violet-500"
+        style={{ y: decoY1 }}
+      />
+      <motion.div
+        className="absolute right-[5%] bottom-1/4 w-80 h-80 rounded-full opacity-[0.03] blur-[80px] pointer-events-none bg-cyan-500"
+        style={{ y: decoY2 }}
       />
 
       <div ref={ref} className="mx-auto max-w-6xl relative z-10">
 
-        {/* Section label */}
+        {/* Section Header */}
         <motion.div
           className="flex items-center gap-4 mb-4"
           initial={{ opacity: 0, x: -40 }}
@@ -151,7 +189,7 @@ export default function Skills() {
           transition={{ duration: 0.7 }}
         >
           <span className="font-mono text-xs text-[var(--accent1)] tracking-widest uppercase font-bold">
-            02 · Skills
+            02 · Technical Arsenal
           </span>
           <motion.div
             className="h-[2px] flex-1 max-w-xs rounded-full"
@@ -163,104 +201,70 @@ export default function Skills() {
         </motion.div>
 
         <motion.h2
-          className="font-display text-3xl md:text-4xl font-extrabold leading-tight mb-4"
+          className="font-display text-4xl md:text-5xl font-extrabold leading-tight mb-4"
           initial={{ opacity: 0, y: 30, filter: 'blur(6px)' }}
           animate={inView ? { opacity: 1, y: 0, filter: 'blur(0px)' } : {}}
           transition={{ duration: 0.7, delay: 0.1 }}
         >
-          <span className="text-[var(--t1)]">Tools I actually </span>
-          <span className="text-[var(--accent1)]">know deeply</span>
+          <span className="text-[var(--t1)]">My Technical </span>
+          <span className="text-[var(--accent1)]">Arsenal</span>
         </motion.h2>
 
         <motion.p
-          className="font-body text-base text-[var(--t3)] max-w-xl mb-10"
+          className="font-body text-base text-[var(--t3)] max-w-xl mb-12"
           initial={{ opacity: 0, y: 16 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.3, duration: 0.5 }}
         >
-          No padding. Every item here is something I've used to ship — or built from scratch to understand.
+          No padding. Every item here is something I've used to ship production pipelines, or built from scratch to understand the math behind it.
         </motion.p>
 
-        {/* Category Tabs — animated with spring layout */}
-        <motion.div
-          className="flex flex-wrap gap-2.5 mb-10"
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 0.4, duration: 0.5 }}
-        >
-          {categories.map((cat) => (
-            <motion.button
-              key={cat.id}
-              onClick={() => setActiveTab(cat.id)}
-              className={`group relative px-5 py-2.5 rounded-xl font-display text-sm font-semibold transition-all duration-300 border ${
-                activeTab === cat.id
-                  ? 'text-[var(--t1)]'
-                  : 'border-[var(--border)] text-[var(--t3)] bg-[var(--panel)] hover:text-[var(--t2)] hover:border-[var(--t3)]'
-              }`}
-              style={activeTab === cat.id ? { borderColor: cat.color, background: `${cat.color}15` } : {}}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.97 }}
-            >
-              <span className="mr-2">{cat.icon}</span>
-              {cat.label}
-              <span className="ml-2 font-mono text-[10px] opacity-50">{cat.skills.length}</span>
-
-              {activeTab === cat.id && (
-                <motion.div
-                  layoutId="skills-tab-glow"
-                  className="absolute inset-0 rounded-xl"
-                  style={{ boxShadow: `0 0 20px ${cat.color}15` }}
-                  transition={{ type: 'spring', stiffness: 400, damping: 35 }}
-                />
-              )}
-            </motion.button>
-          ))}
-        </motion.div>
-
-        {/* Skills Grid — unique visual: card with accent bar + pills */}
-        <AnimatePresence mode="wait">
-          {activeCategory && (
+        {/* Bento Grid Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {categories.map((cat, i) => (
             <motion.div
-              key={activeTab}
-              className="glass-card rounded-2xl"
-              initial={{ opacity: 0, y: 24, scale: 0.98 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -12, scale: 0.98 }}
-              transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+              key={cat.id}
+              className={cat.span}
+              initial={{ opacity: 0, y: 40 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: 0.4 + (i * 0.1), duration: 0.6, type: 'spring', damping: 20 }}
             >
-              {/* Accent bar at top - matches category color */}
-              <div className="h-[3px]" style={{ background: `linear-gradient(90deg, ${activeCategory.color}, transparent)` }} />
-
-              <div className="p-6 md:p-8">
-                <div className="flex items-center gap-3 mb-6">
-                  <motion.div
-                    className="w-8 h-8 rounded-lg flex items-center justify-center text-sm border"
-                    style={{ background: `${activeCategory.color}15`, borderColor: `${activeCategory.color}40`, color: activeCategory.color }}
-                    layoutId="cat-icon"
+              <SpotlightCard color={cat.color} className="h-full">
+                
+                {/* Card Header */}
+                <div className="flex items-center gap-4 mb-8 border-b border-[var(--border)] pb-4">
+                  <div 
+                    className="w-10 h-10 rounded-xl flex items-center justify-center text-lg shadow-inner"
+                    style={{ background: `${cat.color}15`, border: `1px solid ${cat.color}30`, color: cat.color }}
                   >
-                    {activeCategory.icon}
-                  </motion.div>
-                  <h3 className="font-display text-lg font-bold text-[var(--t1)]">
-                    {activeCategory.label}
-                  </h3>
+                    {cat.icon}
+                  </div>
+                  <div>
+                    <h3 className="font-display text-xl font-bold text-[var(--t1)] tracking-tight">
+                      {cat.label}
+                    </h3>
+                    <p className="font-mono text-[10px] text-[var(--t3)] uppercase tracking-wider mt-1">
+                      {cat.skills.length} Technologies
+                    </p>
+                  </div>
                 </div>
 
-                <div className="flex flex-wrap gap-3">
-                  {activeCategory.skills.map((skill, i) => (
-                    <motion.div
-                      key={skill.name}
-                      initial={{ opacity: 0, y: 16, scale: 0.9 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      transition={{ delay: i * 0.05, duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
-                    >
-                      <SkillPill skill={skill} catColor={activeCategory.color} />
-                    </motion.div>
+                {/* Skills Cloud */}
+                <div className="flex flex-wrap gap-3 mt-auto">
+                  {cat.skills.map((skill, index) => (
+                    <SkillPill 
+                      key={skill.name} 
+                      skill={skill} 
+                      catColor={cat.color} 
+                      index={index}
+                    />
                   ))}
                 </div>
-              </div>
+                
+              </SpotlightCard>
             </motion.div>
-          )}
-        </AnimatePresence>
+          ))}
+        </div>
       </div>
     </section>
   )

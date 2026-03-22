@@ -95,7 +95,7 @@ function SkillPill({ skill, catColor }) {
       onMouseLeave={() => setHovered(false)}
     >
       {/* Pill */}
-      <motion.span
+      <motion.span  
         style={{
           display: 'inline-flex',
           alignItems: 'center',
@@ -328,8 +328,8 @@ export default function TechStack() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65, delay: 0.1 }}
           >
-            <span className="text-[var(--t1)]">The stack I've </span>
-            <span className="text-[var(--accent1)]">actually shipped with</span>
+            <span className="text-[var(--t1)]">My Technical </span>
+            <span className="text-[var(--accent1)]">Arsenal</span>
           </motion.h2>
 
           <motion.p
@@ -338,8 +338,7 @@ export default function TechStack() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.28, duration: 0.5 }}
           >
-            Each tool here represents real production use — not tutorials, not demos.
-            Hover any skill to see what I've built with it.
+            Everything here represents hands-on experience—from building neural networks from scratch to assembling agentic workflows. Hover over a skill to see how I've applied it.
           </motion.p>
         </div>
 
