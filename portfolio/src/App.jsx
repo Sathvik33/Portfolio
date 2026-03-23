@@ -47,9 +47,12 @@ function AppRoutes() {
   )
 }
 
+import ScrollToTop from './components/ScrollToTop'
+
 function PortfolioApp() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <ScrollProgress />
       <Navbar />
       <main>
