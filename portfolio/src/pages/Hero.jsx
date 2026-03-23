@@ -299,36 +299,13 @@ export default function Hero() {
             transition={{ delay: 0.6, duration: 1, ease: [0.4, 0, 0.2, 1] }}
             style={{ scale: photoScale, y: photoY }}
           >
-            {/* Animated glow ring */}
-            <motion.div
-              className="absolute -inset-5 rounded-full opacity-30 blur-3xl"
-              style={{ background: 'var(--gradient)' }}
-              animate={{
-                scale: [1, 1.15, 1],
-                opacity: [0.2, 0.4, 0.2],
-                rotate: [0, 180, 360],
-              }}
-              transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
-            />
-
-            {/* Orbiting accent ring */}
-            <motion.div
-              className="absolute -inset-2 rounded-full border border-[var(--accent1)]/20"
-              animate={{ rotate: 360 }}
-              transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-            >
-              <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-[var(--accent1)] opacity-60" />
-            </motion.div>
-
-            <div className="relative p-[3px] rounded-full h-full" style={{ background: 'var(--gradient)' }}>
-              <div className="w-full h-full overflow-hidden rounded-full bg-[var(--bg)]">
-                <img
-                  src="/profile.jpg"
-                  alt="Maru Sathvik Reddy"
-                  className="w-full h-full object-cover"
-                  style={{ objectPosition: 'center 12%', transform: 'scale(1.15)' }}
-                />
-              </div>
+            <div className="relative w-full h-full overflow-hidden rounded-full">
+              <img
+                src="/profile.jpg"
+                alt="Maru Sathvik Reddy"
+                className="w-full h-full object-cover"
+                style={{ objectPosition: 'center 12%', transform: 'scale(1.15)' }}
+              />
             </div>
           </motion.div>
         </div>
