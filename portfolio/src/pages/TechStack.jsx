@@ -95,42 +95,21 @@ function SkillPill({ skill, catColor }) {
       onMouseLeave={() => setHovered(false)}
     >
       {/* Pill */}
-      <motion.span  
-        style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          padding: '8px 14px',
-          borderRadius: '8px',
-          fontFamily: 'monospace',
-          fontSize: '12px',
-          fontWeight: 600,
-          cursor: 'default',
-          userSelect: 'none',
-          border: '1px solid var(--border)',
-          color: 'var(--t2)',
-          background: 'var(--panel)',
-          whiteSpace: 'nowrap',
+      <span  
+        className="inline-flex items-center px-[14px] py-[8px] rounded-[8px] font-mono text-[12px] font-semibold cursor-default select-none border border-[var(--border)] text-[var(--t2)] bg-[var(--panel)] whitespace-nowrap transition-all duration-300"
+        style={hovered ? {
+          transform: 'scale(1.12) translateY(-4px)',
+          color: catColor,
+          borderColor: catColor,
+          backgroundColor: `${catColor}0f`,
+          boxShadow: `0 8px 28px ${catColor}30`,
+        } : {
+          transform: 'scale(1) translateY(0px)',
+          boxShadow: '0 0 0 0 transparent',
         }}
-        animate={
-          hovered
-            ? {
-                scale: 1.12,
-                y: -4,
-                color: catColor,
-                borderColor: catColor,
-                backgroundColor: `${catColor}0f`,
-                boxShadow: `0 8px 28px ${catColor}30`,
-              }
-            : {
-                scale: 1,
-                y: 0,
-                boxShadow: '0 0 0 0 transparent',
-              }
-        }
-        transition={{ type: 'spring', stiffness: 460, damping: 28 }}
       >
         {skill.name}
-      </motion.span>
+      </span>
 
       {/* Tooltip — frosted white/light glass, dark text */}
       <AnimatePresence>

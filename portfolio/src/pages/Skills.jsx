@@ -118,21 +118,24 @@ function SkillPill({ skill, catColor, index }) {
         duration: 4, 
         repeat: Infinity, 
         ease: 'easeInOut',
-        delay: index * 0.2 // Stagger the floating effect
+        delay: index * 0.2 
       }}
     >
-      <motion.span
-        className="inline-flex items-center px-4 py-2.5 rounded-xl font-mono text-xs font-semibold text-[var(--t2)] bg-[var(--panel)] border border-[var(--border)] transition-all duration-300 cursor-default select-none shadow-sm"
-        whileHover={{
-          scale: 1.1,
+      <span
+        className="relative inline-flex items-center px-4 py-2.5 rounded-xl font-mono text-xs font-semibold transition-all duration-300 cursor-default select-none shadow-sm border bg-[var(--panel)] border-[var(--border)] text-[var(--t2)]"
+        style={hovered ? {
+          backgroundColor: `${catColor}10`,
           borderColor: catColor,
           color: catColor,
-          backgroundColor: `${catColor}10`,
+          transform: 'scale(1.1)',
           zIndex: 50
+        } : {
+          transform: 'scale(1)',
+          zIndex: 1
         }}
       >
         {skill.name}
-      </motion.span>
+      </span>
 
       {/* Hover tooltip */}
       <AnimatePresence>
