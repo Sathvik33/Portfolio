@@ -7,11 +7,11 @@ const tabs = [
     label: '01',
     title: 'Programming Languages',
     desc: 'The core syntaxes I use to communicate with machines.',
-    color: '#8b5cf6', // Violet
+    color: '#ba0a0aff',
     skills: [
-      { name: 'Python', context: 'Primary language for ML, backend, and scripting', progress: 95 },
+      { name: 'Python', context: 'Primary language for ML, backend, and scripting', progress: 80 },
       { name: 'C++', context: 'Data structures, algorithms, compiled performance', progress: 85 },
-      { name: 'SQL', context: 'Database querying, aggregations, schema design', progress: 90 },
+      { name: 'SQL', context: 'Database querying, aggregations, schema design', progress: 80 },
     ]
   },
   {
@@ -21,15 +21,15 @@ const tabs = [
     desc: 'Neural architectures and stateful agentic workflows.',
     color: '#0ea5e9', // Sky blue
     skills: [
-      { name: 'PyTorch / CUDA', context: 'Custom model training and GPU acceleration', progress: 92 },
-      { name: 'Transformers', context: 'Decoder-only architectures, attention mechanisms', progress: 90 },
-      { name: 'LangChain / LangGraph', context: 'Multi-agent orchestration, state workflows', progress: 88 },
+      { name: 'PyTorch / CUDA', context: 'Custom model training and GPU acceleration', progress: 70 },
+      { name: 'Transformers', context: 'Decoder-only architectures, attention mechanisms', progress: 85 },
+      { name: 'LangChain / LangGraph', context: 'Multi-agent orchestration, state workflows', progress: 75 },
       { name: 'LangSmith', context: 'Tracing, evaluation, and debugging of LLM applications', progress: 85 },
       { name: 'RAG / ChromaDB', context: 'Semantic retrieval, chunking, vector operations', progress: 85 },
-      { name: 'Scikit-learn', context: 'Ensemble methods, classical ML algorithms', progress: 90 },
-      { name: 'HuggingFace', context: 'Datasets, tokenizers, model pipelines', progress: 85 },
-      { name: 'Computer Vision', context: 'OpenCV, CNNs, image processing pipelines', progress: 80 },
-      { name: 'Pandas / NumPy', context: 'Data wrangling, feature engineering, arrays', progress: 95 },
+      { name: 'Scikit-learn', context: 'Ensemble methods, classical ML algorithms', progress: 75 },
+      { name: 'HuggingFace', context: 'Datasets, tokenizers, model pipelines', progress: 80 },
+      { name: 'Computer Vision', context: 'OpenCV, CNNs, image processing pipelines', progress: 65 },
+      { name: 'Pandas / NumPy', context: 'Data wrangling, feature engineering, arrays', progress: 78 },
     ]
   },
   {
@@ -39,11 +39,11 @@ const tabs = [
     desc: 'Building and connecting the interfaces and APIs.',
     color: '#10b981', // Emerald
     skills: [
-      { name: 'FastAPI', context: 'REST APIs, async endpoints, WebSockets', progress: 90 },
-      { name: 'Streamlit', context: 'Rapid prototyping dashboards, interactive ML demos', progress: 85 },
-      { name: 'PostgreSQL', context: 'Relational data, SQLAlchemy ORM, migrations', progress: 85 },
-      { name: 'Tailwind CSS', context: 'Utility-first styling, responsive design', progress: 92 },
-      { name: 'Git', context: 'Version control, branching, collaborative workflows', progress: 90 },
+      { name: 'FastAPI', context: 'REST APIs, async endpoints, WebSockets', progress: 85 },
+      { name: 'Streamlit', context: 'Rapid prototyping dashboards, interactive ML demos', progress: 75 },
+      { name: 'PostgreSQL', context: 'Relational data, SQLAlchemy ORM, migrations', progress: 80 },
+      { name: 'Tailwind CSS', context: 'Utility-first styling, responsive design', progress: 60 },
+      { name: 'Git', context: 'Version control, branching, collaborative workflows', progress: 85 },
     ]
   },
   {
@@ -53,12 +53,12 @@ const tabs = [
     desc: 'Deploying, scaling, and maintaining production environments.',
     color: '#f59e0b', // Amber
     skills: [
-      { name: 'Docker', context: 'Containerization, multi-stage builds, compose', progress: 88 },
+      { name: 'Docker', context: 'Containerization, multi-stage builds, compose', progress: 90 },
       { name: 'Linux / Bash', context: 'Server administration, shell scripting', progress: 85 },
-      { name: 'Redis', context: 'In-memory caching, message brokering, semantic cache', progress: 80 },
-      { name: 'Nginx', context: 'Reverse proxy, load balancing, SSL termination', progress: 85 },
-      { name: 'AWS', context: 'EC2, S3, RDS, remote deployments', progress: 80 },
-      { name: 'Render & Vercel', context: 'PaaS deployments, CD pipelines, edge functions', progress: 85 },
+      { name: 'Redis', context: 'In-memory caching, message brokering, semantic cache', progress: 90 },
+      { name: 'Nginx', context: 'Reverse proxy, load balancing, SSL termination', progress: 65 },
+      { name: 'AWS', context: 'EC2, S3, RDS, remote deployments', progress: 60 },
+      { name: 'Render & Vercel', context: 'PaaS deployments, CD pipelines, edge functions', progress: 90 },
     ]
   }
 ]
