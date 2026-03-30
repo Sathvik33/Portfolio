@@ -194,9 +194,11 @@ export default function TechStack() {
               >
                 {activeTab === tab.id && (
                   <motion.div 
-                    layoutId="activeTabIndicator"
                     className="absolute left-0 top-0 bottom-0 w-[4px]"
                     style={{ backgroundColor: tab.color }}
+                    initial={{ scaleY: 0 }}
+                    animate={{ scaleY: 1 }}
+                    transition={{ duration: 0.3, ease: "easeOut" }}
                   />
                 )}
                 
