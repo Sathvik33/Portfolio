@@ -173,10 +173,11 @@ export default function Resume() {
               >
                 {activeTab === tab && (
                   <motion.div
-                    layoutId="tab-bg"
                     className="absolute inset-0 rounded-full"
                     style={{ background: 'var(--gradient)' }}
-                    transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.25, ease: 'easeOut' }}
                   />
                 )}
                 <span className="relative z-10">{tab}</span>
